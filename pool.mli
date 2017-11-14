@@ -16,20 +16,20 @@ end
 
 (* in the main, we will have a Pool that we continue to peek from. At every
  * iteration, we take the result of the peek and allow the user to swipe
- * left or right, updating the swipe_results as we go. at the end (when we
- * have exhausted the pool), we can take the swipe_results (which should be
- * fully populated) and write it to the DB *)
+ * left or right, updating the swipe_results_person as we go. at the end 
+ * (when we have exhausted the pool), we can take the swipe_results 
+ * (which should be fully populated) and write it to the DB *)
 
 (* handle swipe logic on a single person and the logic of writing swipes 
  * to the database *)
 module type Swipe = sig
-   type swipe_results
+   type swipe_results_person
    type decision
-   val swipe : person -> decision -> swipe_results
+   val swipe : People.person -> decision -> swipe_results_person
 
   (* once we're done iterating through the pool, call this to write everything
    * into the database *)
-  val write_swipe_results : swipe_results -> unit
+  val write_swipe_results : swipe_results_person -> unit
 end
 
 (* create the ordered pool based on characteristics to be determined later *)
