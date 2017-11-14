@@ -30,9 +30,9 @@ end
 
 (* in the main, we will have a Pool that we continue to peek from. At every
  * iteration, we take the result of the peek and allow the user to swipe
- * left or right, updating the swipe_results as we go. at the end (when we
- * have exhausted the pool), we can take the swipe_results (which should be
- * fully populated) and write it to the DB *)
+ * left or right, updating the swipe_results_person as we go. at the end
+ * (when we have exhausted the pool), we can take the swipe_results
+ * (which should be fully populated) and write it to the DB *)
 
 (* [Swipe] handles the act of deciding favorably or negatively
  * toward items that are popped, in order, from a pool. *)
