@@ -11,9 +11,9 @@ val authenticate : string -> string -> bool
  *    database, used to authenticate the request 
  *   key [type] that specifies the type of info we are trying to GET. 
  *    The value of [type] can only be student or match
- *    if [type] is student, retrieve an individual student row from the database
- *    excluding the password field
- *    if [type] is match, retrieve an individual students match from the database
+ *    if [type] is student, retrieve an individual student row from database
+ *     excluding the password field
+ *    if [type] is match, retrieve an individual students match from database
  * [req.params] - ignored 
  * [req.req_body] - ignored
  * 
@@ -23,10 +23,10 @@ val authenticate : string -> string -> bool
  *  [resp.status]
  *    [resp.status] should be `OK iff netid/password combination was 
  *     authenticated and valid data was retrieved from the database
+*    [resp.status] should be `Unauthorized iff netid/password did not 
+ *     authenticate
  *    [resp.status] should be `No_response iff netid/password authenticated but 
  *     no valid data was retrieved
- *    [resp.status] should be `Unauthorized iff netid/password did not 
- *     authenticate
  *  [resp.res_body]
  *    if [resp.status] is `OK
  *      [resp.res_body] should be a text json representation of the database  
@@ -69,10 +69,10 @@ val student_get : HttpServer.request -> HttpServer.response
  *  [res.status]
  *    [res.status] should be `OK iff netid/password combination was 
  *    authenticated and valid data was written to the database
- *    [res.status] should be `No_response iff netid/password authenticated but
- *    data write failed or some other error occured
  *    [res.status] should be `Unauthorized iff netid/password did not 
  *    authenticate
+ *    [res.status] should be `No_response iff netid/password authenticated but
+ *    data write failed or some other error occured
  *  [res.res_body]
  *    if [res.status] is `OK
  *      [res.resp_body] should be "Success"
@@ -115,9 +115,9 @@ val student_post : HttpServer.request -> HttpServer.response
  *  [res.status]
  *    [res.status] should be `OK iff the admin password was authenticated
  *     and valid data was retrieved from the database
- *    [res.status] should be `No_response iff password authenticated but no
- *     valid data was retrieved
  *    [res.status] should be `Unauthorized iff password did not authenticate
+ *    [res.status] should be `No_response iff password authenticated but no
+ *     valid data was retrieved or some other error occured
  *  [res.res_body]
  *    if [res.status] is `OK
  *      [res.res_body] should be a text json representation 
@@ -135,7 +135,7 @@ val student_post : HttpServer.request -> HttpServer.response
  *    if [res.status] is `Unauthorized, 
  *      [res.res_body] should be "Incorrect password"
  *    if [res.status] is `No_response
- *      [res.res_body] should be "No valid data was retrieved. Try again later"
+ *      [res.res_body] should be "No valid response retrieved. Try again later"
  *)
 val admin_get : HttpServer.request -> HttpServer.response
 
@@ -181,16 +181,16 @@ val admin_get : HttpServer.request -> HttpServer.response
  *  [res.status]
  *    [res.status] should be `OK iff the admin password was authenticated
  *     and valid data was retrieved from the database
- *    [res.status] should be `No_response iff password authenticated but no
- *     valid data was retrieved
  *    [res.status] should be `Unauthorized iff password did not authenticate
+ *    [res.status] should be `No_response iff password authenticated but
+ *     data write failed or some other error occured
  *  [res.res_body]
  *    if [res.status] is `OK
  *      [res.resp_body] should be "Success"
  *    if [res.status] is `Unauthorized
- *      [res.res_body] should be "Incorrect netid or password"
+ *      [res.res_body] should be "Incorrect password"
  *    if [res.status] is `No_response
- *      [res.res_body] should be "No valid data was retrieved. Try again later"
+ *      [res.res_body] should be "No valid response retrieved. Try again later"
  * 
  * side effect : writes to db
  *)
