@@ -60,7 +60,6 @@ val student_get : HttpServer.request -> HttpServer.response
  *   valid, user mutable column, the existing value in the database will be 
  *   overwritten with vi
  * [req.params] - ignored 
- * [req.req_body] - ignored
  *
  * returns:
  * HttpServer.response [res]
@@ -172,7 +171,6 @@ val admin_get : HttpServer.request -> HttpServer.response
  *   if a student with netid si is not in the database, ignore the si : _ pair
  *   if a student with netid si is in the database, delete the entire row
  * [req.params] - ignored 
- * [req.req_body] - ignored
  * 
  * returns:
  * HttpServer.response [res]
