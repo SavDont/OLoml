@@ -5,11 +5,11 @@ val authenticate : string -> string -> bool
 (* [student_get req] is the callback that handles all student-level GET requests
  * requires: 
  * [req.headers]
- *   key [netid] that specifies the netid of the student information is being
+ *   header [netid] that specifies the netid of the student information is being
  *    requested about
- *   key [password] that specifies the password associated with netid in the 
+ *   header [password] that specifies the password associated with netid in the 
  *    database
- *   key [type] that specifies the type of info we are trying to GET. 
+ *   header [type] that specifies the type of info we are trying to GET. 
  *    The value of [type] can only be student or match
  *    if [type] is student, retrieve an individual student row from database
  *     excluding the password field
@@ -47,9 +47,9 @@ val student_get : HttpServer.request -> HttpServer.response
  * requests.
  * requires: 
  * [req.headers]
- *   key [netid] that specifies the netid of the student information is being
+ *   header [netid] that specifies the netid of the student information is being
  *    requested about
- *   key [password] that specifies the password associated with netid in the 
+ *   header [password] that specifies the password associated with netid in the 
  *    database
  * [req.req_body]
  *   [req.req_body] should be a string representing a JSON as such:
@@ -91,8 +91,8 @@ val student_post : HttpServer.request -> HttpServer.response
 (* [admin_get req] is the callback that handles all admin level GET requests.
  * requires: 
  * [req.headers]
- *   key [password] that specifies the admin password
- *   key [type] that specifies the type of info we are trying to GET. 
+ *   header [password] that specifies the admin password
+ *   header [type] that specifies the type of info we are trying to GET. 
  *     [type] can be student_indiv, match_indiv, swipe_indiv, student_all, 
  *     swipe_all, or match_all
  *     if [type] is student_indiv, retrieve an individual student row 
@@ -105,7 +105,7 @@ val student_post : HttpServer.request -> HttpServer.response
  *     in the database
  *     if [type] is match_all, retrieve the match for all students from the
  *     database
- *   key [netid] that specifies the netid of the student we are trying to GET
+ *   header [netid] that specifies the netid of the student we are trying to GET
  *     data about
  *     only needed iff [type] is student_indiv, match_indiv, or swipe_indiv
  * [req.params] - ignored 
@@ -145,9 +145,9 @@ val admin_get : HttpServer.request -> HttpServer.response
 (* [admin_post req] is the callback that handles all admin level POST requests.
  * requires: 
  * [req.headers]
- *  key [password] that specifies the admin password
- *  key [type] that specifies the type of action we are trying to take. 
- *   key [type] can either be add or remove
+ *  header [password] that specifies the admin password
+ *  header [type] that specifies the type of action we are trying to take. 
+ *   header [type] can either be add or remove
  *   if [type] is add, add any number of students to the database
  *   if [type] is remove, remove any number of students from the database
  * [req.req_body] 
