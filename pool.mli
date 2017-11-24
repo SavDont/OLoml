@@ -58,6 +58,8 @@ end
  * toward items that are popped, in order, from a pool. *)
 module type Swipe = sig
 
+  type key
+
 (* [swipe_results] is a representation of the decisions
  * a user has made regarding a person *)
   type swipe_results
@@ -68,7 +70,7 @@ module type Swipe = sig
 
 (* [swipe p d] is the [swipe_results] representation
  * of the user's act of making a decision, d about a person, p. *)
-   val swipe : swipe_results -> Student.student -> decision -> swipe_results
+   val swipe : swipe_results -> key -> decision -> swipe_results
 
 (* [write_swipe_results s] adds s to the connected database.
  * side-effects: updates the connected database. *)

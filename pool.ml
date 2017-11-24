@@ -51,8 +51,9 @@ end
 
 module type Swipe = sig
   type decision
+  type key
   type swipe_results
-  val swipe : swipe_results -> Student.student -> decision -> swipe_results
+  val swipe : swipe_results -> key -> decision -> swipe_results
   val write_swipe_results : swipe_results -> unit
 end
 
@@ -64,8 +65,10 @@ module StudentSwipe : Swipe = struct
     | Like of score
     | Neutral
 
+  type key = Student.student
+
   (* identifying student + decision for each netid in class *)
-  type swipe_results = (Student.student * ((Student.student * decision) list))
+  type swipe_results = (key * ((key * decision) list))
 
 (* TODO: figure out how to initialize list of just net-id's?
  * initializes swipe list for a given student
