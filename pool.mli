@@ -21,10 +21,12 @@ module type Pool = sig
   val push     : 'a -> 'a pool -> 'a pool
 
 (* [peek p] is the next greatest item in p. Unlike pop,
- * it does not remove said item. *)
-  val peek     : 'a pool -> 'a
+ * it does not remove said item. Returns None if p is empty, and Some v
+ * if it is not. *)
+  val peek     : 'a pool -> 'a option
 
-(* [pop p] is p with the next greatest item removed from it. *)
+(* [pop p] is p with the next greatest item removed from it.
+ * If p is empty, it returns the empty pool. *)
   val pop      : 'a pool -> 'a pool
 end
 
@@ -48,7 +50,7 @@ module type Swipe = sig
 
 (* [swipe p d] is the [swipe_results] representation
  * of the user's act of making a decision, d about a person, p. *)
-   val swipe : People.person -> decision -> swipe_results
+   val swipe : swipe_results -> Student.student -> decision -> swipe_results
 
 (* [write_swipe_results s] adds s to the connected database.
  * side-effects: updates the connected database. *)
@@ -61,7 +63,7 @@ end
  * a = b and c = d
  * [compatibility_score a b] should equal [compatability_score b a]
  *)
-val compatability_score : People.person -> People.person -> score
+val compatability_score : Student.student -> Student.person -> score
 
 (* [poolify p p_lst] is a pool of maximum 25 people, from people_lst,
  * who are determined to be the most compatible matches for p,
@@ -69,4 +71,4 @@ val compatability_score : People.person -> People.person -> score
  * person in p_lst.
  * note: the maximum number of people + the features that determine
  * this compatibility score are tbd. *)
-val poolify : People.person -> People.person list -> pool
+val poolify : Student.student -> Student.student list -> pool
