@@ -16,3 +16,6 @@ clean:
 
 server:
 	make && ./server.byte
+
+compile:
+	ocamlbuild -use-ocamlfind pool.cmo student.cmo
