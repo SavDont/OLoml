@@ -35,6 +35,11 @@ val remove_student: Student.netid -> bool
  * side effect: writes to the DB *)
 val add_student: Student.studentData -> bool
 
+
+(* [get_student netID] returns Some s iff a student with netID exists in the 
+ * database and s is that student. Otherwise, return None *)
+val get_student: Student.netid -> Student.student option
+
 (* [get_all_student ()] reads from the database and returns a list of students.
  *)
 val get_all_students: unit -> Student.student list
