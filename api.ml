@@ -13,11 +13,14 @@ let authenticate user pwd =
 let student_get req = 
   failwith "Unimplemented"
 
-let student_post req =
+let student_put req =
   failwith "Unimplemented"
 
 let admin_get req =
   failwith "Unimplemented"
 
 let admin_post req = 
+  failwith "Unimplemented"
+
+let admin_delete req = 
   failwith "Unimplemented"

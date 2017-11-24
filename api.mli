@@ -3,11 +3,12 @@
 val authenticate : string -> string -> bool
 
 (* [student_get req] is the callback that handles all student-level GET requests
+ * student-level GET request can retrieve information about a specified student.
  * requires: 
  * [req.headers]
  *   header [netid] that specifies the netid of the student information is being
- *    requested about
- *   header [password] that specifies the password associated with netid in the 
+ *    requested for
+ *   header [password] specifies the password associated with netid in the 
  *    database
  *   header [type] that specifies the type of info we are trying to GET. 
  *    The value of [type] can only be student or match
@@ -44,11 +45,12 @@ val authenticate : string -> string -> bool
 val student_get : HttpServer.request -> HttpServer.response
 
 (* [student_post req] is the callback that handles all student-level POST 
- * requests.
+ * requests. student-level POST request can update information for a specified
+ * student.
  * requires: 
  * [req.headers]
- *   header [netid] that specifies the netid of the student information is being
- *    requested about
+ *   header [netid] that specifies the netid of the student we are trying to
+ *   update
  *   header [password] that specifies the password associated with netid in the 
  *    database
  * [req.req_body]
@@ -88,12 +90,14 @@ val student_get : HttpServer.request -> HttpServer.response
  *)
 val student_post : HttpServer.request -> HttpServer.response
 
-(* [admin_get req] is the callback that handles all admin level GET requests.
+(* [admin_get req] is the callback that handles all admin-level GET requests.
+ * admin-level GET requests can retrieve information about both an individual 
+ * student and about the entire class
  * requires: 
  * [req.headers]
  *   header [password] that specifies the admin password
  *   header [type] that specifies the type of info we are trying to GET. 
- *     [type] can be student_indiv, match_indiv, swipe_indiv, student_all, 
+ *     [type] can only be student_indiv, match_indiv, swipe_indiv, student_all, 
  *     swipe_all, or match_all
  *     if [type] is student_indiv, retrieve an individual student row 
  *     from the database
@@ -107,7 +111,7 @@ val student_post : HttpServer.request -> HttpServer.response
  *     database
  *   header [netid] that specifies the netid of the student we are trying to GET
  *     data about
- *     only needed iff [type] is student_indiv, match_indiv, or swipe_indiv
+ *     only needed if [type] is student_indiv, match_indiv, or swipe_indiv
  * [req.params] - ignored 
  * [req.req_body] - ignored
  * 
@@ -142,17 +146,14 @@ val student_post : HttpServer.request -> HttpServer.response
  *)
 val admin_get : HttpServer.request -> HttpServer.response
 
-(* [admin_post req] is the callback that handles all admin level POST requests.
+(* [admin_post req] is the callback that handles all admin-level POST requests.
+ * admin-level POST requests can add/update info for any number of specified
+ * students
  * requires: 
  * [req.headers]
  *  header [password] that specifies the admin password
- *  header [type] that specifies the type of action we are trying to take. 
- *   header [type] can either be add or remove
- *   if [type] is add, add any number of students to the database
- *   if [type] is remove, remove any number of students from the database
  * [req.req_body] 
- *  [req.req_body] should be a string representing a JSON
- *  if [type] is add, the body should be as follows:
+ *  [req.req_body] should be a string representing a JSON as follows
  *    {s1 :
  *       {k1 : s1v1, k2 : s1v2, ... kn : s1vn},
  *     s2 :
@@ -163,17 +164,11 @@ val admin_get : HttpServer.request -> HttpServer.response
  *     }
  *   where si is a netid, kj is a column in the database and sivj is the
  *   value we would like to store in column kj for student si
- *   if kj is an invalid column name or a column name that is not user mutable 
- *   (i.e. a metadata column), the kj : sivj pair is ignored
+ *   if a student with netid si does not exist in the database, the student will
+ *   be created with the specified information
  *   if a student with netid si is already in the database, its fields will be
  *   overwritten with the data specified in the request body
- *  if [type] is remove, the body shoudld be as follows:
- *   {s1 : _, s2: _, ... , sn: _}
- *   where si is a netid. We do not care about the JSON value associated with 
- *   si, hence the wildcard.
- *   if a student with netid si is not in the database, ignore the si : _ pair
- *   if a student with netid si is in the database, delete the entire row
- *   associated with that student
+ *   if kj is an invalid column name, the kj : sivj pair is ignored
  * [req.params] - ignored 
  * 
  * returns:
@@ -196,3 +191,45 @@ val admin_get : HttpServer.request -> HttpServer.response
  * side effect : updates the database
  *)
 val admin_post : HttpServer.request -> HttpServer.response
+
+(* [admin_delete req] is the callback that handles all admin-level DELETE
+ * requests.
+ * the admin is able to delete the entire class or a selected subset of the 
+ * class
+ * requires: 
+ * [req.headers]
+ *   header [password] that specifies the admin password
+ *   header [scope] 
+ *    should be "class" if we want to delete all students, i.e. reset the class
+ *    should be "subset" if we only want to delete a subset of the students
+ * [req.req_body] 
+ *   if header [scope] is "class", [req.req_body] is ignored.
+ *   else, [req.req_body] should be a string representing a JSON as follows:
+ *     {s1 : _, s2: _, ... , sn: _}
+ *     where si is a netid. We do not care about the JSON value associated with 
+ *     si, hence the wildcard.
+ *     if a student with netid si is not in the database, ignore the si : _ pair
+ *     if a student with netid si is in the database, the entire row associated
+ *     with that student will be deleted
+ * [req.params] - ignored 
+ * 
+ * returns:
+ * HttpServer.response [res]
+ *  [res.headers]
+ *    [res.headers] should be the default plain text Cohttp Header
+ *  [res.status]
+ *    [res.status] should be `OK iff the admin password was authenticated
+ *     and a valid database update was performed
+ *    [res.status] should be `Unauthorized iff password did not authenticate
+ *    [res.status] should be `No_response otherwise
+ *  [res.res_body]
+ *    if [res.status] is `OK
+ *      [res.resp_body] should be "Success"
+ *    if [res.status] is `Unauthorized
+ *      [res.res_body] should be "Incorrect password"
+ *    if [res.status] is `No_response
+ *      [res.res_body] should be "No valid response. Try again later"
+ * 
+ * side effect : updates the database
+ *)
+val admin_delete : HttpServer.request -> HttpServer.response
