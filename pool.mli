@@ -5,29 +5,47 @@ type score
  * the greatest entry is the first to be accessed, and
  * the least entry is the last to be accessed. *)
 module type Pool = sig
-
+  type key
+  type value
 (* [pool] is the type representing the underlying
  * datastructure of this module.  *)
-  type 'a pool
+  type pool
 
 (* [empty] is the empty pool *)
-  val empty    : 'a pool
+  val empty    : pool
 
 (* [is_empty p] is true iff p is empty. *)
-  val is_empty : 'a pool -> bool
+  val is_empty : pool -> bool
 
 (* [push i p] is p with i inserted in its correct ordered position.
 * Requires: i is not already in p *)
-  val push     : 'a -> 'a pool -> 'a pool
+  val push     : (key * value) -> pool -> pool
 
 (* [peek p] is the next greatest item in p. Unlike pop,
  * it does not remove said item. Returns None if p is empty, and Some v
  * if it is not. *)
-  val peek     : 'a pool -> 'a option
+  val peek     : pool -> (key * value) option
 
 (* [pop p] is p with the next greatest item removed from it.
  * If p is empty, it returns the empty pool. *)
-  val pop      : 'a pool -> 'a pool
+  val pop      : pool -> pool
+
+(* [poolify p p_lst] is a pool of maximum 25 people, from people_lst,
+ * who are determined to be the most compatible matches for p,
+ * based on the results of calling [compatability_score] on each
+ * person in p_lst.
+ * note: the maximum number of people + the features that determine
+ * this compatibility score are tbd. *)
+  val poolify : value -> value list -> pool
+
+(* [compatability_score p1 p2] gives the [score] representing how
+ * "good" a partnership between p1 and p2 appears.
+ * [compatibility_score a b] should equal [compatability_score c d] if
+ * a = b and c = d
+ * [compatibility_score a b] should equal [compatability_score b a]
+ *)
+(* val compatability_score : Student.student -> Student.student -> score *)
+
 end
 
 (* in the main, we will have a Pool that we continue to peek from. At every
@@ -56,19 +74,3 @@ module type Swipe = sig
  * side-effects: updates the connected database. *)
   val write_swipe_results : swipe_results -> unit
 end
-
-(* [compatability_score p1 p2] gives the [score] representing how
- * "good" a partnership between p1 and p2 appears.
- * [compatibility_score a b] should equal [compatability_score c d] if
- * a = b and c = d
- * [compatibility_score a b] should equal [compatability_score b a]
- *)
-val compatability_score : Student.student -> Student.person -> score
-
-(* [poolify p p_lst] is a pool of maximum 25 people, from people_lst,
- * who are determined to be the most compatible matches for p,
- * based on the results of calling [compatability_score] on each
- * person in p_lst.
- * note: the maximum number of people + the features that determine
- * this compatibility score are tbd. *)
-val poolify : Student.student -> Student.student list -> pool
