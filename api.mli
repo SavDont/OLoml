@@ -66,6 +66,8 @@ val student_get : HttpServer.request -> HttpServer.response
  *   for column name ki specified in the request body where ki corresponds to a
  *   valid, user mutable column, the existing value in the database will be 
  *   overwritten with vi
+ *   if a valid column name kx is not included in k1 ... kn, the corresponding 
+ *   value for column kx for the given student will remain unchanged
  * [req.params] - ignored 
  *
  * returns:
@@ -155,20 +157,23 @@ val admin_get : HttpServer.request -> HttpServer.response
  * [req.req_body] 
  *  [req.req_body] should be a string representing a JSON as follows
  *    {s1 :
- *       {k1 : s1v1, k2 : s1v2, ... kn : s1vn},
+ *       {s1k1 : s1v1, s1k2 : s1v2, ... s1kn : s1vn},
  *     s2 :
- *       {k1 : s2v1, k2 : s2v2, ... kn : s2vn},
+ *       {s2k1 : s2v1, s2k2 : s2v2, ... s2kn : s2vn},
  *                         ...
  *     sn:
- *       {k1 : snv1, k2 : snv2, ... kn : snvn}
+ *       {s3k1 : snv1, s3k2 : snv2, ... s3kn : snvn}
  *     }
- *   where si is a netid, kj is a column in the database and sivj is the
- *   value we would like to store in column kj for student si
+ *   where si is a netid, sikj is a column in the database and sivj is the
+ *   value we would like to store in column kj for student with netid si
  *   if a student with netid si does not exist in the database, the student will
  *   be created with the specified information
  *   if a student with netid si is already in the database, its fields will be
  *   overwritten with the data specified in the request body
  *   if kj is an invalid column name, the kj : sivj pair is ignored
+ *   for a valid column name kx not included in sik1 ... sikn for student with 
+ *   netid si, the corresponding value in column kx for that student will remain
+ *   unchanged for an existing student and set to the default for a new student
  * [req.params] - ignored 
  * 
  * returns:
