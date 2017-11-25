@@ -10,11 +10,11 @@ val authenticate : string -> string -> bool
  *    requested for
  *   header [password] specifies the password associated with netid in the 
  *    database
- *   header [info] that specifies the type of info we are trying to GET. 
- *    The value of [info] can only be student or match
- *    if [info] is student, retrieve an individual student row from database
+ *   header [scope] that specifies the scope of the info we are trying to GET. 
+ *    The value of [scope] can only be "all" or "match"
+ *    if [scope] is "all", retrieve an individual student row from database
  *     excluding the password field
- *    if [info] is match, retrieve an individual students match from database
+ *    if [scope] is "match", retrieve an individual students match from database
  * [req.params] - ignored 
  * [req.req_body] - ignored
  * 
@@ -96,22 +96,22 @@ val student_post : HttpServer.request -> HttpServer.response
  * requires: 
  * [req.headers]
  *   header [password] that specifies the admin password
- *   header [info] that specifies the type of info we are trying to GET. 
- *     [info] can only be student_indiv, swipe_indiv, match_indiv, student_all, 
- *     swipe_all, or match_all
- *     if [info] is student_indiv, retrieve an individual student row 
+ *   header [scope] that specifies the scope of info we are trying to GET. 
+ *     [scope] can only be "student_indiv", "swipe_indiv", "match_indiv", 
+ *     "student_all", "swipe_all", or "match_all"
+ *     if [scope] is "student_indiv", retrieve an individual student row 
  *     from the database
- *     if [info] is swipe_indiv, retrieve the swipe results for an individual
+ *     if [scope] is "swipe_indiv", retrieve the swipe results for an individual
  *     student
- *     if [info] is match_indiv, retrieve the match for an individual student
- *     if [info] is student_all, retrieve all students from the database
- *     if [info] is swipe_all, retrieve the swipe results from all students
+ *     if [scope] is "match_indiv", retrieve the match for an individual student
+ *     if [scope] is "student_all", retrieve all students from the database
+ *     if [scope] is "swipe_all", retrieve the swipe results from all students
  *     in the database
- *     if [info] is match_all, retrieve the match for all students from the
+ *     if [scope] is "match_all", retrieve the match for all students from the
  *     database
  *   header [netid] that specifies the netid of the student we are trying to GET
  *     data about
- *     only needed if [type] is student_indiv, swipe_indiv, or match_indiv
+ *     needed iff [scope] is "student_indiv", "swipe_indiv", or "match_indiv"
  * [req.params] - ignored 
  * [req.req_body] - ignored
  * 
@@ -199,7 +199,8 @@ val admin_post : HttpServer.request -> HttpServer.response
  * requires: 
  * [req.headers]
  *   header [password] that specifies the admin password
- *   header [scope] 
+ *   header [scope] specifies the scope of the information we want to delete
+ *   header [scope] can only be "class" or "subset"
  *    should be "class" if we want to delete all students, i.e. reset the class
  *    should be "subset" if we only want to delete a subset of the students
  * [req.req_body] 

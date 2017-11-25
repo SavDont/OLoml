@@ -3,7 +3,7 @@
  * requires: 
  * [netID] is a valid netid of a student in the database
  * [pwd] is the password associated with the student whose netid is netID
- * [info] is either "student" or "match"
+ * [scope] is either "all" or "match"
  * side effect: makes a GET request to the student api endpoint *)
 val student_get : Student.netid -> string -> string -> HttpServer.meth*string
 
@@ -23,8 +23,8 @@ val student_post : Student.netid -> string -> string -> HttpServer.meth*string
  * and response body received after a GET request to the admin api endpoint. 
  * requires: 
  * [pwd] is the admin password
- * [info] is one of the following: "student_indiv", "swipe_indiv", "match_indiv"
- * "student_all", "swipe_all", "match_all"
+ * [scope] is one of the following: "student_indiv", "swipe_indiv", 
+ * "match_indiv", "student_all", "swipe_all", "match_all"
  * [netID] is an optional string argument. [netID] should be a valid netid of 
  * a student in the database) if [info] is student_indiv, swipe_indiv, or
  * match_indiv. Otherwise, it is set to the empty string and is unused
@@ -54,5 +54,3 @@ val admin_post : string -> string -> HttpServer.meth*string
  * [reqBody] should be formatted as specified in the api documentation
  * side effect: makes a DELETE request to the admin api endpoint *)
 val admin_delete : string -> string -> string -> HttpServer.meth*string
-
-

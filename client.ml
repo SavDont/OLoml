@@ -1,10 +1,10 @@
-let student_get netID pwd info =
+let student_get netID pwd scope =
   failwith "Unimplemented"
 
 let student_post netID pwd reqBody =
   failwith "Unimplemented"
 
-let admin_get pwd info ?netID:(n="") =
+let admin_get pwd scope ?netID:(n="") =
   failwith "Unimplemented"
 
 let admin_post pwd reqBody =
