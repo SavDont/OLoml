@@ -10,11 +10,11 @@ val authenticate : string -> string -> bool
  *    requested for
  *   header [password] specifies the password associated with netid in the 
  *    database
- *   header [type] that specifies the type of info we are trying to GET. 
- *    The value of [type] can only be student or match
- *    if [type] is student, retrieve an individual student row from database
+ *   header [info] that specifies the type of info we are trying to GET. 
+ *    The value of [info] can only be student or match
+ *    if [info] is student, retrieve an individual student row from database
  *     excluding the password field
- *    if [type] is match, retrieve an individual students match from database
+ *    if [info] is match, retrieve an individual students match from database
  * [req.params] - ignored 
  * [req.req_body] - ignored
  * 
@@ -96,22 +96,22 @@ val student_post : HttpServer.request -> HttpServer.response
  * requires: 
  * [req.headers]
  *   header [password] that specifies the admin password
- *   header [type] that specifies the type of info we are trying to GET. 
- *     [type] can only be student_indiv, match_indiv, swipe_indiv, student_all, 
+ *   header [info] that specifies the type of info we are trying to GET. 
+ *     [info] can only be student_indiv, swipe_indiv, match_indiv, student_all, 
  *     swipe_all, or match_all
- *     if [type] is student_indiv, retrieve an individual student row 
+ *     if [info] is student_indiv, retrieve an individual student row 
  *     from the database
- *     if [type] is match_indiv, retrieve the match for an individual student
- *     if [type] is swipe_indiv, retrieve the swipe results for an individual
+ *     if [info] is swipe_indiv, retrieve the swipe results for an individual
  *     student
- *     if [type] is student_all, retrieve all students from the database
- *     if [type] is swipe_all, retrieve the swipe results from all students
+ *     if [info] is match_indiv, retrieve the match for an individual student
+ *     if [info] is student_all, retrieve all students from the database
+ *     if [info] is swipe_all, retrieve the swipe results from all students
  *     in the database
- *     if [type] is match_all, retrieve the match for all students from the
+ *     if [info] is match_all, retrieve the match for all students from the
  *     database
  *   header [netid] that specifies the netid of the student we are trying to GET
  *     data about
- *     only needed if [type] is student_indiv, match_indiv, or swipe_indiv
+ *     only needed if [type] is student_indiv, swipe_indiv, or match_indiv
  * [req.params] - ignored 
  * [req.req_body] - ignored
  * 
