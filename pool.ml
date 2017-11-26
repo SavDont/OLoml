@@ -13,7 +13,6 @@ module type Pool = sig
   val pop      : pool -> pool
   val poolify  : value -> value list -> pool
   val size     : pool -> int
-  val to_list  : pool -> (key * value) list
 end
 
 (* single_comparison: need to be able to compare two values and generate
@@ -24,6 +23,7 @@ module type TupleComparable = sig
   type value
   val tuple_comparison : (key * value) -> (key * value) -> int
   val tuple_gen : value -> value -> (key * value)
+  val opt_key_to_string : key option -> string
 end
 
 module MakePool (T : TupleComparable) : Pool
@@ -64,14 +64,13 @@ module MakePool (T : TupleComparable) : Pool
       else cut_lst (List.tl lst) len (push (List.hd lst) final_lst) in
     cut_lst tuple_lst_srt max_len []
 
-  let to_list p = p
 end
 
 module StudentScores : TupleComparable
   with type key = score
   with type value = student
-
 = struct
+
   type key = score
   type value = student
 
@@ -83,6 +82,12 @@ module StudentScores : TupleComparable
   (* generates score for s1 and s2, tuple for s2 *)
   let tuple_gen s1 s2 =
     (Random.float 1000.0, s2) (* Replace with algorithm *)
+
+  (* useful for code reuse in swiping *)
+  let opt_key_to_string k_opt =
+    match k_opt with
+    | None -> "0.0"
+    | Some v -> string_of_float v
 end
 
 module StudentPool = MakePool(StudentScores)

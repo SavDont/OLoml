@@ -47,7 +47,6 @@ module type Pool = sig
  *)
 (* val compatability_score : Student.student -> Student.student -> score *)
   val size : pool -> int
-  val to_list : pool -> (key * value) list
 end
 
 module type TupleComparable = sig
@@ -55,6 +54,7 @@ module type TupleComparable = sig
   type value
   val tuple_comparison : (key * value) -> (key * value) -> int
   val tuple_gen : value -> value -> (key * value)
+  val opt_key_to_string : key option -> string
 end
 
 module MakePool (T : TupleComparable): Pool

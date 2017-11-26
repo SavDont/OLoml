@@ -64,6 +64,6 @@ let swipes = [gen_test_student "Joe"; gen_test_student "Mara"; gen_test_student 
 
 let swipes_r = init_swipes swipes
 
-let swipes_lst = swipe swipes_r (snd student) (Like (fst student))
+let swipes_lst = swipe swipes_r (snd student) (Some (fst student))
 
 let results = gen_swipe_results swipes_lst
