@@ -18,4 +18,4 @@ server:
 	make && ./server.byte
 
 compile:
-	ocamlbuild -use-ocamlfind pool.cmo student.cmo
+	ocamlbuild -use-ocamlfind pool.cmo student.cmo swipe.cmo
