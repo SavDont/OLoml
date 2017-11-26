@@ -1,7 +1,9 @@
+open Student
+
 type score = float
 
 module type Pool = sig
-  type key = score
+  type key
   type value
   type pool
   val empty    : pool
@@ -10,20 +12,22 @@ module type Pool = sig
   val peek     : pool -> (key * value) option
   val pop      : pool -> pool
   val poolify  : value -> value list -> pool
+  val size     : pool -> int
+  val to_list  : pool -> (key * value) list
 end
 
 (* single_comparison: need to be able to compare two values and generate
  * a key, value tuple which can then be compared with other
  * key,value tuples using tuple_comparison *)
 module type TupleComparable = sig
-  type key = score
+  type key
   type value
   val tuple_comparison : (key * value) -> (key * value) -> int
   val tuple_gen : value -> value -> (key * value)
 end
 
 module MakePool (T : TupleComparable) : Pool
-  with type key = score
+  with type key = T.key
   with type value = T.value = struct
 
   type key = T.key
@@ -54,17 +58,22 @@ module MakePool (T : TupleComparable) : Pool
     let tuple_lst = List.map (T.tuple_gen v) v_lst in
     let tuple_lst_srt = List.sort (T.tuple_comparison) tuple_lst in
     (* How many students do we want them swiping through? *)
-    let max_len = (1/4) * List.length tuple_lst_srt in
+    let max_len = (List.length tuple_lst_srt)/2 in
     let rec cut_lst lst len final_lst =
       if List.length final_lst = max_len then final_lst
-      else push (List.hd lst) final_lst in
+      else cut_lst (List.tl lst) len (push (List.hd lst) final_lst) in
     cut_lst tuple_lst_srt max_len []
 
+  let to_list p = p
 end
 
-module StudentScores = struct
+module StudentScores : TupleComparable
+  with type key = score
+  with type value = student
+
+= struct
   type key = score
-  type value = Student.student
+  type value = student
 
   let tuple_comparison (sc1, st1) (sc2, st2) =
     if sc1 > sc2 then -1
@@ -73,7 +82,7 @@ module StudentScores = struct
 
   (* generates score for s1 and s2, tuple for s2 *)
   let tuple_gen s1 s2 =
-    (50.0, s2) (* Replace with algorithm *)
+    (Random.float 1000.0, s2) (* Replace with algorithm *)
 end
 
 module StudentPool = MakePool(StudentScores)

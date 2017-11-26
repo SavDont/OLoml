@@ -1,3 +1,4 @@
+open Student
 (* [score] represents how valuable or "good" a partnership might be *)
 type score = float
 
@@ -5,7 +6,7 @@ type score = float
  * the greatest entry is the first to be accessed, and
  * the least entry is the last to be accessed. *)
 module type Pool = sig
-  type key = score
+  type key
   type value
 (* [pool] is the type representing the underlying
  * datastructure of this module.  *)
@@ -45,14 +46,23 @@ module type Pool = sig
  * [compatibility_score a b] should equal [compatability_score b a]
  *)
 (* val compatability_score : Student.student -> Student.student -> score *)
+  val size : pool -> int
+  val to_list : pool -> (key * value) list
 end
 
 module type TupleComparable = sig
-  type key = score
+  type key
   type value
   val tuple_comparison : (key * value) -> (key * value) -> int
   val tuple_gen : value -> value -> (key * value)
 end
 
-module StudentPool : Pool
+module MakePool (T : TupleComparable): Pool
+
 module StudentScores : TupleComparable
+  with type key = score
+  with type value = student
+
+module StudentPool : Pool
+  with type key = score
+  with type value = student
