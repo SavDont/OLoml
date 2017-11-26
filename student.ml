@@ -48,12 +48,6 @@ type student = {
   hours_to_spend : int
 }
 
-type studentData =
-  | Schedule of schedule
-  | Courses of course list
-  | Skills of skill list
-  | Hours of int
-
 let authenticate n s =
   failwith "unimplemented"
 
