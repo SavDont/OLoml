@@ -11,8 +11,8 @@ val authenticate : string -> string -> bool
  *   header [password] specifies the password associated with netid in the 
  *    database
  *   header [scope] that specifies the scope of the info we are trying to GET. 
- *    The value of [scope] can only be "all" or "match"
- *    if [scope] is "all", retrieve an individual student row from database
+ *    The value of [scope] can only be "student" or "match"
+ *    if [scope] is "student", retrieve an individual student row from database
  *     excluding the password field
  *    if [scope] is "match", retrieve an individual students match from database
  * [req.params] - ignored 
@@ -170,10 +170,11 @@ val admin_get : HttpServer.request -> HttpServer.response
  *   be created with the specified information
  *   if a student with netid si is already in the database, its fields will be
  *   overwritten with the data specified in the request body
- *   if kj is an invalid column name, the kj : sivj pair is ignored
+ *   if sikj is an invalid column name, the sikj : sivj pair is ignored
  *   for a valid column name kx not included in sik1 ... sikn for student with 
- *   netid si, the corresponding value in column kx for that student will remain
- *   unchanged for an existing student and set to the default for a new student
+ *   netid si, the corresponding value in column kx for that student will either
+ *     remain unchanged (if the student already exists in the databse)
+ *     be set to the default value (if the student is new)
  * [req.params] - ignored 
  * 
  * returns:
