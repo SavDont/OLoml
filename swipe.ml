@@ -43,16 +43,14 @@ module MakeSwipe (T : TupleComparable) : Swipe
     | Like v -> v
     | Neutral -> 0.0
 
-  let lst_to_string lst acc =
-    let string_lst = match lst with
-    | [] -> acc
-    | h::m::t -> acc^","^(string_of_float h)
-    | h::t -> acc^(string_of_float h) in
-    "["^string_lst^"]"
+  let rec lst_to_string = function
+    | [] -> ""
+    | h::m::t -> (string_of_float h)^","^(lst_to_string (m::t))
+    | h::t -> (string_of_float h)^(lst_to_string (t))
 
   let gen_swipe_results s_results =
     let lst = List.map (convert_result) s_results in
-    let str_lst = lst_to_string lst "" in
+    let str_lst = "["^(lst_to_string lst)^"]" in
     from_string str_lst
 
 end

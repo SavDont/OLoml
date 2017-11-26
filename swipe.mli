@@ -21,6 +21,7 @@ module type Swipe = sig
    * a user has made regarding a person *)
   type swipe_results = (swipe_item * decision) list
 
+
   (* [swipe p d] is the [swipe_results] representation
    * of the user's act of making a decision, d about a person, p. *)
   val swipe : swipe_results -> swipe_item -> decision -> swipe_results
