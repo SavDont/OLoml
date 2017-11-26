@@ -19,7 +19,7 @@ module type Swipe = sig
 
   (* [swipe_results] is a representation of the decisions
    * a user has made regarding a person *)
-  type swipe_results = (swipe_item * decision) list
+  type swipe_results
 
 
   (* [swipe p d] is the [swipe_results] representation
@@ -29,4 +29,9 @@ module type Swipe = sig
   (* [write_swipe_results s] adds s to the connected database.
    * side-effects: updates the connected database. *)
   val gen_swipe_results : swipe_results -> Yojson.Basic.json
+
+  val init_swipes : swipe_item list -> swipe_results
 end
+
+module SwipeStudentPool : Swipe
+  with type swipe_item = Student.student

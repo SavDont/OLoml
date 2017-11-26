@@ -10,12 +10,13 @@ module type Swipe = sig
 
   type swipe_item
 
-  type swipe_results = (swipe_item * decision) list
+  type swipe_results
 
   val swipe : swipe_results -> swipe_item -> decision -> swipe_results
 
   val gen_swipe_results : swipe_results -> json
 
+  val init_swipes : swipe_item list -> swipe_results
 end
 
 module MakeSwipe (T : TupleComparable) : Swipe
@@ -45,13 +46,16 @@ module MakeSwipe (T : TupleComparable) : Swipe
 
   let rec lst_to_string = function
     | [] -> ""
-    | h::m::t -> (string_of_float h)^","^(lst_to_string (m::t))
-    | h::t -> (string_of_float h)^(lst_to_string (t))
+    | h::m::t -> (string_of_float h)^"0,"^(lst_to_string (m::t))
+    | h::t -> (string_of_float h)^"0"^(lst_to_string (t))
 
   let gen_swipe_results s_results =
     let lst = List.map (convert_result) s_results in
     let str_lst = "["^(lst_to_string lst)^"]" in
     from_string str_lst
+
+  let init_swipes s_lst =
+    List.map (fun s -> (s, Neutral)) s_lst
 
 end
 
