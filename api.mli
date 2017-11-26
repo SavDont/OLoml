@@ -170,10 +170,11 @@ val admin_get : HttpServer.request -> HttpServer.response
  *   be created with the specified information
  *   if a student with netid si is already in the database, its fields will be
  *   overwritten with the data specified in the request body
- *   if kj is an invalid column name, the kj : sivj pair is ignored
+ *   if sikj is an invalid column name, the sikj : sivj pair is ignored
  *   for a valid column name kx not included in sik1 ... sikn for student with 
- *   netid si, the corresponding value in column kx for that student will remain
- *   unchanged for an existing student and set to the default for a new student
+ *   netid si, the corresponding value in column kx for that student will either
+ *     remain unchanged (if the student already exists in the databse)
+ *     be set to the default value (if the student is new)
  * [req.params] - ignored 
  * 
  * returns:
