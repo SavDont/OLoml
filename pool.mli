@@ -1,11 +1,11 @@
 (* [score] represents how valuable or "good" a partnership might be *)
-type score
+type score = float
 
 (* a [Pool] is an ordered representation of entries.
  * the greatest entry is the first to be accessed, and
  * the least entry is the last to be accessed. *)
 module type Pool = sig
-  type key
+  type key = score
   type value
 (* [pool] is the type representing the underlying
  * datastructure of this module.  *)
@@ -45,34 +45,14 @@ module type Pool = sig
  * [compatibility_score a b] should equal [compatability_score b a]
  *)
 (* val compatability_score : Student.student -> Student.student -> score *)
-
 end
 
-(* in the main, we will have a Pool that we continue to peek from. At every
- * iteration, we take the result of the peek and allow the user to swipe
- * left or right, updating the swipe_results_person as we go. at the end
- * (when we have exhausted the pool), we can take the swipe_results
- * (which should be fully populated) and write it to the DB *)
-
-(* [Swipe] handles the act of deciding favorably or negatively
- * toward items that are popped, in order, from a pool. *)
-module type Swipe = sig
-
-  type key
-
-(* [swipe_results] is a representation of the decisions
- * a user has made regarding a person *)
-  type swipe_results
-
-(* [decision] is a representation of a user's decision regarding
- * a person.  Said decision may be negative or positive. *)
-  type decision
-
-(* [swipe p d] is the [swipe_results] representation
- * of the user's act of making a decision, d about a person, p. *)
-   val swipe : swipe_results -> key -> decision -> swipe_results
-
-(* [write_swipe_results s] adds s to the connected database.
- * side-effects: updates the connected database. *)
-  val write_swipe_results : swipe_results -> unit
+module type TupleComparable = sig
+  type key = score
+  type value
+  val tuple_comparison : (key * value) -> (key * value) -> int
+  val tuple_gen : value -> value -> (key * value)
 end
+
+module StudentPool : Pool
+module StudentScores : TupleComparable

@@ -1,7 +1,7 @@
 type score = float
 
 module type Pool = sig
-  type key
+  type key = score
   type value
   type pool
   val empty    : pool
@@ -12,28 +12,33 @@ module type Pool = sig
   val poolify  : value -> value list -> pool
 end
 
-module StudentPool : Pool = struct
+(* single_comparison: need to be able to compare two values and generate
+ * a key, value tuple which can then be compared with other
+ * key,value tuples using tuple_comparison *)
+module type TupleComparable = sig
   type key = score
-  type value = Student.student
+  type value
+  val tuple_comparison : (key * value) -> (key * value) -> int
+  val tuple_gen : value -> value -> (key * value)
+end
+
+module MakePool (T : TupleComparable) : Pool
+  with type key = score
+  with type value = T.value = struct
+
+  type key = T.key
+  type value = T.value
   type pool = (key * value) list
 
-(* comparator function for score,student tuples
- * Note: comparison is "backwards" to allow for max-heap *)
-  let score_compare (sc1, st1) (sc2, st2) =
-    if sc1 < sc2 then 1
-    else if sc1 > sc2 then -1
-    else 0
-
-  (* p is sorted from greatest to least *)
   let rep_ok p =
-    List.sort (score_compare) p = p
+    List.sort (T.tuple_comparison) p = p
 
   let empty = []
 
   let is_empty p = (p = [])
 
   let push v p =
-    List.sort (score_compare) (v::p)
+    List.sort (T.tuple_comparison) (v::p)
 
   let peek = function
     | [] -> None
@@ -45,52 +50,30 @@ module StudentPool : Pool = struct
 
   let size p = List.length p
 
-  let poolify s s_lst =
-    failwith "unimplemented"
+  let poolify v v_lst =
+    let tuple_lst = List.map (T.tuple_gen v) v_lst in
+    let tuple_lst_srt = List.sort (T.tuple_comparison) tuple_lst in
+    (* How many students do we want them swiping through? *)
+    let max_len = (1/4) * List.length tuple_lst_srt in
+    let rec cut_lst lst len final_lst =
+      if List.length final_lst = max_len then final_lst
+      else push (List.hd lst) final_lst in
+    cut_lst tuple_lst_srt max_len []
+
 end
 
-module type Swipe = sig
-  type decision
-  type key
-  type swipe_results
-  val swipe : swipe_results -> key -> decision -> swipe_results
-  val write_swipe_results : swipe_results -> unit
+module StudentScores = struct
+  type key = score
+  type value = Student.student
+
+  let tuple_comparison (sc1, st1) (sc2, st2) =
+    if sc1 > sc2 then -1
+    else if sc1 < sc2 then 1
+    else 0
+
+  (* generates score for s1 and s2, tuple for s2 *)
+  let tuple_gen s1 s2 =
+    (50.0, s2) (* Replace with algorithm *)
 end
 
-(* Swiping on a pool -- have pool as input? *)
-module StudentSwipe : Swipe = struct
-  type decision =
-    (* if student "likes" a student, we care about compatibility *)
-    | Dislike
-    | Like of score
-    | Neutral
-
-  type key = Student.student
-
-  (* identifying student + decision for each netid in class *)
-  type swipe_results = (key * ((key * decision) list))
-
-(* TODO: figure out how to initialize list of just net-id's?
- * initializes swipe list for a given student
- * do we want the whole class here to make merging the swipe list easier? *)
-  (* let init_swipelst s =
-    let all_students = Professor.get_all_students () in
-    let dec_tuples = List.map (fun s -> (s,Neutral)) all_students in
-    (s, dec_tuples) *)
-
-  (* updates decision for a single (student, decision) tuple *)
-  let updated_decision s d sd_tuple =
-    if fst sd_tuple = s then (fst sd_tuple, d)
-    else sd_tuple
-
-  let swipe current_swipes s d =
-    let lst = List.map (updated_decision s d) (snd current_swipes) in
-    (fst current_swipes, lst)
-
-  (* Put list into good form for inserting into database ((netid,int) list?)*)
-  let normalize sd_tuple =
-    failwith "unimplemented"
-
-  let write_swipe_results s_results =
-    failwith "unimplemented"
-end
+module StudentPool = MakePool(StudentScores)
