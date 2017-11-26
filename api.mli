@@ -11,8 +11,8 @@ val authenticate : string -> string -> bool
  *   header [password] specifies the password associated with netid in the 
  *    database
  *   header [scope] that specifies the scope of the info we are trying to GET. 
- *    The value of [scope] can only be "all" or "match"
- *    if [scope] is "all", retrieve an individual student row from database
+ *    The value of [scope] can only be "student" or "match"
+ *    if [scope] is "student", retrieve an individual student row from database
  *     excluding the password field
  *    if [scope] is "match", retrieve an individual students match from database
  * [req.params] - ignored 

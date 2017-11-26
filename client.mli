@@ -4,7 +4,7 @@ open Cohttp
  * requires: 
  * [netID] is a valid netid of a student in the database
  * [pwd] is the password associated with the student whose netid is netID
- * [scope] is either "all" or "match"
+ * [scope] is either "student" or "match"
  * side effect: makes a GET request to the student api endpoint *)
 val student_get : Student.netid -> string -> string -> Code.status_code*string
 
