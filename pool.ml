@@ -15,23 +15,20 @@ module type Pool = sig
   val size     : pool -> int
 end
 
-(* single_comparison: need to be able to compare two values and generate
- * a key, value tuple which can then be compared with other
- * key,value tuples using tuple_comparison *)
 module type TupleComparable = sig
-  type key
-  type value
-  val tuple_comparison : (key * value) -> (key * value) -> int
-  val tuple_gen : value -> value -> (key * value)
-  val opt_key_to_string : key option -> string
+  type rank
+  type item
+  val tuple_comparison : (rank * item) -> (rank * item) -> int
+  val tuple_gen : item -> item -> (rank * item)
+  val opt_key_to_string : rank option -> string
 end
 
 module MakePool (T : TupleComparable) : Pool
-  with type key = T.key
-  with type value = T.value = struct
+  with type key = T.rank
+  with type value = T.item = struct
 
-  type key = T.key
-  type value = T.value
+  type key = T.rank
+  type value = T.item
   type pool = (key * value) list
 
   let rep_ok p =
@@ -67,12 +64,12 @@ module MakePool (T : TupleComparable) : Pool
 end
 
 module StudentScores : TupleComparable
-  with type key = score
-  with type value = student
+  with type rank = score
+  with type item = student
 = struct
 
-  type key = score
-  type value = student
+  type rank = score
+  type item = student
 
   let tuple_comparison (sc1, st1) (sc2, st2) =
     if sc1 > sc2 then -1
