@@ -67,9 +67,6 @@ module type TupleComparable = sig
   val opt_key_to_string : rank option -> string
 end
 
-(* [MakePool] is a functor producing a [Pool] for a given [TupleComparable]*)
-module MakePool (T : TupleComparable): Pool
-
 module StudentScores : TupleComparable
   with type rank = score
   with type item = student

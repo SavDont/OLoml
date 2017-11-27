@@ -2,18 +2,11 @@ open Pool
 open Yojson.Basic
 
 module type Swipe = sig
-  (* exposed so people can input decisions? *)
-
   type swipe_value
-
   type swipe_item
-
   type swipe_results
-
   val swipe : swipe_results -> swipe_item -> swipe_value option -> swipe_results
-
   val gen_swipe_results : swipe_results -> json
-
   val init_swipes : swipe_item list -> swipe_results
 end
 
@@ -23,19 +16,21 @@ module MakeSwipe (T : TupleComparable) : Swipe
 = struct
 
   type swipe_item = T.value
-
   type swipe_value = T.key
-  (* identifying student + decision for each netid in class *)
   type swipe_results = (swipe_item * swipe_value option) list
 
-  (* updates decision for a single (swipe_item, decision) tuple *)
+(* [updated_decision si d sid_tuple] gives the tuple (si,d) if
+ * the first element of sid_tuple = si, or sid_tuple if it does not. *)
   let updated_decision si d sid_tuple =
-    if fst sid_tuple = si then (fst sid_tuple, d)
+    if fst sid_tuple = si then (si, d)
     else sid_tuple
 
   let swipe current_swipes si d =
     List.map (updated_decision si d) current_swipes
 
+(* [lst_to_string lst] gives the string representation of lst.
+ * each element is converted to a string using T's method for that type.
+ * elements are separated by commas, and the list is surrounded by brackets. *)
   let rec lst_to_string = function
     | [] -> ""
     | h::m::t -> (T.opt_key_to_string h)^"0,"^(lst_to_string (m::t))
