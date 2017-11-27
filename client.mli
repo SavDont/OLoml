@@ -18,7 +18,8 @@ val student_get : Student.netid -> string -> string -> Code.status_code*string
  * updated for the student with netid netID
  * [reqBody] should be formatted as specified in the api documentation
  * side effect: makes a POST request to the student api endpoint *)
-val student_post : Student.netid -> string -> string -> Code.status_code*string
+val student_post : 
+  Student.netid -> string -> Yojson.Basic.json -> Code.status_code*string
 
 (* [admin_get pwd info ?netID] returns a tuple containing the response status 
  * and response body received after a GET request to the admin api endpoint. 
@@ -42,7 +43,7 @@ val admin_get :
  * created/updated for any number of students
  * [reqBody] should be formatted as specified in the api documentation
  * side effect: makes a POST request to the admin api endpoint *)
-val admin_post : string -> string -> Code.status_code*string
+val admin_post : string -> Yojson.Basic.json -> Code.status_code*string
 
 (* [admin_delete pwd scope reqBody] returns a tuple containing the response 
  * status and response body received after a DELETE request to the admin api 
@@ -54,4 +55,5 @@ val admin_post : string -> string -> Code.status_code*string
  * delete
  * [reqBody] should be formatted as specified in the api documentation
  * side effect: makes a DELETE request to the admin api endpoint *)
-val admin_delete : string -> string -> string -> Code.status_code*string
+val admin_delete :
+  string -> string -> Yojson.Basic.json -> Code.status_code*string
