@@ -84,7 +84,7 @@ module StudentScores : TupleComparable
   let opt_key_to_string k_opt =
     match k_opt with
     | None -> "0.0"
-    | Some v -> string_of_float v
+    | Some v -> (string_of_float v)^"0"
 end
 
 module StudentPool = MakePool(StudentScores)

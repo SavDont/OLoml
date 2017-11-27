@@ -11,12 +11,12 @@ module type Swipe = sig
 end
 
 module MakeSwipe (T : TupleComparable) : Swipe
-  with type swipe_item = T.value
-  with type swipe_value = T.key
+  with type swipe_item = T.item
+  with type swipe_value = T.rank
 = struct
 
-  type swipe_item = T.value
-  type swipe_value = T.key
+  type swipe_item = T.item
+  type swipe_value = T.rank
   type swipe_results = (swipe_item * swipe_value option) list
 
 (* [updated_decision si d sid_tuple] gives the tuple (si,d) if
@@ -33,8 +33,8 @@ module MakeSwipe (T : TupleComparable) : Swipe
  * elements are separated by commas, and the list is surrounded by brackets. *)
   let rec lst_to_string = function
     | [] -> ""
-    | h::m::t -> (T.opt_key_to_string h)^"0,"^(lst_to_string (m::t))
-    | h::t -> (T.opt_key_to_string h)^"0"^(lst_to_string (t))
+    | h::m::t -> (T.opt_key_to_string h)^","^(lst_to_string (m::t))
+    | h::t -> (T.opt_key_to_string h)^(lst_to_string (t))
 
   let gen_swipe_results s_results =
     let just_scores = List.map (fun (si,d) -> d) s_results in
