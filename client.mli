@@ -1,5 +1,5 @@
 open Cohttp
-(* [student_get netID pwd info] returns a tuple containing the response status 
+(* [student_get netID pwd scope] returns a tuple containing the response status 
  * and response body received after a GET request to the student api endpoint. 
  * requires: 
  * [netID] is a valid netid of a student in the database
@@ -21,7 +21,7 @@ val student_get : Student.netid -> string -> string -> Code.status_code*string
 val student_post : 
   Student.netid -> string -> Yojson.Basic.json -> Code.status_code*string
 
-(* [admin_get pwd info ?netID] returns a tuple containing the response status 
+(* [admin_get pwd scope ?netID] returns a tuple containing the response status 
  * and response body received after a GET request to the admin api endpoint. 
  * requires: 
  * [pwd] is the admin password
