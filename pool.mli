@@ -34,6 +34,8 @@ module type Pool = sig
 (* [poolify p p_lst] is a pool of maximum 1/2 class size, from people_lst,
  * who are determined to be the most compatible matches for p,
  * based on the results of some ranking function.
+ *
+ * Note: p will not be included in pool
  *)
   val poolify : value -> value list -> pool
 

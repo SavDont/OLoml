@@ -54,8 +54,10 @@ module MakePool (T : TupleComparable) : Pool
   let poolify v v_lst =
     let tuple_lst = List.map (T.tuple_gen v) v_lst in
     let tuple_lst_srt = List.sort (T.tuple_comparison) tuple_lst in
-    (* How many students do we want them swiping through? *)
-    let max_len = (List.length tuple_lst_srt)/2 in
+    (* Remove possibility of an item swiping on itself *)
+    let tuple_lst_rem = List.filter (fun (rnk,it) -> v <> it) tuple_lst_srt in
+    (* How many do we want them swiping through? *)
+    let max_len = (List.length tuple_lst_rem)/2 in
     let rec cut_lst lst len final_lst =
       if List.length final_lst = max_len then final_lst
       else cut_lst (List.tl lst) len (push (List.hd lst) final_lst) in
@@ -76,7 +78,7 @@ module StudentScores : TupleComparable
     else if sc1 < sc2 then 1
     else 0
 
-  (* generates score for s1 and s2, tuple for s2 *)
+(* generates score for s1 and s2, tuple for s2 *)
   let tuple_gen s1 s2 =
     (Random.float 1000.0, s2) (* Replace with algorithm *)
 
