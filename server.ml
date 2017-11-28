@@ -2,6 +2,7 @@ open HttpServer
 open Api
 
 let _ = 
+  HttpServer.add_route (`POST, "/test") Api.test;
   HttpServer.add_route (`POST, "/credentials") Api.credentials_post;
   HttpServer.add_route (`GET, "/period") Api.period_get;
   HttpServer.add_route (`POST, "/period") Api.period_post;

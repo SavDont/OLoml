@@ -1,11 +1,11 @@
 open HttpServer
 open Cohttp
 
-(* let test req = 
+let test req = 
   let headers = Header.init_with "Content-Type" "text/plain" in
   let status = `OK in
   let res_body = "Hello " ^ req.req_body ^ "!" in
-  {headers; status; res_body} *)
+  {headers; status; res_body}
 
 let are_valid_credentials user pwd =
   failwith "Unimplemented"

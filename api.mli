@@ -1,3 +1,6 @@
+(* test callback, will not be there in final version *)
+val test: HttpServer.request -> HttpServer.response
+
 (* [are_valid_credentials user pwd] returns [true] iff user and pwd are a 
  * valid username password combination in the database and [false] otherwise *)
 val are_valid_credentials : string -> string -> bool
