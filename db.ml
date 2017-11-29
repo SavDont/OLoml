@@ -38,3 +38,7 @@ let get_student_query dbh tbl netid =
     let loc = ("location", jloc)) in
   let jsonobj = `Assoc[name;netid;year;sched;courses;skills;hrs;prof;loc] in
   Yojson.Basic.to_string jsonobj
+
+let get_stu_match_query dbh tbl1 tbl2 netid =
+  let partner =  PGQL(dbh) "SELECT Match FROM $tbl WHERE Stu1 = $netid" in
+  get_student_query dbh tbl2 partner
