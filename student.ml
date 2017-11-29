@@ -149,13 +149,6 @@ let ext_str jsn_str =
   let str = to_string jsn_str in
   String.sub str 1 (String.length str - 2)
 
-(* [parse_student st_str] gives the student representation of the
- * inputted string representation of json.
- * Requries: st_str must be a valid representation of a json.  That is,
- * Yojson.Basic.from_string must not throw any errors when called in st_str.
- * st_str must have the following fields as members: "courses_taken",
- * "skills", "schedule", "name", "netid", "year", "hours_to_spend",
- * "profile_text", "location"*)
 let parse_student st_str =
   let jsn = from_string st_str in
   let courses = jsn |> Util.member "courses_taken" |> Util.to_list in

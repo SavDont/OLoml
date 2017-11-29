@@ -1,5 +1,7 @@
 open Client
 open Unix
+open Yojson.Basic
+open Student
 
 (* timePeriodDate represents a date in the following order:
  * month, day, and year
@@ -24,10 +26,9 @@ let valid_date (m, d, y) =
                 else d<=28 && d>=1
 
 let import_students dir pwd =
-  match dir |> Yojson.Basic.from_file with
-  | Sys_error s -> false
-  | j -> let postResponse = Client.admin_post pwd j in
-    if fst postResponse = `Ok
+  let j =  dir |> from_file in
+  let postResponse = Client.admin_post pwd j in
+    if fst postResponse = `OK
     then true
     else false
 
@@ -36,15 +37,15 @@ let import_students dir pwd =
  * the Unix library.
 *)
 let tm_record (m, d, y) = {
-  tm_sec : 0;
-  tm_min : 0;
-  tm_hour : 0;
-  tm_mday : d;
-  tm_mon : m-1;
-  tm_year : y-1900;
-  tm_wday : 0;
-  tm_yday : 0;
-  tm_isdst : false;
+  tm_sec = 0;
+  tm_min = 0;
+  tm_hour = 0;
+  tm_mday = d;
+  tm_mon = m-1;
+  tm_year = y-1900;
+  tm_wday = 0;
+  tm_yday = 0;
+  tm_isdst = false;
 }
 let set_periods upDate swDate mtDate pwd =
   if valid_date upDate && valid_date swDate && valid_date mtDate
@@ -52,31 +53,55 @@ let set_periods upDate swDate mtDate pwd =
     let sRecord = tm_record swDate in
     let mRecord = tm_record mtDate in
     let strJson = "{
-                    \"update\" : " ^ uRecord |> mktime |> fst |> string_of_float ^ ",
-                    \"swipe\" : " ^ sRecord |> mktime |> fst |> string_of_float ^ ",
-                    \"match\" : " ^ mRecord |> mktime |> fst |> string_of_float ^
+                    \"update\" : " ^ (uRecord |> mktime |> fst |> string_of_float) ^ ",
+                    \"swipe\" : " ^ (sRecord |> mktime |> fst |> string_of_float) ^ ",
+                    \"match\" : " ^ (mRecord |> mktime |> fst |> string_of_float) ^
                                                                 "}" in
-    let yoJsonF = Yojson.Basic.from_string strJson in
-    if Client.period_post pwd yoJsonF = `Ok
+    let yoJsonF = from_string strJson in
+    if fst (Client.period_post pwd yoJsonF) = `OK
     then true
     else false
   else false
 
 let remove_student netID pwd =
   let strJson = "{ \"" ^ netID ^ "\": 1 }" in
-  let yoJsonF = Yojson.Basic.from_string strJson in
-  if Client.admin_delete pwd "subset" yoJsonF  = `Ok
+  let yoJsonF = from_string strJson in
+  if fst (Client.admin_delete pwd "subset" yoJsonF)  = `OK
   then true
   else false
 
-let add_student metaData pwd =
-  failwith "Unimplemented"
+(* [get_assoc_list jsn] takes a json argument and outputs the Association list
+ * from it*)
+let get_assoc_list jsn = match jsn with
+  | `Assoc lst -> lst
+  | _ -> []
 
 let get_student netID pwd =
-  failwith "Unimplemented"
+  let getReq = Client.admin_get pwd "student_indiv" ~netID:netID in
+  if fst getReq = `OK
+  then
+    let jList = getReq |> snd |> from_string |> get_assoc_list in
+    if jList = [] then None
+    else Some (jList |> List.hd |> snd |> to_string |> parse_student)
+  else None
 
-let get_all_students () =
-  failwith "Unimplemented"
+(* [jsn_students jsnLst] takes a tuple list of type (string * json) and
+ * *)
+let rec jsn_students jsnLst = match jsnLst with
+  | (_, j)::t -> (j |> to_string |>
+                  parse_student)::(jsn_students t)
+  | [] -> []
 
-let reset_class () =
-  failwith "Unimplemented"
+let get_all_students pwd =
+  let getReq = Client.admin_get pwd "student_all" ~netID:"" in
+  if fst getReq = `OK
+  then  let lst = getReq |> snd |> from_string |> get_assoc_list in
+    jsn_students lst
+  else []
+
+let reset_class pwd =
+  let emptyJson = from_string "{}" in
+  let delReq = Client.admin_delete pwd "class" emptyJson in
+  if fst delReq = `OK
+  then true
+  else false

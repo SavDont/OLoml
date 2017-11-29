@@ -22,6 +22,14 @@ val valid_course : int -> bool
  * requires: s's schedule list must be exactly length 21. *)
 val printable_student : student -> string
 
+(* [parse_student st_str] gives the student representation of the
+ * inputted string representation of json.
+ * Requries: st_str must be a valid representation of a json.  That is,
+ * Yojson.Basic.from_string must not throw any errors when called in st_str.
+ * st_str must have the following fields as members: "courses_taken",
+ * "skills", "schedule", "name", "netid", "year", "hours_to_spend",
+ * "profile_text", "location"*)
+val parse_student : string -> student
 (* [get_student net pwd] gives the student option corresponding to
  * netid of net if (a) a student with this netid exists in the database
  * and (b), that pwd is the correct password for this netid.
