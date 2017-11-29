@@ -108,4 +108,3 @@ let admin_change_query dbh tbl info =
   PGSQL(dbh) "INSERT INTO table (Netid, Name, Year) VALUES
     ($new_id, $new_name, $new_year) ON DUPLICATE KEY UPDATE
     Name = $new_name, Year = $new_year"
-(
