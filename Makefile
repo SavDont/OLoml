@@ -19,4 +19,4 @@ server:
 	make && ./server.byte
 
 compile:
-	ocamlbuild -use-ocamlfind api.cmo httpServer.cmo loml_client.cmo main.cmo oclient.cmo pool.cmo server.cmo student.cmo swipe.cmo professor.cmo
+	ocamlbuild -use-ocamlfind api.cmo httpServer.cmo loml_client.cmo main.cmo oclient.cmo pool.cmo server.cmo student.cmo swipe.cmo professor.cmo command.cmo

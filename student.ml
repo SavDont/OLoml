@@ -135,7 +135,7 @@ let skill_to_json sk =
  * each element is separated by a comma. *)
 let rec printable_lst = function
   | [] -> ""
-  | h::m::t -> h^","^(printable_lst (m::t))
+  | h::m::t -> h^", "^(printable_lst (m::t))
   | h::t -> h
 
 (* [printable_skill sk] gives the string representation of a skill type,
@@ -153,8 +153,6 @@ let printable_skill sk =
  * Requires: sched is a valid schedule list.  That is, it is of length
  * exactly 21. *)
 let rec sched_to_str sched acc pos =
-  if List.length sched <> 21 then failwith "Incorrect Schedule Length"
-  else
   let time_of_day p =
     if p mod 3 = 0 then "mornings"
     else if p mod 3 = 1 then "afternoons"
@@ -171,7 +169,7 @@ let rec sched_to_str sched acc pos =
   | [] -> acc
   | h::t ->
     if h
-    then sched_to_str t (acc^(day_of_week pos)^(time_of_day pos)^"\n\n") (pos+1)
+    then sched_to_str t (acc^(day_of_week pos)^(time_of_day pos)^"\n") (pos+1)
     else sched_to_str t acc (pos+1)
 
 (* [ext_str jsn_str] removes double quotations from the inputted string.
@@ -217,7 +215,7 @@ let printable_student st =
   let hrs = "Willing to spend "^(string_of_int st.hours_to_spend)^" hours on this project" in
   let sched = "Available:\n"^(sched_to_str st.schedule "" 0) in
   let about = "About me: "^st.profile_text in
-  header^"\n\n"^yr^"\n\n"^loc^"\n\n"^courses^"\n\n"^skills^"\n"^sched^hrs^"\n\n"^about
+  header^"\n\n"^yr^"\n\n"^loc^"\n\n"^courses^"\n\n"^skills^"\n\n"^sched^"\n"^hrs^"\n\n"^about
 
 let get_student net pwd =
   match Loml_client.student_get net pwd "student" with
