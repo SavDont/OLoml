@@ -2,17 +2,8 @@ open Yojson.Basic
 
 type netid = string
 
-type daySchedule = {morning : bool; afternoon : bool; evening : bool}
-
-type schedule = {
-  monday : daySchedule;
-  tuesday : daySchedule;
-  wednesday : daySchedule;
-  thursday : daySchedule;
-  friday : daySchedule;
-  saturday : daySchedule;
-  sunday : daySchedule;
-}
+(* Length 21 bool list *)
+type schedule = bool list
 
 type classYear =
   | Fresh
@@ -63,27 +54,11 @@ type updateData =
   | Courses of course list
   | Skill of skill list
   | Hours of int
+  | Location of location
+  | Text of string
 
 (* variant saying what part of student you want to update
  * for partial writes *)
-
-let parse_sched_str str =
-  let int_to_b i = if i = '1' then true else false in
-  let parse_day i =
-    {
-      morning = String.get str i |> int_to_b;
-      afternoon = String.get str (i+1) |> int_to_b;
-      evening = String.get str (i+2) |> int_to_b
-    } in
-  {
-    monday = parse_day 0;
-    tuesday = parse_day 3;
-    wednesday = parse_day 6;
-    thursday = parse_day 9;
-    friday = parse_day 12;
-    saturday = parse_day 15;
-    sunday = parse_day 18;
-  }
 
 let parse_skill_str str =
   let splt = String.split_on_char '_' str in
@@ -119,6 +94,28 @@ let parse_loc loc =
   else if loc = "West Campus" then West
   else Collegetown
 
+let rec sched_to_str sched acc pos =
+  if List.length sched <> 21 then failwith "Incorrect Schedule Length"
+  else
+  let time_of_day p =
+    if p mod 3 = 0 then "mornings"
+    else if p mod 3 = 1 then "afternoons"
+    else "evenings" in
+  let day_of_week d =
+    if d < 3 then "monday "
+    else if d < 6 then "tuesday "
+    else if d < 9 then "wednesday "
+    else if d < 12 then "thursday "
+    else if d < 15 then "friday "
+    else if d < 18 then "saturday "
+    else "sunday " in
+  match sched with
+  | [] -> acc
+  | h::t ->
+    if h
+    then sched_to_str t (acc^(day_of_week pos)^(time_of_day pos)^"\n\n") (pos+1)
+    else sched_to_str t acc (pos+1)
+
 (* Removes double quotes *)
 let ext_str jsn_str =
   let str = to_string jsn_str in
@@ -129,23 +126,18 @@ let parse_student st_str =
   let jsn = from_string st_str in
   let courses = jsn |> Util.member "courses_taken" |> Util.to_list in
   let skills = jsn |> Util.member "skills" |> Util.to_list in
+  let sched = jsn |> Util.member "schedule" |> Util.to_list in
   {
     name = jsn |> Util.member "name" |> ext_str;
     netid = jsn |> Util.member "netid" |> ext_str;
     year = jsn |> Util.member "year" |> ext_str |> parse_yr;
-    schedule = jsn |> Util.member "schedule" |> ext_str |> parse_sched_str;
+    schedule = sched |> List.map Util.to_bool;
     courses_taken = courses |> List.map Util.to_int;
     skills = skills |> List.map ext_str |> List.map parse_skill_str;
     hours_to_spend = jsn |> Util.member "hours_to_spend" |> Util.to_int;
     profile_text = jsn |> Util.member "profile_text" |> ext_str;
     location = jsn |> Util.member "location" |> ext_str |> parse_loc
   }
-
-(* let printable_sched =
-  failwith "unimplemented"
-
-let printable_skills =
-  failwith "unimplemented" *)
 
 let rec printable_lst = function
   | [] -> ""
@@ -172,9 +164,6 @@ let skill_lst_to_str sk_lst =
   let sk_lst = List.map skill_to_str sk_lst in
   List.fold_right (fun acc i -> i^acc) sk_lst ""
 
-(* let sched_to_str sched =
-  failwith "unimplemented" *)
-
 let printable_student st =
   let header = "Viewing profile for: "^st.name^" ("^st.netid^")" in
   let yr = "Year: "^(year_to_str st.year) in
@@ -183,20 +172,43 @@ let printable_student st =
   let course_lst_cs = List.map (fun s -> "CS "^s) course_lst in
   let courses = "Has taken: "^(printable_lst course_lst_cs) in
   let skills = "Skills:\n"^(skill_lst_to_str st.skills) in
-  let hrs = "Willing to spend: "^(string_of_int st.hours_to_spend)^" hours on this project" in
-  header^"\n\n"^yr^"\n\n"^loc^"\n\n"^courses^"\n\n"^skills^"\n"^hrs
+  let hrs = "Willing to spend "^(string_of_int st.hours_to_spend)^" hours on this project" in
+  let sched = "Available:\n"^(sched_to_str st.schedule "" 0) in
+  let about = "About me: "^st.profile_text in
+  header^"\n\n"^yr^"\n\n"^loc^"\n\n"^courses^"\n\n"^skills^"\n"^sched^hrs^"\n\n"^about
 
-(* let get_student net pwd =
+let get_student net pwd =
   match Client.student_get net pwd "student" with
   | (`No_response,str) -> None
   | (`OK,str) -> Some (parse_student str)
-  | _ -> failwith "impossible" *)
 
-(* let update_profile net fields =
-  failwith "unimplemented"
+let skill_lst_to_json lst =
+  `List (List.map skill_to_string lst)
 
-let get_match net =
-  failwith "unimplemented" *)
+let course_lst_to_json c_lst =
+  `List ((List.map (fun i -> `Int i)) c_lst)
+
+let sched_lst_to_json s_lst =
+  `List ((List.map (fun b -> `Bool b)) s_lst)
+
+let field_to_json = function
+  | Schedule s -> ("schedule",sched_lst_to_json s)
+  | Courses c -> ("courses_taken",course_lst_to_json c)
+  | Skill sk -> ("skills",skill_lst_to_json sk)
+  | Hours h -> ("hours_to_spend",`Int h)
+  | Location l -> ("location",`String (loc_to_str l))
+  | Text t ->  ("profile_text",`String t)
+
+let update_profile net pwd fields =
+  let fields_mapped = List.map field_to_json fields in
+  match Client.student_post net pwd fields_mapped with
+  | (`No_response,str) -> false
+  | (`OK,str) -> true
+
+let get_match net pwd =
+  match Client.student_get net pwd "match" with
+  | (`No_response,str) -> None
+  | (`Ok,str) -> Some (parse_student str)
 
 let skill_to_string = function
   | Java i -> `String ("Java_"^(string_of_int i))
@@ -207,27 +219,11 @@ let skill_to_string = function
   | SQL i -> `String ("SQL_"^(string_of_int i))
   | OCaml i -> `String ("OCaml_"^(string_of_int i))
 
-let skill_lst_to_json lst =
-  `List (List.map skill_to_string lst)
-
-let daysched_to_string {morning = m; afternoon = a; evening = e} =
-  let bool_to_str b = if b then "1" else "0" in
-  (bool_to_str m)^(bool_to_str a)^(bool_to_str e)
-
-let totsched_to_string sched =
-  (daysched_to_string sched.monday)^(daysched_to_string sched.tuesday)^
-  (daysched_to_string sched.wednesday)^(daysched_to_string sched.thursday)^
-  (daysched_to_string sched.friday)^(daysched_to_string sched.saturday)^
-  (daysched_to_string sched.sunday)
-
-let course_lst_to_json c_lst =
-  `List ((List.map (fun i -> `Int i)) c_lst)
-
 let student_to_json st =
   let name = ("name", `String st.name) in
   let netid = ("netid", `String st.netid) in
   let year = ("year", `String (year_to_str st.year)) in
-  let sched = ("schedule", `String (totsched_to_string st.schedule)) in
+  let sched = ("schedule", sched_lst_to_json st.schedule) in
   let courses = ("courses_taken", (course_lst_to_json st.courses_taken)) in
   let skills = ("skills", (skill_lst_to_json st.skills)) in
   let hrs = ("hours_to_spend", `Int st.hours_to_spend) in
