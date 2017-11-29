@@ -8,6 +8,7 @@ module type Swipe = sig
   val swipe : swipe_results -> swipe_item -> swipe_value option -> swipe_results
   val gen_swipe_results : swipe_results -> json
   val init_swipes : swipe_item list -> swipe_results
+  val write_swipes : string -> string -> swipe_results -> bool
 end
 
 module MakeSwipe (T : TupleComparable) : Swipe
@@ -43,6 +44,13 @@ module MakeSwipe (T : TupleComparable) : Swipe
 
   let init_swipes s_lst =
     List.map (fun s -> (s, None)) s_lst
+
+  let write_swipes net pwd s_results =
+    let res_str = s_results |> gen_swipe_results |> to_string in
+    match Loml_client.student_post net pwd res_str with
+    | (`No_response, str) -> false
+    | (`OK, str) -> true
+    | _ -> failwith "impossible"
 
 end
 

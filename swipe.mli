@@ -22,6 +22,15 @@ module type Swipe = sig
 (* [init_swipes si_lst] generates swipe_results from a list of swipe_items,
  * such that each swipe_item is assigned a default swipe_value. *)
   val init_swipes : swipe_item list -> swipe_results
+
+(* [write_swipes net pwd s_results] writes s_results to the database
+ * for the student identified by net. If write is unsuccessful,
+ * returns false, otherwise returns true.  May be unsuccessful
+ * if net is not in the database, or if pwd is not correct for net.
+ * Requires: s_results is the result of converting a valid swipe
+ * result type into a json, then string form.
+ * Side-effects: updates database *)
+  val write_swipes : string -> string -> swipe_results -> bool
 end
 
 module SwipeStudentPool : Swipe

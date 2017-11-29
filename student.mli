@@ -1,17 +1,81 @@
 
 (* Type representing a student, with all of his/her metadata and profile
  * information*)
-type student
+(* type student *)
 
 (* Type representing possible skills a student can have, as well as
  * proficiency in those skills *)
-type skills
+(* type skills *)
 
 (* Type representing a location closest to where a student lives *)
-type location
+(* type location *)
 
 (* Type representing data that can be updated by a student (non-metadata)*)
-type updateData
+(* type updateData *)
+
+(* REMOVE LATER ~~~~~~~~~~~~~~~*)
+(* Type representing student's current year in school
+ * Fresh = freshman, Soph = sophomore, Jun = junior, Sen = senior*)
+type classYear =
+  | Fresh
+  | Soph
+  | Jun
+  | Sen
+
+type location =
+  | North
+  | West
+  | Collegetown
+
+(* Type representing a student's available time slots throughout a single week.
+ * Each schedule must be of length exactly 21.  It is parsed as follows:
+ * - every three elements represent a single day.  For example,
+ *   elements 0-2 represent monday, 3-5 represent tuesday...18-20 represent
+ *   sunday
+ * - within each day, the first element represents morning, the second
+ *   afternoon, and the third evening. i.e. 0 is monday morning, 2 is monday
+ *   evening
+ * - true means that a student is available during this time slot, and
+ *   false means they are not. *)
+type schedule = bool list
+
+type skill_type =
+  | Java
+  | Python
+  | C
+  | Ruby
+  | Javascript
+  | SQL
+  | OCaml
+
+type skills =
+  {
+    excellent : skill_type list;
+    great : skill_type list;
+    good : skill_type list;
+    some_exposure : skill_type list
+  }
+
+type student = {
+  name : string;
+  netid : string;
+  year : classYear;
+  schedule : schedule;
+  courses_taken : int list;
+  skills : skills;
+  hours_to_spend : int;
+  location : location;
+  profile_text : string;
+}
+
+type updateData =
+  | Schedule of schedule
+  | Courses of int list
+  | Skill of skills
+  | Hours of int
+  | Location of location
+  | Text of string
+(* REMOVE LATER ~~~~~~~~~~~~~~~~~~~ *)
 
 (* [valid_course c] is true iff c is a course that a student can
  * list as having taken.

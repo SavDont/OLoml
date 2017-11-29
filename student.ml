@@ -274,7 +274,7 @@ let student_to_json st =
  * (21 entries) *)
 let sched_score {schedule = s1} {schedule = s2} =
   let rec counter st1 st2 acc =
-  match s1, s2 with
+  match st1, st2 with
   |[],[] -> acc
   |h1::t1, h2::t2 ->
     if h1 = h2 then counter t1 t2 (acc+.1.0)

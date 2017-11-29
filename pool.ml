@@ -55,13 +55,13 @@ module MakePool (T : TupleComparable) : Pool
     let tuple_lst = List.map (T.tuple_gen v) v_lst in
     let tuple_lst_srt = List.sort (T.tuple_comparison) tuple_lst in
     (* Remove possibility of an item swiping on itself *)
-    let tuple_lst_rem = List.filter (fun (rnk,it) -> v <> it) tuple_lst_srt in
+    List.filter (fun (rnk,it) -> v <> it) tuple_lst_srt 
     (* How many do we want them swiping through? *)
-    let max_len = (List.length tuple_lst_rem)/2 in
+    (* let max_len = (List.length tuple_lst_rem) in
     let rec cut_lst lst len final_lst =
       if List.length final_lst = max_len then final_lst
       else cut_lst (List.tl lst) len (push (List.hd lst) final_lst) in
-    cut_lst tuple_lst_srt max_len []
+    cut_lst tuple_lst_srt max_len [] *)
 
 end
 
