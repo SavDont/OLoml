@@ -51,22 +51,27 @@ val update_profile : string -> string -> updateData list -> bool
  * None is returned. *)
 val get_match : string -> string -> student option
 
-(* [sched_score s1 s2] gives an integer score representing how compatible
+(* [sched_score s1 s2] gives a float score representing how compatible
  * two students' schedules are.
  * Requires: s1 and s2 cannot be the same student *)
 val sched_score : student -> student -> float
 
-(* [sched_score s1 s2] gives an integer score representing how compatible
+(* [sched_score s1 s2] gives a float score representing how compatible
  * two students' course lists are.
  * Requires: s1 and s2 cannot be the same student *)
 val course_score : student -> student -> float
 
-(* [sched_score s1 s2] gives an integer score representing how compatible
+(* [sched_score s1 s2] gives a float score representing how compatible
  * two students' hours willing to spend on project are.
  * Requires: s1 and s2 cannot be the same student *)
 val hour_score : student -> student -> float
 
-(* [sched_score s1 s2] gives an integer score representing how compatible
+(* [sched_score s1 s2] gives a float score representing how compatible
  * two students' living locations are.
  * Requires: s1 and s2 cannot be the same student *)
 val loc_score : student -> student -> float
+
+(* [skill_score s1 s2] gives a float score representing how compatible
+ * two students' skill sets are.
+ * Requires: s1 and s2 cannot be the same student *)
+val skill_score : student -> student -> float

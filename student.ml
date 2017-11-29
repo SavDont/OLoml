@@ -98,6 +98,7 @@ let parse_loc loc =
   else if loc = "West Campus" then West
   else Collegetown
 
+(* [skill_to_str sk] gives the string representation of the skill variant. *)
 let skill_to_str = function
   | Java -> "Java"
   | Python -> "Python"
@@ -107,6 +108,9 @@ let skill_to_str = function
   | SQL -> "SQL"
   | OCaml -> "OCaml"
 
+(* [skill_to_str sk] gives the variant representation of the skill string.
+ * Requires: sk must be "Java", "Python", "C", "Ruby", "Javascript",
+ * "SQL", or "OCaml"*)
 let parse_skill sk =
   if sk = "Java" then Java
   else if sk = "Python" then Python
@@ -116,6 +120,9 @@ let parse_skill sk =
   else if sk = "SQL" then SQL
   else OCaml
 
+(* [skill_to_json sk] gives the json representation of a skill type,
+ * such that it can be converted to a string using yojson and stored in
+ * a database. *)
 let skill_to_json sk =
   let map_func = List.map (fun s -> `String (skill_to_str s)) in
   let ex = ("excellent", `List (map_func sk.excellent)) in
@@ -131,6 +138,8 @@ let rec printable_lst = function
   | h::m::t -> h^","^(printable_lst (m::t))
   | h::t -> h
 
+(* [printable_skill sk] gives the string representation of a skill type,
+ * such that it can be printed in the command line *)
 let printable_skill sk =
   let map_func = List.map skill_to_str in
   let ex = "Excellent: "^(map_func sk.excellent |> printable_lst) in
@@ -301,10 +310,30 @@ let hour_score {hours_to_spend = h1} {hours_to_spend = h2} =
   else if hour_dev < 30 then 0.25
   else 0.0
 
+(* [find_skill sk sk_lst] gives an integer representing the skill level
+ * of a skill within sk_lst.  A skill that is "excellent" is ranked a 4.0,
+ * while a skill that is not present in sk_lst is ranked 0.0. *)
+let find_skill sk sk_lst =
+  if List.mem sk sk_lst.excellent then 4.0
+  else if List.mem sk sk_lst.great then 3.0
+  else if List.mem sk sk_lst.good then 2.0
+  else if List.mem sk sk_lst.some_exposure then 1.0
+  else 0.0
+
 (* Function of how many skills you share, how skill level compares in skills
- * you share, and to smaller extent, how similar number of skills are*)
+ * you share
+ * if you share a skill and skill level is same, +4.  1 apart, +3, 2 apart + 2
+ * 3 apart, +1.  *)
 let skill_score {skills = s1} {skills = s2} =
-  failwith "Unimplemented"
+  let rec iterate sk_lst1 sk_lst2 acc lev =
+    match sk_lst1 with
+    | [] -> acc
+    | h::t ->
+      let diff = abs_float (lev -. find_skill h sk_lst2) in
+      iterate t sk_lst2 (acc +. (4.0 -. diff)) lev in
+  let fst = iterate s1.excellent s2 0.0 4.0 +. iterate s1.great s2 0.0 3.0 in
+  let snd = iterate s1.good s2 0.0 2.0 +. iterate s1.some_exposure s2 0.0 1.0 in
+  (fst +. snd)/.14.0 (* full score assumes someone is good at every skill *)
 
 let loc_score {location = l1} {location = l2} =
   if l1 = l2 then 1.0 else 0.0
