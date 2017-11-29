@@ -219,6 +219,12 @@ let get_student net pwd =
   match Client.student_get net pwd "student" with
   | (`No_response,str) -> None
   | (`OK,str) -> Some (parse_student str)
+  | _ -> failwith "impossible"
+
+(* [skill_to_string sk] gives the yojson `String representation of sk *)
+let skill_to_string sk =
+  let tup = extract_skill sk in
+  `String ((fst tup)^"_"^(string_of_int (snd tup)))
 
 (* [skill_lst_to_json lst] gives the yojson List format to lst, such that
  * it can be included in a yojson association list. *)
@@ -247,19 +253,16 @@ let field_to_json = function
 
 let update_profile net pwd fields =
   let fields_mapped = List.map field_to_json fields in
-  match Client.student_post net pwd fields_mapped with
+  match Client.student_post net pwd (`Assoc(fields_mapped)) with
   | (`No_response,str) -> false
   | (`OK,str) -> true
+  | _ -> failwith "impossible"
 
 let get_match net pwd =
   match Client.student_get net pwd "match" with
   | (`No_response,str) -> None
-  | (`Ok,str) -> Some (parse_student str)
-
-(* [skill_to_string sk] gives the yojson `String representation of sk *)
-let skill_to_string sk =
-  let tup = extract_skill sk in
-  `String ((fst tup)^"_"^(string_of_int (snd tup)))
+  | (`OK,str) -> Some (parse_student str)
+  | _ -> failwith "impossible"
 
 (* [student_to_json st] gives the yojson form of a student. *)
 let student_to_json st =
