@@ -1,9 +1,3 @@
-(* [make_query query] takes a string [query] that represents a SQL query
- * and returns the data produces by running the query on the database via the
- * pgocaml
-val make_query : string -> 'a option
-   should call connect somewhere maybe *)
-
 (* [val check_cred_query dbh tbl creds] gives the results of performing a query
  * on the table [tbl] inside the database (represented by [dbh], the value
  * returned by pgocaml's connect function) that gets the corresponding password
@@ -17,5 +11,25 @@ val check_cred_query : 'a -> string -> string -> string
  * returned by pgocaml's connect function) that gets the current period based on
  * which starting date is greater than the current date.
  * requires: the table must exist inside the database and must contain
- * columns "Semester", "Update", "Swipe" and "Match"*)
+ * columns "Update", "Swipe" and "Match"*)
 val check_period_query : 'a -> string -> string -> string
+
+(* [check_period_set dbh tbl] returns false if the values in any of the
+* columns are not null. returns true otherwise.
+* requires: the table must exist inside the database and must contain columns
+* "Update", "Swipe", and "Match" *)
+val check_period_set : string -> string -> bool
+
+(* [set_period_query dbh tbl periods] returns unit. If check_period_set
+ * returns true then this function queries the database (dbh) and updates
+ * table (tbl) that represents the start dates of each period with the dates
+ * given in the json representing the periods
+ * requires: the table must exist inside the database and must contain
+ * columns "Update, "Swipe", and "Match" .
+ * requires dates to be represented as integers of form YYYMMDD where for
+ * example, November 29th, 2017 would be represented by 20171129
+ * retuires: periods must be a valid representation of a json *)
+val set_period_query : string -> string -> string -> unit
+
+    (**)
+val get_student : string -> string -> string -> string
