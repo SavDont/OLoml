@@ -276,3 +276,49 @@ let student_to_json st =
   let prof = ("profile_text", `String st.profile_text) in
   let loc = ("location", `String (loc_to_str st.location)) in
   `Assoc[name;netid;year;sched;courses;skills;hrs;prof;loc]
+
+(* Requires: s1 and s2 must have valid schedules of the same length
+ * (21 entries) *)
+let sched_score {schedule = s1} {schedule = s2} =
+  let rec counter st1 st2 acc =
+  match s1, s2 with
+  |[],[] -> acc
+  |h1::t1, h2::t2 ->
+    if h1 = h2 then counter t1 t2 (acc+.1.0)
+    else counter t1 t2 acc
+  |_ -> failwith "schedules must be same length" in
+  (counter s1 s2 0.0) /. 21.0
+
+(* Function of how many classes in common + difference in highest
+ * course level taken *)
+let course_score {courses_taken = c1} {courses_taken = c2} =
+  let rec common_course_count st1 st2 acc =
+    match st1 with
+    | [] -> acc
+    | h::t ->
+      if List.mem h st2 then common_course_count t st2 (acc+.1.0)
+      else common_course_count t st2 acc in
+  let highest_course lst =
+    (List.fold_left(fun acc elt-> if elt > acc then elt else acc) 0 lst)/1000 in
+  let course_dev = abs((highest_course c1)-(highest_course c2))|>float_of_int in
+  (* don't want negative scores *)
+  let pre_score = max 0.0 (common_course_count c1 c2 0.0) -. course_dev in
+  pre_score /. 10.0 (* considering this a "perfect" score *)
+
+
+(* Function of deviation in hours willing to spend *)
+let hour_score {hours_to_spend = h1} {hours_to_spend = h2} =
+  let hour_dev = abs (h1-h2) in
+  if hour_dev < 5 then 1.0
+  else if hour_dev < 10 then 0.75
+  else if hour_dev < 20 then 0.5
+  else if hour_dev < 30 then 0.25
+  else 0.0
+
+(* Function of how many skills you share, how skill level compares in skills
+ * you share, and to smaller extent, how similar number of skills are*)
+let skill_score {skills = s1} {skills = s2} =
+  failwith "Unimplemented"
+
+let loc_score {location = l1} {location = l2} =
+  if l1 = l2 then 1.0 else 0.0

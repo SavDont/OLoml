@@ -78,9 +78,13 @@ module StudentScores : TupleComparable
     else if sc1 < sc2 then 1
     else 0
 
-(* generates score for s1 and s2, tuple for s2 *)
+  (* TODO: calculate skill compatibility and add it *)
   let tuple_gen s1 s2 =
-    (Random.float 1000.0, s2) (* Replace with algorithm *)
+    let sched_compat = 0.25 *. sched_score s1 s2  in
+    let course_compat = 0.25 *. course_score s1 s2 in
+    let hours_compat = 0.20 *. hour_score s1 s2 in
+    let loc_compat = 0.10 *. loc_score s1 s2 in
+    (sched_compat +. course_compat +. hours_compat +. loc_compat, s2)
 
   (* useful for code reuse in swiping *)
   let opt_key_to_string k_opt =
