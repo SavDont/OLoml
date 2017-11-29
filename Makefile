@@ -1,9 +1,11 @@
-OBJS=httpServer.cmo
+
+OBJS1=httpServer.cmo
+OBJS2=api.cmo
 NAME=server
 OFIND=ocamlfind ocamlc -thread -package cohttp.lwt,cohttp.async,lwt.ppx
 
-$(NAME).byte: $(OBJS)
-		$(OFIND) -linkpkg -o $@ $(OBJS) $(NAME).ml
+$(NAME).byte: $(OBJS1) $(OBJS2)
+		$(OFIND) -linkpkg -o $@ $(OBJS1) $(OBJS2) $(NAME).ml
 
 %.cmo: %.ml
 		$(OFIND) -c $<i
@@ -18,4 +20,5 @@ server:
 	make && ./server.byte
 
 compile:
-	ocamlbuild -use-ocamlfind pool.cmo student.cmo swipe.cmo main.cmo
+	# make clean && ocamlbuild -use-ocamlfind api.cmo httpServer.cmo main.cmo pool.cmo server.cmo student.cmo swipe.cmo
+	ocamlbuild -use-ocamlfind api.cmo httpServer.cmo main.cmo pool.cmo server.cmo student.cmo swipe.cmo

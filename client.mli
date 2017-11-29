@@ -1,4 +1,35 @@
 open Cohttp
+
+(* [credentials_post username pwd] returns a tuple containing the response 
+ * status and response body received after a POST request to the credentials api
+ * endpoint. 
+ * requires: 
+ * [username] is a valid username of a user in the database
+ * [pwd] is the password associated with that user
+ * side effect: makes a POST request to the credentials api endpoint *)
+val credentials_post : string -> string -> Code.status_code*string
+
+(* [period_post username pwd] returns a tuple containing the response 
+ * status and response body received after a GET request to the period api
+ * endpoint. 
+ * requires: 
+ * [username] is a valid username of a user in the database
+ * [pwd] is the password associated with that user
+ * side effect: makes a GET request to the period api endpoint *)
+val period_get : string -> string -> Code.status_code*string
+
+(* [period_post pwd reqBody] returns a tuple containing the response 
+ * status and response body received after a POST request to the period api
+ * endpoint. 
+ * requires: 
+ * [pwd] is the admin password
+ * [reqBody] is a Yojson.Basic.json containing the dates for the update, swipe,
+ * and match periods
+ * [reqBody] must be formatted such that calling Yojson.Basic.to_string on it
+ * will result in a string json as specified in the api documentation
+ * side effect: makes a POST request to the period api endpoint *)
+val period_post : string -> Yojson.Basic.json -> Code.status_code*string
+
 (* [student_get netID pwd scope] returns a tuple containing the response status 
  * and response body received after a GET request to the student api endpoint. 
  * requires: 
@@ -14,9 +45,10 @@ val student_get : Student.netid -> string -> string -> Code.status_code*string
  * requires:
  * [netID] is a valid netid of a student in the database
  * [pwd] is the password associated with the student with netid netID
- * [reqBody] is a string representation of a json containing information to be
- * updated for the student with netid netID
- * [reqBody] should be formatted as specified in the api documentation
+ * [reqBody] is a Yojson.Basic.json containing information to be updated for the
+ * student with netid netID
+ * [reqBody] must be formatted such that calling Yojson.Basic.to_string on it
+ * will result in a string json as specified in the api documentation
  * side effect: makes a POST request to the student api endpoint *)
 val student_post : 
   Student.netid -> string -> Yojson.Basic.json -> Code.status_code*string
@@ -39,9 +71,10 @@ val admin_get :
  * endpoint. 
  * requires:
  * [pwd] is the admin password
- * [reqBody] is a string representation of a json containing information to be
- * created/updated for any number of students
- * [reqBody] should be formatted as specified in the api documentation
+ * [reqBody] is a Yojson.Basic.json containing information to be created/updated
+ * for any number of students
+ * [reqBody] must be formatted such that calling Yojson.Basic.to_string on it
+ * will result in a string json as specified in the api documentation
  * side effect: makes a POST request to the admin api endpoint *)
 val admin_post : string -> Yojson.Basic.json -> Code.status_code*string
 
@@ -51,9 +84,9 @@ val admin_post : string -> Yojson.Basic.json -> Code.status_code*string
  * requires:
  * [pwd] is the admin password
  * [scope] is either "class" or "subset"
- * [reqBody] is a string representation of a json detailing which students to
- * delete
- * [reqBody] should be formatted as specified in the api documentation
+ * [reqBody] is a Yojson.Basic.json detailing which students to delete
+ * [reqBody] must be formatted such that calling Yojson.Basic.to_string on it
+ * will result in a string json as specified in the api documentation
  * side effect: makes a DELETE request to the admin api endpoint *)
 val admin_delete :
   string -> string -> Yojson.Basic.json -> Code.status_code*string
