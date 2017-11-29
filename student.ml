@@ -25,15 +25,22 @@ type location =
  *   false means they are not. *)
 type schedule = bool list
 
-(* Skills ranked on scale of 1 (never seen it) to 5 (extremely proficient)*)
-type skill =
-  | Java of int
-  | Python of int
-  | C of int
-  | Ruby of int
-  | Javascript of int
-  | SQL of int
-  | OCaml of int
+type skill_type =
+  | Java
+  | Python
+  | C
+  | Ruby
+  | Javascript
+  | SQL
+  | OCaml
+
+type skills =
+  {
+    excellent : skill_type list;
+    great : skill_type list;
+    good : skill_type list;
+    some_exposure : skill_type list
+  }
 
 type student = {
   name : string;
@@ -41,7 +48,7 @@ type student = {
   year : classYear;
   schedule : schedule;
   courses_taken : int list;
-  skills : skill list;
+  skills : skills;
   hours_to_spend : int;
   location : location;
   profile_text : string;
@@ -50,7 +57,7 @@ type student = {
 type updateData =
   | Schedule of schedule
   | Courses of int list
-  | Skill of skill list
+  | Skill of skills
   | Hours of int
   | Location of location
   | Text of string
@@ -62,31 +69,6 @@ let valid_course c =
                           4670; 4740; 4750; 4780; 4820; 4850] in
   List.mem c possible_courses
 
-(* [extract_skill sk] gives the tuple (s,l) where s is the string
- * representation of the skill, and i is the integer representing
- * level of proficiency. *)
-let extract_skill = function
-  | Java i -> ("Java", i)
-  | Python i -> ("Python", i)
-  | C i -> ("C", i)
-  | Ruby i -> ("Ruby", i)
-  | Javascript i -> ("Javascript", i)
-  | SQL i -> ("SQL",i)
-  | OCaml i -> ("OCaml",i)
-
-(* [parse_skill_str str] gives the skill variant representation of
- * str, essentially undoing [extract_skill] *)
-let parse_skill_str str =
-  let splt = String.split_on_char '_' str in
-  let hd = List.hd splt in
-  let tl_int = List.nth splt 1 |> int_of_string in
-  if hd = "Java" then Java tl_int
-  else if hd = "Python" then Python tl_int
-  else if hd = "C" then C tl_int
-  else if hd = "Ruby" then Ruby tl_int
-  else if hd = "Javascript" then Javascript tl_int
-  else if hd = "SQL" then SQL tl_int
-  else OCaml tl_int
 
 (* [year_to_str y] gives the string representation of the year variant, y. *)
 let year_to_str = function
@@ -115,6 +97,47 @@ let parse_loc loc =
   if loc = "North Campus" then North
   else if loc = "West Campus" then West
   else Collegetown
+
+let skill_to_str = function
+  | Java -> "Java"
+  | Python -> "Python"
+  | C -> "C"
+  | Ruby -> "Ruby"
+  | Javascript -> "Javascript"
+  | SQL -> "SQL"
+  | OCaml -> "OCaml"
+
+let parse_skill sk =
+  if sk = "Java" then Java
+  else if sk = "Python" then Python
+  else if sk = "C" then C
+  else if sk = "Ruby" then Ruby
+  else if sk = "Javascript" then Javascript
+  else if sk = "SQL" then SQL
+  else OCaml
+
+let skill_to_json sk =
+  let map_func = List.map (fun s -> `String (skill_to_str s)) in
+  let ex = ("excellent", `List (map_func sk.excellent)) in
+  let gr = ("great", `List (map_func sk.great)) in
+  let go = ("good", `List (map_func sk.good)) in
+  let se = ("some_exposure",`List (map_func sk.some_exposure)) in
+  `Assoc[ex;gr;go;se]
+
+(* [printable_lst lst] gives the string representation of lst.
+ * each element is separated by a comma. *)
+let rec printable_lst = function
+  | [] -> ""
+  | h::m::t -> h^","^(printable_lst (m::t))
+  | h::t -> h
+
+let printable_skill sk =
+  let map_func = List.map skill_to_str in
+  let ex = "Excellent: "^(map_func sk.excellent |> printable_lst) in
+  let gr = "Great: "^(map_func sk.good |> printable_lst) in
+  let go = "Good: "^(map_func sk.great |> printable_lst) in
+  let se = "Some Exposure: "^(map_func sk.some_exposure |> printable_lst) in
+  ex^"\n"^gr^"\n"^go^"\n"^se
 
 (* [sched_to_str sched acc pos] gives the string representation of
  * a boolean list which represents a schedule.
@@ -152,48 +175,27 @@ let ext_str jsn_str =
 let parse_student st_str =
   let jsn = from_string st_str in
   let courses = jsn |> Util.member "courses_taken" |> Util.to_list in
-  let skills = jsn |> Util.member "skills" |> Util.to_list in
   let sched = jsn |> Util.member "schedule" |> Util.to_list in
+  let skills_jsn = jsn |> Util.member "skills" in
+  let parse_sk sk = sk |> Util.to_list |> List.map to_string |> List.map parse_skill in
+  let skills =
+  {
+    excellent = skills_jsn |> Util.member "excellent" |> parse_sk;
+    great = skills_jsn |> Util.member "great" |> parse_sk;
+    good = skills_jsn |> Util.member "good" |> parse_sk;
+    some_exposure = skills_jsn |> Util.member "some_exposure" |> parse_sk
+  } in
   {
     name = jsn |> Util.member "name" |> ext_str;
     netid = jsn |> Util.member "netid" |> ext_str;
     year = jsn |> Util.member "year" |> ext_str |> parse_yr;
     schedule = sched |> List.map Util.to_bool;
     courses_taken = courses |> List.map Util.to_int;
-    skills = skills |> List.map ext_str |> List.map parse_skill_str;
+    skills = skills;
     hours_to_spend = jsn |> Util.member "hours_to_spend" |> Util.to_int;
     profile_text = jsn |> Util.member "profile_text" |> ext_str;
     location = jsn |> Util.member "location" |> ext_str |> parse_loc
   }
-
-(* [printable_lst lst] gives the string representation of lst.
- * each element is separated by a comma. *)
-let rec printable_lst = function
-  | [] -> ""
-  | h::m::t -> h^","^(printable_lst (m::t))
-  | h::t -> h
-
-(* [lvl_to_str i] gives the string representation of an integer skill level.
- * Requires: 1 <= i <= 5 *)
-let lvl_to_str i =
-  if i = 1 then "no exposure"
-  else if i = 2 then "some exposure"
-  else if i = 3 then "moderate skill"
-  else if i = 4 then "strong skill"
-  else "excellent skill"
-
-(* [skill_to_str sk] gives the string representation of sk, in the format,
- * "skill name: skill level (string representation)"
- * Requires: the integer component of sk must be between 1 and 5 (inclusive)*)
-let skill_to_str sk =
-  let tup = extract_skill sk in
-  (fst tup)^": "^(lvl_to_str (snd tup))
-
-(* [skill_lst_to_str sk_lst] gives the string representation of skills within
- * sk_lst.*)
-let skill_lst_to_str sk_lst =
-  let sk_lst = List.map skill_to_str sk_lst in
-  List.fold_right (fun acc i -> i^acc) sk_lst ""
 
 let printable_student st =
   let header = "Viewing profile for: "^st.name^" ("^st.netid^")" in
@@ -202,7 +204,7 @@ let printable_student st =
   let course_lst = List.map string_of_int st.courses_taken in
   let course_lst_cs = List.map (fun s -> "CS "^s) course_lst in
   let courses = "Has taken: "^(printable_lst course_lst_cs) in
-  let skills = "Skills:\n"^(skill_lst_to_str st.skills) in
+  let skills = "Skills:\n"^(printable_skill st.skills) in
   let hrs = "Willing to spend "^(string_of_int st.hours_to_spend)^" hours on this project" in
   let sched = "Available:\n"^(sched_to_str st.schedule "" 0) in
   let about = "About me: "^st.profile_text in
@@ -213,16 +215,6 @@ let get_student net pwd =
   | (`No_response,str) -> None
   | (`OK,str) -> Some (parse_student str)
   | _ -> failwith "impossible"
-
-(* [skill_to_string sk] gives the yojson `String representation of sk *)
-let skill_to_string sk =
-  let tup = extract_skill sk in
-  `String ((fst tup)^"_"^(string_of_int (snd tup)))
-
-(* [skill_lst_to_json lst] gives the yojson List format to lst, such that
- * it can be included in a yojson association list. *)
-let skill_lst_to_json lst =
-  `List (List.map skill_to_string lst)
 
 (* [course_lst_to_json lst] gives the yojson List format to lst, such that
  * it can be included in a yojson association list. *)
@@ -239,13 +231,13 @@ let sched_lst_to_json s_lst =
 let field_to_json = function
   | Schedule s -> ("schedule",sched_lst_to_json s)
   | Courses c -> ("courses_taken",course_lst_to_json c)
-  | Skill sk -> ("skills",skill_lst_to_json sk)
+  | Skill sk -> ("skills",skill_to_json sk)
   | Hours h -> ("hours_to_spend",`Int h)
   | Location l -> ("location",`String (loc_to_str l))
   | Text t ->  ("profile_text",`String t)
 
 let update_profile net pwd fields =
-  let fields_mapped = 
+  let fields_mapped =
     `Assoc(List.map field_to_json fields) |> Yojson.Basic.to_string in
   match Loml_client.student_post net pwd fields_mapped with
   | (`No_response,str) -> false
@@ -265,7 +257,7 @@ let student_to_json st =
   let year = ("year", `String (year_to_str st.year)) in
   let sched = ("schedule", sched_lst_to_json st.schedule) in
   let courses = ("courses_taken", (course_lst_to_json st.courses_taken)) in
-  let skills = ("skills", (skill_lst_to_json st.skills)) in
+  let skills = ("skills", (skill_to_json st.skills)) in
   let hrs = ("hours_to_spend", `Int st.hours_to_spend) in
   let prof = ("profile_text", `String st.profile_text) in
   let loc = ("location", `String (loc_to_str st.location)) in

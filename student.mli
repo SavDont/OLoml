@@ -5,7 +5,7 @@ type student
 
 (* Type representing possible skills a student can have, as well as
  * proficiency in those skills *)
-type skill
+type skills
 
 (* Type representing a location closest to where a student lives *)
 type location
