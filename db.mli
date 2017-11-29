@@ -25,11 +25,13 @@ val check_period_set : string -> string -> bool
  * table (tbl) that represents the start dates of each period with the dates
  * given in the json representing the periods
  * requires: the table must exist inside the database and must contain
- * columns "Update, "Swipe", and "Match" .
+ * columns "Update, "Swipe", and "Match"
  * requires dates to be represented as integers of form YYYMMDD where for
  * example, November 29th, 2017 would be represented by 20171129
  * retuires: periods must be a valid representation of a json *)
 val set_period_query : string -> string -> string -> unit
 
-    (**)
-val get_student : string -> string -> string -> string
+(* [get_student_query dbh tbl netid] returns a string representation of the
+ * json produced by selecting all columns from the student table for a specifc
+ * netID. requires that the netID exist in the database*)
+val get_student_query : string -> string -> string -> string
