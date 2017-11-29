@@ -1,68 +1,44 @@
-type netid = string
 
-type daySchedule = {morning : bool; afternoon : bool; evening : bool}
+(* Type representing a student, with all of his/her metadata and profile
+ * information*)
+type student
 
-type schedule = {
-  monday : daySchedule;
-  tuesday : daySchedule;
-  wednesday : daySchedule;
-  thursday : daySchedule;
-  friday : daySchedule;
-  saturday : daySchedule;
-  sunday : daySchedule;
-}
+(* Type representing possible skills a student can have, as well as
+ * proficiency in those skills *)
+type skill
 
-type classYear =
-  | Fresh
-  | Soph
-  | Jun
-  | Sen
+(* Type representing a location closest to where a student lives *)
+type location
 
-(* possible CS courses a student can have taken
- * Only went up to 4000 level--do we want to include more? *)
-type course =
-  | CS_1110 | CS_1112 | CS_1300 | CS_2022 | CS_2024 | CS_2043 | CS_2044
-  | CS_2110 | CS_2112 | CS_2300 | CS_2800 | CS_3110 | CS_3410 | CS_3420
-  | CS_4110 | CS_4120 | CS_4152 | CS_4210 | CS_4220 | CS_4300 | CS_4320
-  | CS_4410 | CS_4420 | CS_4620 | CS_4670 | CS_4700 | CS_4740 | CS_4750
-  | CS_4780 | CS_4820 | CS_4850
+(* Type representing data that can be updated by a student (non-metadata)*)
+type updateData
 
-(* int from 1 to 5 dictates proficiency
- * add more skills? *)
-type skill =
-  | Java of int
-  | Python of int
-  | C of int
-  | Ruby of int
-  | Javascript of int
-  | SQL of int
-  | OCaml of int
+(* [valid_course c] is true iff c is a course that a student can
+ * list as having taken.
+ * Requires: c must be 4 digits in length*)
+val valid_course : int -> bool
 
-type student = {
-  name : string;
-  netid : netid;
-  year : classYear;
-  schedule : schedule;
-  courses_taken : course list;
-  skills : skill list;
-  hours_to_spend : int
-}
+(* [printable_student s] gives the printable profile representation of s.
+ * requires: s's schedule list must be exactly length 21. *)
+val printable_student : student -> string
 
-(* [authenticate netID pwd] returns [true] iff pwd = the password associated
- * with netID in the database and [false] otherwise *)
-val authenticate : netid -> string -> bool
+(* [get_student net pwd] gives the student option corresponding to
+ * netid of net if (a) a student with this netid exists in the database
+ * and (b), that pwd is the correct password for this netid.
+ * If either is not true, None is returned. *)
+val get_student : string -> string -> student option
 
-(* [get_student netID] returns Some s iff a student with netID exists in the
- * database and s is that student. Otherwise, return None *)
-val get_student : netid -> student option
+(* [update_profile net pwd attr_lst] updates the database entry corresponding
+ * to netid, net and password, pwd with every attribute that is included
+ * in attr_lst.  Any attribute that is not in the list remains unchanged
+ * in the database.  The update is successful if (a) a student corresponding
+ * to net exists in the database, and (b) if pwd is the correct password
+ * stored. It returns true if the update is successful, and false if not.
+ * Side-Effects: Updates Database *)
+val update_profile : string -> string -> updateData list -> bool
 
-(* [update_student netID] returns Some s iff a student with netID exists
- * in the database. s is that student updated with studentData.
- * Otherwise, return None
- * side effect: writes to the DB *)
-val update_student : netid -> student -> student option
-
-(* [get_match netID] returns Some s iff a student with netID exists in the
- * database and that student (Ezra) has a match. s is Ezra's match and
- * None otherwise *)
-val get_match : netid -> student option
+(* [get_match net pwd] gives the student option that the student corresponding
+ * to net has been matched to.  If a student corresponding to netid, net doesn't
+ * exist in the database, or pwd is not the correct password for net,
+ * None is returned. *)
+val get_match : string -> string -> student option

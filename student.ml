@@ -1,10 +1,7 @@
 open Yojson.Basic
 
-type netid = string
-
-(* Length 21 bool list *)
-type schedule = bool list
-
+(* Type representing student's current year in school
+ * Fresh = freshman, Soph = sophomore, Jun = junior, Sen = senior*)
 type classYear =
   | Fresh
   | Soph
@@ -16,17 +13,19 @@ type location =
   | West
   | Collegetown
 
-(* possible CS courses a student can have taken
- * Only went up to 4000 level--do we want to include more? *)
-type course = int
+(* Type representing a student's available time slots throughout a single week.
+ * Each schedule must be of length exactly 21.  It is parsed as follows:
+ * - every three elements represent a single day.  For example,
+ *   elements 0-2 represent monday, 3-5 represent tuesday...18-20 represent
+ *   sunday
+ * - within each day, the first element represents morning, the second
+ *   afternoon, and the third evening. i.e. 0 is monday morning, 2 is monday
+ *   evening
+ * - true means that a student is available during this time slot, and
+ *   false means they are not. *)
+type schedule = bool list
 
-let possible_courses = [1110; 1112; 1300; 2022; 2024; 2043; 2044; 2110;
-                        2112; 2300; 2800; 3110; 3410; 3420; 4110; 4120;
-                        4152; 4210; 4220; 4300; 4320; 4410; 4420; 4620;
-                        4670; 4740; 4750; 4780; 4820; 4850]
-
-(* int from 1 to 5 dictates proficiency
- * add more skills? *)
+(* Skills ranked on scale of 1 (never seen it) to 5 (extremely proficient)*)
 type skill =
   | Java of int
   | Python of int
@@ -38,28 +37,45 @@ type skill =
 
 type student = {
   name : string;
-  netid : netid;
+  netid : string;
   year : classYear;
   schedule : schedule;
-  courses_taken : course list;
+  courses_taken : int list;
   skills : skill list;
   hours_to_spend : int;
   location : location;
   profile_text : string;
 }
 
-(* Only mutable fields for students (different ones for profs??) *)
 type updateData =
   | Schedule of schedule
-  | Courses of course list
+  | Courses of int list
   | Skill of skill list
   | Hours of int
   | Location of location
   | Text of string
 
-(* variant saying what part of student you want to update
- * for partial writes *)
+let valid_course c =
+  let possible_courses = [1110; 1112; 1300; 2022; 2024; 2043; 2044; 2110;
+                          2112; 2300; 2800; 3110; 3410; 3420; 4110; 4120;
+                          4152; 4210; 4220; 4300; 4320; 4410; 4420; 4620;
+                          4670; 4740; 4750; 4780; 4820; 4850] in
+  List.mem c possible_courses
 
+(* [extract_skill sk] gives the tuple (s,l) where s is the string
+ * representation of the skill, and i is the integer representing
+ * level of proficiency. *)
+let extract_skill = function
+  | Java i -> ("Java", i)
+  | Python i -> ("Python", i)
+  | C i -> ("C", i)
+  | Ruby i -> ("Ruby", i)
+  | Javascript i -> ("Javascript", i)
+  | SQL i -> ("SQL",i)
+  | OCaml i -> ("OCaml",i)
+
+(* [parse_skill_str str] gives the skill variant representation of
+ * str, essentially undoing [extract_skill] *)
 let parse_skill_str str =
   let splt = String.split_on_char '_' str in
   let hd = List.hd splt in
@@ -72,28 +88,38 @@ let parse_skill_str str =
   else if hd = "SQL" then SQL tl_int
   else OCaml tl_int
 
+(* [year_to_str y] gives the string representation of the year variant, y. *)
 let year_to_str = function
   | Fresh -> "Freshman"
   | Soph -> "Sophomore"
   | Jun -> "Junior"
   | Sen -> "Senior"
 
+(* [parse_yr] gives the variant representation of the year string, yr.
+ * Requires: yr must be "Freshman", "Sophomore", "Junior", or "Senior".*)
 let parse_yr yr =
   if yr = "Freshman" then Fresh
   else if yr = "Sophomore" then Soph
   else if yr = "Junior" then Jun
   else Sen
 
+(* [loc_to_str] gives the string representation of the location variant. *)
 let loc_to_str = function
   | North -> "North Campus"
   | West -> "West Campus"
   | Collegetown -> "Collegetown"
 
+(* [parse_loc loc] gives the variant representation of the location string.
+ * Requires: loc must be "North Campus", "West Campus", or "Collegetown"*)
 let parse_loc loc =
   if loc = "North Campus" then North
   else if loc = "West Campus" then West
   else Collegetown
 
+(* [sched_to_str sched acc pos] gives the string representation of
+ * a boolean list which represents a schedule.
+ * Requires: sched is a valid schedule list.  That is, it is of length
+ * exactly 21. *)
 let rec sched_to_str sched acc pos =
   if List.length sched <> 21 then failwith "Incorrect Schedule Length"
   else
@@ -116,12 +142,20 @@ let rec sched_to_str sched acc pos =
     then sched_to_str t (acc^(day_of_week pos)^(time_of_day pos)^"\n\n") (pos+1)
     else sched_to_str t acc (pos+1)
 
-(* Removes double quotes *)
+(* [ext_str jsn_str] removes double quotations from the inputted string.
+ * Requires: the double quotations must contain the entirety of the string
+ * within [jsn_str], and they must exist. *)
 let ext_str jsn_str =
   let str = to_string jsn_str in
   String.sub str 1 (String.length str - 2)
 
-(* takes DB string representation, makes student type *)
+(* [parse_student st_str] gives the student representation of the
+ * inputted string representation of json.
+ * Requries: st_str must be a valid representation of a json.  That is,
+ * Yojson.Basic.from_string must not throw any errors when called in st_str.
+ * st_str must have the following fields as members: "courses_taken",
+ * "skills", "schedule", "name", "netid", "year", "hours_to_spend",
+ * "profile_text", "location"*)
 let parse_student st_str =
   let jsn = from_string st_str in
   let courses = jsn |> Util.member "courses_taken" |> Util.to_list in
@@ -139,11 +173,15 @@ let parse_student st_str =
     location = jsn |> Util.member "location" |> ext_str |> parse_loc
   }
 
+(* [printable_lst lst] gives the string representation of lst.
+ * each element is separated by a comma. *)
 let rec printable_lst = function
   | [] -> ""
   | h::m::t -> h^","^(printable_lst (m::t))
   | h::t -> h
 
+(* [lvl_to_str i] gives the string representation of an integer skill level.
+ * Requires: 1 <= i <= 5 *)
 let lvl_to_str i =
   if i = 1 then "no exposure"
   else if i = 2 then "some exposure"
@@ -151,15 +189,15 @@ let lvl_to_str i =
   else if i = 4 then "strong skill"
   else "excellent skill"
 
-let skill_to_str = function
-  | Java i -> "Java: "^(lvl_to_str i)^"\n"
-  | Python i -> "Python: "^(lvl_to_str i)^"\n"
-  | C i -> "C: "^(lvl_to_str i)^"\n"
-  | Ruby i -> "Ruby: "^(lvl_to_str i)^"\n"
-  | Javascript i -> "Javascript: "^(lvl_to_str i)^"\n"
-  | SQL i -> "SQL: "^(lvl_to_str i)^"\n"
-  | OCaml i -> "OCaml: "^(lvl_to_str i)^"\n"
+(* [skill_to_str sk] gives the string representation of sk, in the format,
+ * "skill name: skill level (string representation)"
+ * Requires: the integer component of sk must be between 1 and 5 (inclusive)*)
+let skill_to_str sk =
+  let tup = extract_skill sk in
+  (fst tup)^": "^(lvl_to_str (snd tup))
 
+(* [skill_lst_to_str sk_lst] gives the string representation of skills within
+ * sk_lst.*)
 let skill_lst_to_str sk_lst =
   let sk_lst = List.map skill_to_str sk_lst in
   List.fold_right (fun acc i -> i^acc) sk_lst ""
@@ -182,15 +220,23 @@ let get_student net pwd =
   | (`No_response,str) -> None
   | (`OK,str) -> Some (parse_student str)
 
+(* [skill_lst_to_json lst] gives the yojson List format to lst, such that
+ * it can be included in a yojson association list. *)
 let skill_lst_to_json lst =
   `List (List.map skill_to_string lst)
 
+(* [course_lst_to_json lst] gives the yojson List format to lst, such that
+ * it can be included in a yojson association list. *)
 let course_lst_to_json c_lst =
   `List ((List.map (fun i -> `Int i)) c_lst)
 
+(* [sched_lst_to_json lst] gives the yojson List format to lst, such that
+ * it can be included in a yojson association list. *)
 let sched_lst_to_json s_lst =
   `List ((List.map (fun b -> `Bool b)) s_lst)
 
+(* [field_to_json fld] gives the yojson association tuple corresponding
+ * to the update field. *)
 let field_to_json = function
   | Schedule s -> ("schedule",sched_lst_to_json s)
   | Courses c -> ("courses_taken",course_lst_to_json c)
@@ -210,15 +256,12 @@ let get_match net pwd =
   | (`No_response,str) -> None
   | (`Ok,str) -> Some (parse_student str)
 
-let skill_to_string = function
-  | Java i -> `String ("Java_"^(string_of_int i))
-  | Python i -> `String ("Python_"^(string_of_int i))
-  | C i -> `String ("C_"^(string_of_int i))
-  | Ruby i -> `String ("Ruby_"^(string_of_int i))
-  | Javascript i -> `String ("Javascript_"^(string_of_int i))
-  | SQL i -> `String ("SQL_"^(string_of_int i))
-  | OCaml i -> `String ("OCaml_"^(string_of_int i))
+(* [skill_to_string sk] gives the yojson `String representation of sk *)
+let skill_to_string sk =
+  let tup = extract_skill sk in
+  `String ((fst tup)^"_"^(string_of_int (snd tup)))
 
+(* [student_to_json st] gives the yojson form of a student. *)
 let student_to_json st =
   let name = ("name", `String st.name) in
   let netid = ("netid", `String st.netid) in
