@@ -209,7 +209,7 @@ let printable_student st =
   header^"\n\n"^yr^"\n\n"^loc^"\n\n"^courses^"\n\n"^skills^"\n"^sched^hrs^"\n\n"^about
 
 let get_student net pwd =
-  match Client.student_get net pwd "student" with
+  match Loml_client.student_get net pwd "student" with
   | (`No_response,str) -> None
   | (`OK,str) -> Some (parse_student str)
   | _ -> failwith "impossible"
@@ -245,14 +245,15 @@ let field_to_json = function
   | Text t ->  ("profile_text",`String t)
 
 let update_profile net pwd fields =
-  let fields_mapped = List.map field_to_json fields in
-  match Client.student_post net pwd (`Assoc(fields_mapped)) with
+  let fields_mapped = 
+    `Assoc(List.map field_to_json fields) |> Yojson.Basic.to_string in
+  match Loml_client.student_post net pwd fields_mapped with
   | (`No_response,str) -> false
   | (`OK,str) -> true
   | _ -> failwith "impossible"
 
 let get_match net pwd =
-  match Client.student_get net pwd "match" with
+  match Loml_client.student_get net pwd "match" with
   | (`No_response,str) -> None
   | (`OK,str) -> Some (parse_student str)
   | _ -> failwith "impossible"

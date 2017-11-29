@@ -1,4 +1,4 @@
-open Client
+open Loml_client
 open Unix
 open Yojson.Basic
 open Student
@@ -26,8 +26,8 @@ let valid_date (m, d, y) =
                 else d<=28 && d>=1
 
 let import_students dir pwd =
-  let j =  dir |> from_file in
-  let postResponse = Client.admin_post pwd j in
+  let j =  dir |> from_file |> to_string in
+  let postResponse = Loml_client.admin_post pwd j in
     if fst postResponse = `OK
     then true
     else false
@@ -57,16 +57,14 @@ let set_periods upDate swDate mtDate pwd =
                     \"swipe\" : " ^ (sRecord |> mktime |> fst |> string_of_float) ^ ",
                     \"match\" : " ^ (mRecord |> mktime |> fst |> string_of_float) ^
                                                                 "}" in
-    let yoJsonF = from_string strJson in
-    if fst (Client.period_post pwd yoJsonF) = `OK
+    if fst (Loml_client.period_post pwd strJson) = `OK
     then true
     else false
   else false
 
 let remove_student netID pwd =
   let strJson = "{ \"" ^ netID ^ "\": 1 }" in
-  let yoJsonF = from_string strJson in
-  if fst (Client.admin_delete pwd "subset" yoJsonF)  = `OK
+  if fst (Loml_client.admin_delete pwd "subset" strJson)  = `OK
   then true
   else false
 
@@ -77,7 +75,7 @@ let get_assoc_list jsn = match jsn with
   | _ -> []
 
 let get_student netID pwd =
-  let getReq = Client.admin_get pwd "student_indiv" ~netID:netID in
+  let getReq = Loml_client.admin_get pwd "student_indiv" ~netID:netID in
   if fst getReq = `OK
   then
     let jList = getReq |> snd |> from_string |> get_assoc_list in
@@ -93,15 +91,15 @@ let rec jsn_students jsnLst = match jsnLst with
   | [] -> []
 
 let get_all_students pwd =
-  let getReq = Client.admin_get pwd "student_all" ~netID:"" in
+  let getReq = Loml_client.admin_get pwd "student_all" ~netID:"" in
   if fst getReq = `OK
   then  let lst = getReq |> snd |> from_string |> get_assoc_list in
     jsn_students lst
   else []
 
 let reset_class pwd =
-  let emptyJson = from_string "{}" in
-  let delReq = Client.admin_delete pwd "class" emptyJson in
+  let emptyJson = "{}" in
+  let delReq = Loml_client.admin_delete pwd "class" emptyJson in
   if fst delReq = `OK
   then true
   else false

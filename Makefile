@@ -1,4 +1,3 @@
-
 OBJS1=httpServer.cmo
 OBJS2=api.cmo
 NAME=server
@@ -20,5 +19,4 @@ server:
 	make && ./server.byte
 
 compile:
-	# make clean && ocamlbuild -use-ocamlfind api.cmo httpServer.cmo main.cmo pool.cmo server.cmo student.cmo swipe.cmo
-	ocamlbuild -use-ocamlfind api.cmo client.cmo httpServer.cmo main.cmo pool.cmo server.cmo student.cmo swipe.cmo professor.cmo
+	ocamlbuild -use-ocamlfind api.cmo httpServer.cmo loml_client.cmo main.cmo oclient.cmo pool.cmo server.cmo student.cmo swipe.cmo professor.cmo

@@ -1,5 +1,3 @@
-open Client
-open Unix
 open Student
 type timePeriodDate
 
