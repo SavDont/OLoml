@@ -21,4 +21,4 @@ server:
 
 compile:
 	# make clean && ocamlbuild -use-ocamlfind api.cmo httpServer.cmo main.cmo pool.cmo server.cmo student.cmo swipe.cmo
-	ocamlbuild -use-ocamlfind api.cmo httpServer.cmo main.cmo pool.cmo server.cmo student.cmo swipe.cmo professor.cmo
+	ocamlbuild -use-ocamlfind api.cmo client.cmo httpServer.cmo main.cmo pool.cmo server.cmo student.cmo swipe.cmo professor.cmo
