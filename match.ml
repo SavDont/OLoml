@@ -1,5 +1,5 @@
 open Loml_client
-open YOjson.Basic
+open Yojson.Basic
 
 type swipe_results_class = (string * string * int) list
 
@@ -76,12 +76,12 @@ let rec resolve_duplicates swResults = match swResults with
  * returns: string list*)
 let rec get_unique_ids_sw swLst acc = match swLst with
   | (n1, n2, _)::t -> if not (List.mem n1 acc) && not (List.mem n2 acc)
-    then get_unique_ids t (n1::n2::acc)
+    then get_unique_ids_sw t (n1::n2::acc)
     else if not (List.mem n1 acc) && List.mem n2 acc
-    then get_unique_ids t (n1::acc)
+    then get_unique_ids_sw t (n1::acc)
     else if List.mem n1 acc && not (List.mem n2 acc)
-    then get_unique_ids t (n2::acc)
-    else get_unique_ids t acc
+    then get_unique_ids_sw t (n2::acc)
+    else get_unique_ids_sw t acc
   | [] -> acc
 
 let gen_class_results pwd =
@@ -117,7 +117,8 @@ let rec list_rem lst n = match lst with
  * [unm]
  * Returns: string list*)
 let rec find_unmatched  mList unm = match mList with
-  | (n1, n2)::t -> find_unmatched t (list_rem (list_rem t n1) n2)
+  | (n1, n2)::t -> let firstUnm = list_rem unm n1 in
+    find_unmatched t (list_rem firstUnm n2)
   | [] -> unm
 
 (* [get_matches lst] returns a variable of type matching which represents
