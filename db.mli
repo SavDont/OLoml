@@ -14,8 +14,8 @@ val check_cred_query : 'a -> string -> string -> string
  * columns "Update", "Swipe" and "Match"*)
 val check_period_query : 'a -> string -> string -> string
 
-(* [check_period_set dbh tbl] returns false if the values in any of the
-* columns are not null. returns true otherwise.
+(* [check_period_set dbh tbl] returns true if the values in any of the
+* columns are not null. returns false otherwise.
 * Requires: the table must exist inside the database and must contain columns
 * "Update", "Swipe", and "Match" *)
 val check_period_set : string -> string -> bool

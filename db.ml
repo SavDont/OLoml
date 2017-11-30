@@ -10,9 +10,9 @@ let check_period_query dbh tbl date =
   failwith "Unimplemented"
 
 let check_period_set dbh tbl =
-  if ((PGSQL(dbh) "SELECT Update FROM $tbl") != null
-      ||  (PGSQL(dbh) "SELECT Swipe FROM $tbl") != null
-      ||  (PGSQL(dbh) "SELECT Match FROM $tbl") != null) then false
+  if ((PGSQL(dbh) "SELECT Update FROM $tbl") != None
+      ||  (PGSQL(dbh) "SELECT Swipe FROM $tbl") != None
+      ||  (PGSQL(dbh) "SELECT Match FROM $tbl") != None) then true
   else true
 
 let set_period_query dbh tbl periods =
