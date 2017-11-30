@@ -5,18 +5,23 @@ open SwipeStudentPool
 open StudentPool
 open Command
 open Professor
+open Loml_client
 
 exception QuitREPL
+
+let check_creds net pwd =
+  match credentials_post net pwd with
+  | (`OK,str) -> true
+  | _ -> false
 
   let rec get_authed () =
   print_string("\nNetid (all lowercase, no spaces): ");
   let net = read_line () in
   print_newline();
-  print_string("Password (case-sensitive: )");
+  print_string("Password (case-sensitive): ");
   let pwd = read_line () in
   print_newline();
-  (* Api.are_valid_credentials giving circular dependency *)
-  match true with
+  match check_creds net pwd with
   | true ->
     print_endline("Success. Hello "^net);
     begin match net with
@@ -29,22 +34,75 @@ exception QuitREPL
 
 and
 
-  student_main_outer net pwd =
-  (* Api.current_period giving circular dependency *)
-  match "swipe" with
-  | "swipe" ->
-    print_endline ("\nIt's time to swipe for potential matches. ");
-    print_endline ("\nenter 'swipe' to swipe, 'profile' to view your profile, or 'quit' to quit");
-    swipe_period net pwd
-  | "match" ->
-    print_endline ("\nThe system is done matching partners.\n");
-    print_endline ("\nHere's your match:\n\n");
-    match_period net pwd
-  | "update" ->
-    print_endline ("\nSwiping has not begun. Enter 'profile' to view your profile, or 'quit' to quit");
-    update_period net pwd
+  prof_main_outer net pwd =
+  match period_get net pwd with
+  | (`OK,str) ->
+    begin
+      match str with
+      | "null" -> failwith "need to set periods, upload students, remove"
+      | _ ->
+        print_endline ("\nYour class is already running. Your only option is to reset. Enter 'reset' to reset, or 'quit' to quit.");
+        reset_outer net pwd
+    end
   | _ ->
-    print_endline ("\nThe system is not currently set up. Check back later.");
+    print_endline("\nError: Terminating program.");
+
+and
+
+  reset_outer net pwd =
+  print_string("\n> ");
+  match parse_command (read_line ()) with
+  | Reset ->
+    print_endline ("\nAre you sure you want to reset? Enter 'yes' or 'no'.");
+    reset_inner net pwd
+  | Quit -> quit_check_outer net pwd prof_main_outer
+  | _ ->
+    print_endline ("Unrecognized command. Enter 'reset' or 'quit'.");
+    reset_outer net pwd
+
+and
+
+  reset_inner net pwd =
+  match parse_command (read_line ()) with
+  | Confirm Yes ->
+    begin
+      match reset_class pwd with
+      | true ->
+        print_endline ("\nClass reset. Re-start program to continue.")
+      | _ ->
+        print_endline ("Error. Try again.");
+        prof_main_outer net pwd
+    end
+  | Confirm No ->
+    print_endline ("\nClass not reset.");
+    prof_main_outer net pwd
+  | _ ->
+    print_endline ("Unrecognized command. Enter 'yes' or 'no'.");
+    reset_inner net pwd
+
+and
+
+  student_main_outer net pwd =
+  match period_get net pwd with
+  | (`OK,str) ->
+    begin
+      match str with
+      | "swipe" ->
+        print_endline ("\nIt's time to swipe for potential matches. ");
+        print_endline ("\nenter 'swipe' to swipe, 'profile' to view your profile, or 'quit' to quit");
+        swipe_period net pwd
+      | "match" ->
+        print_endline ("\nThe system is done matching partners.\n");
+        print_endline ("\nHere's your match:\n\n");
+        match_period net pwd
+      | "update" ->
+        print_endline ("\nSwiping has not begun. Enter 'profile' to view your profile, or 'quit' to quit");
+        update_period net pwd
+      | _ ->
+        print_endline ("\nThe system is not currently set up. Check back later.");
+    end
+  | _ ->
+    print_endline ("\nError: Terminating program.");
 
 and
 
@@ -324,105 +382,6 @@ and
   | _ ->
     print_endline ("\nUnrecognized command. Please enter 'save' or 'quit'.");
     save_loop pl net pwd s_results
-
-
-let test_students =
-  [
-    {
-      name = "Bob";
-      netid = "bb123";
-      year = Jun;
-      courses_taken = [1110; 2110; 3110];
-      skills =
-        {
-          excellent = [Python; OCaml];
-          great = [];
-          good = [C];
-          some_exposure = [Ruby];
-        };
-      location = Collegetown;
-      hours_to_spend = 40;
-      schedule = [true;true;true;false;false;false;true;false;false;true;false;
-                    false;true;false;true;false;true;false;true;false;true];
-      profile_text = "hey I'm bob";
-    };
-    {
-      name = "Bobette";
-      netid = "bb124";
-      year = Fresh;
-      courses_taken = [1110];
-      skills =
-        {
-          excellent = [];
-          great = [];
-          good = [];
-          some_exposure = [Python];
-        };
-      location = North;
-      hours_to_spend = 50;
-      schedule = [true;true;false;false;true;false;true;true;false;true;true;
-                    false;false;false;false;true;true;true;true;false;false];
-      profile_text = "hey I'm bobette";
-    };
-    {
-      name = "Bobina";
-      netid = "bb125";
-      year = Sen;
-      courses_taken = [1110; 2110; 3110; 4410; 4110; 2800; 4820];
-      skills =
-        {
-          excellent = [Python; OCaml; C];
-          great = [Java];
-          good = [];
-          some_exposure = [Ruby];
-        };
-      location = Collegetown;
-      hours_to_spend = 60;
-      schedule = [true;true;true;false;false;false;true;false;false;true;false;
-                    false;true;false;true;false;true;false;true;false;true];
-      profile_text = "hey I'm bobina";
-    };
-    {
-      name = "Bobby-Joe";
-      netid = "bb126";
-      year = Soph;
-      courses_taken = [1110; 2110; 3110];
-      skills =
-        {
-          excellent = [Python; OCaml];
-          great = [];
-          good = [C];
-          some_exposure = [Ruby];
-        };
-      location = Collegetown;
-      hours_to_spend = 40;
-      schedule = [true;false;false;false;false;false;true;false;false;true;false;
-                    false;true;false;true;false;true;false;true;false;true];
-      profile_text = "hey I'm bobby-joe";
-    };
-  ]
-
-let test_student =
-{
-  name = "Bob";
-  netid = "bb123";
-  year = Jun;
-  courses_taken = [1110; 2110; 3110];
-  skills =
-    {
-      excellent = [Python; OCaml];
-      great = [];
-      good = [C];
-      some_exposure = [Ruby];
-    };
-  location = Collegetown;
-  hours_to_spend = 40;
-  schedule = [true;true;true;false;false;false;true;false;false;true;false;
-                false;true;false;true;false;true;false;true;false;true];
-  profile_text = "hey I'm bob";
-}
-
-let test_student_pool = StudentPool.poolify test_student test_students
 
 let main () =
   print_endline("\nWelcome to OLoml!  Let's find you the love of your CS life. AKA your only life.");
