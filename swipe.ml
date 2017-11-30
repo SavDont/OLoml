@@ -47,7 +47,7 @@ module MakeSwipe (T : TupleComparable) : Swipe
 
   let write_swipes net pwd s_results =
     let res_str = s_results |> gen_swipe_results |> to_string in
-    match Loml_client.student_post net pwd res_str with
+    match Loml_client.swipes_post net pwd res_str with
     | (`No_response, str) -> false
     | (`OK, str) -> true
     | _ -> failwith "impossible"
