@@ -15,6 +15,7 @@ type command =
   | Update
   | Field of int
   | Reset
+  | Matchify
   | Unknown of string
 
 let parse_command txt =
@@ -36,4 +37,5 @@ let parse_command txt =
   else if txt_lower = "3" then Field 3
   else if txt_lower = "4" then Field 4
   else if txt_lower = "reset" then Reset
+  else if txt_lower = "matchify" then Matchify
   else Unknown txt_lower
