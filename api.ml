@@ -22,6 +22,15 @@ let period_get req =
 let period_post req =
   failwith "Unimplemented"
 
+let swipes_get req =
+  failwith "Unimplemented"
+
+let swipes_post req =
+  failwith "Unimplemeted"
+
+let matches_post req =
+  failwith "Unimplemented"
+
 let student_get req = 
   failwith "Unimplemented"
 

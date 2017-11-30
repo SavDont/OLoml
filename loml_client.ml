@@ -6,8 +6,10 @@ let credentials_endpoint = "credentials/"
 let period_endpoint = "period/"
 let student_endpoint = "student/"
 let admin_endpoint = "admin/"
+let swipes_endpoint = "swipes/"
+let matches_endpoint = "matches/"
 
-(* credential clients *)
+(* credential client *)
 let credentials_post username password =
   let headers = make_headers [("username",username); ("password",password)] in
   let uri = make_uri base_url credentials_endpoint in
@@ -23,6 +25,25 @@ let period_post password reqBody =
   let headers = make_headers [("password",password)] in
   let body = make_body reqBody in
   let uri = make_uri base_url period_endpoint in
+  post_req ?headers:(Some headers) ?body:(Some body) uri
+
+(* swipes clients *)
+let swipes_get password =
+  let headers = make_headers [("password",password)] in
+  let uri = make_uri base_url swipes_endpoint in
+  get_req ?headers:(Some headers) uri
+
+let swipes_post netID password reqBody = 
+  let headers = make_headers [("password",password)] in
+  let body = make_body reqBody in
+  let uri = make_uri base_url swipes_endpoint in
+  post_req ?headers:(Some headers) ?body:(Some body) uri
+
+(* matches client *)
+let matches_post password reqBody = 
+  let headers = make_headers [("password",password)] in
+  let body = make_body reqBody in
+  let uri = make_uri base_url matches_endpoint in
   post_req ?headers:(Some headers) ?body:(Some body) uri
 
 (* student clients *)
