@@ -4,12 +4,21 @@ open Cohttp
 let test req = 
   let headers = Header.init_with "Content-Type" "text/plain" in
   let status = `OK in
-  let res_body = "Hello " ^ req.req_body ^ "!" in
+  let res_body = "Hello " ^ req.req_body ^ "" in
   {headers; status; res_body}
 
-let are_valid_credentials user pwd =
+(* [are_valid_credentials username password] returns [true] iff username and
+ * password are a valid username password combination in the database and 
+ * [false] otherwise *)
+let are_valid_credentials user password =
   failwith "Unimplemented"
 
+(* [current_period] is a string representing the current period.
+ * returns:
+ *  "update" if the current period is the update period
+ *  "swipe" if the current period is the swipe period
+ *  "match" if the current period is the match period
+ *  "null" if the periods have not been initialize yet *)
 let current_period () =
   failwith "Unimplemented"
 

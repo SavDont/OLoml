@@ -1,13 +1,19 @@
 open Oclient
 
 (* api specific parameters parameters *)
-let base_url = "localhost:8000/"
+let base_url = "http://192.168.1.9:8000/test/"
 let credentials_endpoint = "credentials/"
 let period_endpoint = "period/"
 let student_endpoint = "student/"
 let admin_endpoint = "admin/"
 let swipes_endpoint = "swipes/"
 let matches_endpoint = "matches/"
+
+let test name =
+  let headers = make_headers [] in
+  let uri = make_uri base_url "" in
+  let body = make_body name in
+  post_req ?headers:(Some headers) ?body:(Some body) uri
 
 (* credential client *)
 let credentials_post username password =
