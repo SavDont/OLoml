@@ -98,6 +98,118 @@ val period_get : HttpServer.request -> HttpServer.response
  * side effect: updates the database *)
 val period_post : HttpServer.request -> HttpServer.response
 
+(* [swipes_get req] is the endpoint that retrieves all swipe results from the
+ * database
+ * [req.headers]
+ *   header [password] that specifies the admin password (only the admin can
+ *    retrieve swipes)
+ * [req.params] - ignored
+ * [req.req_body] - ignored
+ * returns: HttpServer.response [res]
+ *  [resp.headers]
+*    [res.headers] should be the default plain text Cohttp Header
+ *  [res.status]
+ *    [res.status] should be `OK iff the admin password was authenticated
+ *     and valid data was retrieved from the database
+ *    [res.status] should be `Unauthorized iff password did not authenticate
+ *    [res.status] should be `No_response otherwise
+ *  [res.res_body]
+ *    if [res.status] is `OK
+ *      [res.res_body] should be a text json representation
+ *      of the database data in the following form:
+ *   { student1:
+ *       {student1: score1, student2: score2, ... , studentn: scoren},
+ *    student2:
+ *       {student1: score1, student2: score2, ... , studentn: scoren},
+ *                                 ... ,
+ *    studentn:
+ *       {student1: score1, student2: score2, ... , studentn: scoren},                          
+ *   }
+ *    studenti is the netid of a student in the database. The netid of every
+ *     student in the class will be stored as a key in the outer json. The value
+ *     of studenti in the outer json is another json. The key:value pairs in
+ *     this inner json represent student:score pairs. For every student studentj
+ *     in the inner json, scorei is the score assigned to the pairing of
+ *     studenti and studentj. The score is based on how studenti swiped on
+ *     studentj and the compatability score between the two students.
+ *    if [res.status] is `Unauthorized
+ *      [res.res_body] should be "Incorrect password"
+ *    if [res.status] is `No_response
+ *      [res.res_body] should be "No valid response. Try again later" *)
+val swipes_get : HttpServer.request -> HttpServer.response
+
+(* [swipes_post req] is the endpoint that writes a students swipe results
+ * to the database
+ * [req.headers]
+ *   header [netid] that specifies the netid of the student swipes are being
+ *    written for
+ *   header [password] specifies the password associated with netid in the
+ *    database
+ * [req.params] - ignored
+ * [req.req_body] -
+ *   [req.req_body] should be a string json of the following form
+ *   {
+ *    netid:
+ *       {student1: score1, student2: score2, ... , studentn: scoren}
+ *   }
+ * where netID is the netid from above, studenti is the netid of another
+ * student in the database and scorei is the score assigned to the pairing of 
+ * student netID and student studenti.
+ * this score should be calculated based on how student netID swiped on student
+ * studenti and the compatability score between the two students.
+ * returns: HttpServer.response [res]
+ *  [resp.headers]
+ *    [resp.headers] should be the default plain text Cohttp Header
+ *  [res.status]
+ *    [res.status] should be `OK iff netid/password combination was
+ *    authenticated and a valid database update was performed
+ *    [res.status] should be `Unauthorized iff netid/password did not
+ *    authenticate
+ *    [res.status] should be `No_response otherwise
+ *  [res.res_body]
+ *    if [res.status] is `OK
+ *      [res.resp_body] should be "Success"
+ *    if [res.status] is `Unauthorized
+ *      [res.res_body] should be "Incorrect netid or password"
+ *    if [res.status] is `No_response
+ *      [res.res_body] should be "No valid response. Try again later" *)
+val swipes_post : HttpServer.request -> HttpServer.response
+
+(* [matches_post req] is the endpoint that writes matches from the matching
+ * algorithm to the database
+ * [req.headers]
+ *   header [password] that specifies the admin password (only the admin can
+ *    write matches)
+ * [req.params] - ignored
+ * [req.req_body] -
+ *   [req.req_body] should be a string json of the following form
+ * {
+ *       netid_1 : netid_2,
+ *              ...
+ *    netid_n-1  : netid_n,
+ * }
+ * where each key:value pair in the json represents a match to be written into
+ * the database. 
+ * each key:value pair should only exist in one order; i.e. if the pair a:b is
+ * in the json, the pair b:a should not be in the json.
+ * returns: HttpServer.response [res]
+ *  [resp.headers]
+ *    [resp.headers] should be the default plain text Cohttp Header
+ *  [resp.status]
+ *    [resp.status] should be `OK iff the admin password was valid and the
+ *     matches were written
+ *    [resp.status] should be `Unauthorized if admin password did not validate
+ *    [res.status] should be `No_response otherwise
+ *  [resp.res_body]
+ *    if [res.status] is `OK
+ *      [res.resp_body] should be "Success"
+ *    if [res.status] is `Unauthorized
+ *       [res.res_body] should be "Incorrect password"
+ *    if [res.status] is `No_response
+ *      [res.res_body] should be "No valid response. Try again later"
+ * side effect: updates the database *)
+val matches_post : HttpServer.request -> HttpServer.response
+
 (* [student_get req] is the callback that handles all student-level GET requests
  * student-level GET request can retrieve information about a specified student.
  * requires:

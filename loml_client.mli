@@ -29,6 +29,34 @@ val period_get : string -> string -> Code.status_code*string
  * side effect: makes a POST request to the period api endpoint *)
 val period_post : string -> string -> Code.status_code*string
 
+(* [matches_post password reqBody] returns a tuple containing the response
+ * status and response body received after a POST request to the match api
+ * endpoint.
+ * requires:
+ * [password] is the admin password
+ * [reqBody] is a string json containing the matches for the class
+ * [reqBody] must be formatted in accordance with the api documentation
+ * side effect: makes a POST request to the match api endpoint *)
+val matches_post : string -> string -> Code.status_code*string
+
+(* [swipes_get password] returns a tuple containing the response status
+ * and response body received after a GET request to the swipes api endpoint.
+ * requires:
+ * [password] is the admin password
+ * side effect: makes a GET request to the swipes api endpoint *)
+val swipes_get : string -> Code.status_code*string
+
+(* [swipes_post netID password reqBody] returns a tuple containing the response
+ * status and response body received after a POST request to the swipes api
+ * endpoint.
+ * requires:
+ * [netID] is a valid netid of a student in the database
+ * [password] is the password associated with the student whose netid is netID
+ * [reqBody] is a string json containing information on the students swipes
+ * [reqBody] must be formatted in accordance with the api documentation
+ * side effect: makes a POST request to the swipes api endpoint *)
+val swipes_post : string -> string -> string -> Code.status_code*string
+
 (* [student_get netID password scope] returns a tuple containing the response
  * status
  * and response body received after a GET request to the student api endpoint.
