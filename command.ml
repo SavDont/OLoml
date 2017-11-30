@@ -1,18 +1,20 @@
 type swipeDirection = Left | Right
 type confirm = Yes | No
-type credentials =
-  {
-    netid : string;
-    password : string
-  }
+type loc =
+  | SwipePage
+  | MatchPage
+  | MainPage
+  | ProfilePage
 
 type command =
   | Swipe of swipeDirection
   | Quit
-  | Login of credentials
   | Confirm of confirm
   | Save
-  | Unknown
+  | Goto of loc
+  | Update
+  | Field of int
+  | Unknown of string
 
 let parse_command txt =
   let txt_lower = String.lowercase_ascii txt in
@@ -22,4 +24,14 @@ let parse_command txt =
   else if txt_lower = "yes" then Confirm Yes
   else if txt_lower = "no" then Confirm No
   else if txt_lower = "save" then Save
-  else Unknown
+  else if txt_lower = "profile" then Goto ProfilePage
+  else if txt_lower = "swipe" then Goto SwipePage
+  else if txt_lower = "match" then Goto MatchPage
+  else if txt_lower = "back" then Goto MainPage
+  else if txt_lower = "update" then Update
+  else if txt_lower = "0" then Field 0
+  else if txt_lower = "1" then Field 1
+  else if txt_lower = "2" then Field 2
+  else if txt_lower = "3" then Field 3
+  else if txt_lower = "4" then Field 4
+  else Unknown txt_lower

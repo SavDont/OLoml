@@ -1,17 +1,20 @@
 type swipeDirection = Left | Right
 type confirm = Yes | No
-type credentials =
-  {
-    netid : string;
-    password : string
-  }
+
+type loc =
+  | SwipePage
+  | MatchPage
+  | MainPage
+  | ProfilePage
 
 type command =
   | Swipe of swipeDirection
   | Quit
-  | Login of credentials
   | Confirm of confirm
   | Save
-  | Unknown
+  | Goto of loc
+  | Update
+  | Field of int
+  | Unknown of string
 
 val parse_command : string -> command
