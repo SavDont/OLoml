@@ -1,0 +1,24 @@
+ERRYBODY: GET RID OF ANYTHING RELATED TO SKILLS IN THE STUDENT
+
+In DB: (Myra)
+-Add a function that returns all the dates in the period table
+-Make sure all date stuff is the right type
+-Make sure following fields are right type: schedule is a bool list, courses is
+an int list, skills is a string list
+-Adding db stuff to makefile
+
+In API: (Aayush)
+-Check period: compare the current date to the ones inside the period table
+that's returned by database
+
+Sam:
+
+In student:
+
+In main:
+
+
+
+Sav:
+Make sure that the dates entered in period are 1) later than the current date
+2) the periods are in the correct order.
