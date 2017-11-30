@@ -16,6 +16,7 @@ type command =
   | Update
   | Field of int
   | Reset
+  | Matchify
   | Unknown of string
 
 val parse_command : string -> command

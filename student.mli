@@ -39,30 +39,12 @@ type location =
  *   false means they are not. *)
 type schedule = bool list
 
-type skill_type =
-  | Java
-  | Python
-  | C
-  | Ruby
-  | Javascript
-  | SQL
-  | OCaml
-
-type skills =
-  {
-    excellent : skill_type list;
-    great : skill_type list;
-    good : skill_type list;
-    some_exposure : skill_type list
-  }
-
 type student = {
   name : string;
   netid : string;
   year : classYear;
   schedule : schedule;
   courses_taken : int list;
-  skills : skills;
   hours_to_spend : int;
   location : location;
   profile_text : string;
@@ -71,7 +53,6 @@ type student = {
 type updateData =
   | Schedule of schedule
   | Courses of int list
-  | Skill of skills
   | Hours of int
   | Location of location
   | Text of string
@@ -134,8 +115,3 @@ val hour_score : student -> student -> float
  * two students' living locations are.
  * Requires: s1 and s2 cannot be the same student *)
 val loc_score : student -> student -> float
-
-(* [skill_score s1 s2] gives a float score representing how compatible
- * two students' skill sets are.
- * Requires: s1 and s2 cannot be the same student *)
-val skill_score : student -> student -> float

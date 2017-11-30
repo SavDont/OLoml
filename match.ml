@@ -1,5 +1,5 @@
 open Loml_client
-open YOjson.Basic
+open Yojson.Basic
 
 type swipe_results_class = (string * string * int) list
 
@@ -76,16 +76,16 @@ let rec resolve_duplicates swResults = match swResults with
  * returns: string list*)
 let rec get_unique_ids_sw swLst acc = match swLst with
   | (n1, n2, _)::t -> if not (List.mem n1 acc) && not (List.mem n2 acc)
-    then get_unique_ids t (n1::n2::acc)
+    then get_unique_ids_sw t (n1::n2::acc)
     else if not (List.mem n1 acc) && List.mem n2 acc
-    then get_unique_ids t (n1::acc)
+    then get_unique_ids_sw t (n1::acc)
     else if List.mem n1 acc && not (List.mem n2 acc)
-    then get_unique_ids t (n2::acc)
-    else get_unique_ids t acc
+    then get_unique_ids_sw t (n2::acc)
+    else get_unique_ids_sw t acc
   | [] -> acc
 
 let gen_class_results pwd =
-  let swReq = Loml_client.admin_get pwd "swipe_all" in
+  let swReq = Loml_client.swipes_get pwd in
   if fst swReq = `OK
   then
     let lst = swReq |> snd |> from_string |> get_assoc_list in
@@ -117,7 +117,8 @@ let rec list_rem lst n = match lst with
  * [unm]
  * Returns: string list*)
 let rec find_unmatched  mList unm = match mList with
-  | (n1, n2)::t -> find_unmatched t (list_rem (list_rem t n1) n2)
+  | (n1, n2)::t -> let firstUnm = list_rem unm n1 in
+    find_unmatched t (list_rem firstUnm n2)
   | [] -> unm
 
 (* [get_matches lst] returns a variable of type matching which represents
@@ -129,13 +130,31 @@ let rec get_matches lst = match lst with
                               (get_matches(remove_netIDs t netID1 netID2))
   | [] -> []
 
-let matchify r =
+(* [duplicate_tuples lst] returns a list of tuples where for every element
+ * (n1, n2) in the list, (n2, n1) is also added to the list
+ * Requires: for every tuple in the list the two tuples are not equal to one
+ * another
+ * Returns: tuple list*)
+let rec duplicate_tuples lst = match lst with
+  | (n1, n2)::t -> (n1, n2)::(n2, n1)::(duplicate_tuples t)
+  | [] -> []
+
+let matchify r pwd =
   let unmatchedInit = get_unique_ids_sw r [] in
   let orderedSw = List.rev (List.sort
                               (fun (_,_,i1) (_,_,i2) -> if i1 > i2 then 1
                               else if i1 = i2 then 0
                               else -1) r) in
-  let matches  = get_matches orderedSw in
+  let matches  = orderedSw |> get_matches |> duplicate_tuples in
   let unmatched = find_unmatched matches unmatchedInit in
   let leftovers = List.map (fun s -> (s, "UNMATCHED")) unmatched in
-  matches @ leftovers
+  let all_matches = matches @ leftovers in
+  let rec jsonify lst acc = match lst with
+    | (n1, n2)::[] -> acc ^ "\"" ^ n1 ^ "\":\"" ^ n2 ^ "\""
+    | (n1, n2)::t -> jsonify t (acc ^ "\"" ^ n1 ^ "\":\"" ^ n2 ^ "\",")
+    | [] -> acc in
+  let jStr = (jsonify all_matches "{") ^ "}" in
+  let mtchReq = Loml_client.matches_post pwd jStr in
+  if fst mtchReq = `OK
+  then true
+  else false
