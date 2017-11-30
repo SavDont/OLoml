@@ -11,6 +11,8 @@ val gen_class_results : string -> swipe_results_class
 
 (* [matchify r] is a final matching of all students in a class
  * based on r.
- * - The specifics behind this algorithm are tbd
- * - Handling unmatched students tbd *)
+ * - algorithm will first order the pairs in [r] from highest compatibility
+ *   to lowest compatibility score. It will then pair individuals in the order
+ *   from highest compatibility score to lowest. Any unmatched students will
+ *   be matched with "UNMATCHED"*)
 val matchify : swipe_results_class -> matching
