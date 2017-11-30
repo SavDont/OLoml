@@ -1,10 +1,11 @@
-(* [val check_cred_query dbh tbl creds] gives the results of performing a query
+(* [val check_cred_query dbh tbl netid pwd] gives results of performing a query
  * on the table [tbl] inside the database (represented by [dbh], the value
  * returned by pgocaml's connect function) that gets the corresponding password
- * for a user [creds] through the credentials table in the database.
+ * for a user [creds] through the credentials table in the database and
+ * comparing it to the password that the user enters [pwd]
  * requires: the table must exist inside the database and must contain
  * columns "NetId" and "Password"*)
-val check_cred_query : 'a -> string -> string -> string
+val check_cred_query : 'a -> string -> string -> string -> string
 
 (* [val check_period_query dbh tbl date] gives the result of performing a query
  * on the table [tbl] inside the database (represented by [dbh], the value
@@ -18,7 +19,7 @@ val check_period_query : 'a -> string -> string -> string
 * columns are not null. returns false otherwise.
 * Requires: the table must exist inside the database and must contain columns
 * "Update", "Swipe", and "Match" *)
-val check_period_set : string -> string -> bool
+val check_period_set : 'a -> string -> bool
 
 (* [set_period_query dbh tbl periods] returns unit. If check_period_set
  * returns true then this function queries the database (dbh) and updates
@@ -29,18 +30,18 @@ val check_period_set : string -> string -> bool
  * requires dates to be represented as integers of form YYYMMDD where for
  * example, November 29th, 2017 would be represented by 20171129
  * Requires: periods must be a valid representation of a json *)
-val set_period_query : string -> string -> string -> unit
+val set_period_query : 'a -> string -> string -> unit
 
 (* [get_student_query dbh tbl netid] returns a string representation of the
  * json produced by selecting all columns from the student table for a specifc
  * netID. requires that the netID exist in the database*)
-val get_student_query : string -> string -> string -> string
+val get_student_query : 'a -> string -> string -> string
 
 (* [get_stu_match_query dbh tbl1 tbl2 netid] returns a string representation of
  * json produced by selecting all columns from the student table (tbl2) for the
  * match found in the match table (tbl1) for the netid specified.
  * Requires: table exist inside the database and netID exists in the table*)
-val get_stu_match_query : string -> string -> string -> string
+val get_stu_match_query : 'a -> string -> string -> string
 
 (* [change_stu_query dbh tbl net info] returns unit. This function updates the
  * table [tbl] in the database [dbh] that holds all the information about
@@ -49,7 +50,7 @@ val get_stu_match_query : string -> string -> string -> string
  * columns will be ignored.
  * Requires: the table must exist inside the database and the student must
  * exist in the table. *)
-val change_stu_query : string -> string -> string -> string -> unit
+val change_stu_query : 'a -> string -> string -> string -> unit
 
 (* [admin_change_query dbh tbl info] returns unit. This function updates the
  * table (tbl) in the database (dbh) based on the information provided by the
@@ -59,4 +60,4 @@ val change_stu_query : string -> string -> string -> string -> unit
  * row if the netid is in the table already.
  * Requires: the json must only contain fields "name", "netid" and "year" and
  * all values must be non-null*)
-val admin_change_query : string -> string -> string
+val admin_change_query : 'a -> string -> string

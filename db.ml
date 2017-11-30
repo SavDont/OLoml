@@ -3,8 +3,11 @@ open Camlp4
 open Sql
 open Yojson.Basic
 
-let check_cred_query dbh tbl creds =
-  PGSQL(dbh) "SELECT Password FROM $tbl WHERE Netid = $creds"
+let check_cred_query dbh tbl netid pwd =
+  begin match (PGSQL(dbh) "SELECT Password FROM $tbl WHERE Netid = $netid") with
+  | i -> if i = pwd then true else false
+  | _ -> false
+  end
 
 let check_period_query dbh tbl date =
   failwith "Unimplemented"
