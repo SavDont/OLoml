@@ -14,5 +14,6 @@ val gen_class_results : string -> swipe_results_class
  * - algorithm will first order the pairs in [r] from highest compatibility
  *   to lowest compatibility score. It will then pair individuals in the order
  *   from highest compatibility score to lowest. Any unmatched students will
- *   be matched with "UNMATCHED"*)
+ *   be matched with "UNMATCHED"
+ * requires: [r] must contain no duplicate netID pairs*)
 val matchify : swipe_results_class -> matching

@@ -14,6 +14,7 @@ let get_assoc_list jsn = match jsn with
 (* [create_swipes netID lst] takes a tuple list of type string * `Int i and
  * and a [netID] and creates a swipe_results_class tuple with the netID
  * and each tuple in the list [lst]
+ * Requires: lst's second value in the tuple must be of the form `Int i
  * Returns: swipe_results_class*)
 let rec create_swipes netID lst = match lst with
   | (str, `Int i)::t -> if compare netID str = -1
