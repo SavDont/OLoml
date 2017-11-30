@@ -15,6 +15,7 @@ type command =
   | Goto of loc
   | Update
   | Field of int
+  | Reset
   | Unknown of string
 
 val parse_command : string -> command

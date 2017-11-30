@@ -14,6 +14,7 @@ type command =
   | Goto of loc
   | Update
   | Field of int
+  | Reset
   | Unknown of string
 
 let parse_command txt =
@@ -34,4 +35,5 @@ let parse_command txt =
   else if txt_lower = "2" then Field 2
   else if txt_lower = "3" then Field 3
   else if txt_lower = "4" then Field 4
+  else if txt_lower = "reset" then Reset
   else Unknown txt_lower
