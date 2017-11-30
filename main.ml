@@ -6,6 +6,7 @@ open StudentPool
 open Command
 open Professor
 open Loml_client
+open Match
 
 exception QuitREPL
 
@@ -21,11 +22,12 @@ let check_creds net pwd =
   print_string("Password (case-sensitive): ");
   let pwd = read_line () in
   print_newline();
-  match check_creds net pwd with
+  (*check_creds net pwd*)
+  match true with
   | true ->
     print_endline("Success. Hello "^net);
     begin match net with
-      | "admin" -> failwith "unimplemented"
+      | "admin" -> prof_main_outer net pwd
       | _ -> student_main_outer net pwd
     end
   | _  ->
@@ -35,17 +37,32 @@ let check_creds net pwd =
 and
 
   prof_main_outer net pwd =
-  match period_get net pwd with
+  (*period_get net pwd*)
+  match (`OK,"swipe") with
   | (`OK,str) ->
     begin
       match str with
       | "null" -> failwith "need to set periods, upload students, remove"
+      | "match" ->
+        print_endline ("\nIt's time to generate matches. Enter 'matchify' to run the matching algorithm and store matches. Enter 'reset' to reset class, or 'quit' to quit'.");
       | _ ->
         print_endline ("\nYour class is already running. Your only option is to reset. Enter 'reset' to reset, or 'quit' to quit.");
         reset_outer net pwd
     end
   | _ ->
     print_endline("\nError: Terminating program.");
+
+and
+
+  prof_match net pwd =
+  match parse_command (read_line ()) with
+  | Matchify -> failwith "unimplemented"
+  | Quit -> quit_check_outer net pwd prof_main_outer
+  | Reset ->
+    print_endline ("\nAre you sure you want to reset? Enter 'yes' or 'no'.");
+    reset_inner net pwd
+  | _ ->
+    print_endline ("\nUnrecognized command. Enter 'matchify', 'reset', or 'quit'.");
 
 and
 
@@ -57,12 +74,13 @@ and
     reset_inner net pwd
   | Quit -> quit_check_outer net pwd prof_main_outer
   | _ ->
-    print_endline ("Unrecognized command. Enter 'reset' or 'quit'.");
+    print_endline ("\nUnrecognized command. Enter 'reset' or 'quit'.");
     reset_outer net pwd
 
 and
 
   reset_inner net pwd =
+  print_string("\n> ");
   match parse_command (read_line ()) with
   | Confirm Yes ->
     begin
@@ -70,14 +88,14 @@ and
       | true ->
         print_endline ("\nClass reset. Re-start program to continue.")
       | _ ->
-        print_endline ("Error. Try again.");
+        print_endline ("\nError. Try again.");
         prof_main_outer net pwd
     end
   | Confirm No ->
     print_endline ("\nClass not reset.");
     prof_main_outer net pwd
   | _ ->
-    print_endline ("Unrecognized command. Enter 'yes' or 'no'.");
+    print_endline ("\nUnrecognized command. Enter 'yes' or 'no'.");
     reset_inner net pwd
 
 and
@@ -175,7 +193,7 @@ and
 and
 
   update_loop net pwd =
-  print_endline ("\nWhat would you like to update? Enter '0' for location, '1' for classes taken, '2' for schedule, '3' for skills, or '4' for hours willing to spend. Enter 'quit' to quit. ");
+  print_endline ("\nWhat would you like to update? Enter '0' for location, '1' for classes taken, '2' for schedule, or '3' for hours willing to spend. Enter 'quit' to quit. ");
   print_string ("\n> ");
   match parse_command (read_line ()) with
   | Field 0 -> update_loc net pwd
@@ -190,8 +208,7 @@ and
                     "sunday mornings";"sunday afternoons";"sunday evenings"] in
     print_endline ("Answer 'yes' or 'no' to the following questions to build your schedule. You cannot quit until you've answered all of them:\n");
     update_sched net pwd time_str []
-  | Field 3 -> failwith "unimplemented"
-  | Field 4 -> update_hours net pwd
+  | Field 3 -> update_hours net pwd
   | Quit -> quit_check_outer net pwd update_loop
   | _ ->
     print_endline ("\nUnrecognized command. Enter 'quit' or the number of field you want to update.");
@@ -312,11 +329,6 @@ and
   | _ ->
     print_endline ("\nUnrecognized command. Enter 'yes' or 'no'.");
     quit_check_inner net pwd r_func
-
-and
-
-  update_skills net pwd =
-  failwith "unimplemented"
 
 and
 

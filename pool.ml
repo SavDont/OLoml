@@ -55,7 +55,7 @@ module MakePool (T : TupleComparable) : Pool
     let tuple_lst = List.map (T.tuple_gen v) v_lst in
     let tuple_lst_srt = List.sort (T.tuple_comparison) tuple_lst in
     (* Remove possibility of an item swiping on itself *)
-    List.filter (fun (rnk,it) -> v <> it) tuple_lst_srt 
+    List.filter (fun (rnk,it) -> v <> it) tuple_lst_srt
     (* How many do we want them swiping through? *)
     (* let max_len = (List.length tuple_lst_rem) in
     let rec cut_lst lst len final_lst =
@@ -79,12 +79,11 @@ module StudentScores : TupleComparable
     else 0
 
   let tuple_gen s1 s2 =
-    let sched_compat = 0.25 *. sched_score s1 s2  in
-    let course_compat = 0.25 *. course_score s1 s2 in
-    let hours_compat = 0.20 *. hour_score s1 s2 in
-    let loc_compat = 0.10 *. loc_score s1 s2 in
-    let skill_compat = 0.20 *. skill_score s1 s2 in
-    (sched_compat+.course_compat+.hours_compat+.loc_compat+.skill_compat, s2)
+    let sched_compat = 0.30 *. sched_score s1 s2  in
+    let course_compat = 0.30 *. course_score s1 s2 in
+    let hours_compat = 0.25 *. hour_score s1 s2 in
+    let loc_compat = 0.15 *. loc_score s1 s2 in
+    (sched_compat+.course_compat+.hours_compat+.loc_compat, s2)
 
   (* useful for code reuse in swiping *)
   let opt_key_to_string k_opt =
