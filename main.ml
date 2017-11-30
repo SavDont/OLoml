@@ -16,14 +16,15 @@ let check_creds net pwd =
   | _ -> false
 
   let rec get_authed () =
-  print_string("\nNetid (all lowercase, no spaces): ");
-  let net = read_line () in
-  print_newline();
+  print_string("\nNetid: ");
+  let net = (read_line ()) |> String.trim |> String.lowercase_ascii in
+  if net = "quit" then raise QuitREPL;
+  print_newline ();
   print_string("Password (case-sensitive): ");
   let pwd = read_line () in
   print_newline();
-  (*check_creds net pwd*)
-  match true with
+  (**)
+  match check_creds net pwd with
   | true ->
     print_endline("Success. Hello "^net);
     begin match net with
@@ -31,20 +32,21 @@ let check_creds net pwd =
       | _ -> student_main_outer net pwd
     end
   | _  ->
-    print_endline ("\nIncorrect Credentials. Try again.");
+    print_endline ("\nIncorrect Credentials. Try again, or 'quit'.");
     get_authed ();
 
 and
 
   prof_main_outer net pwd =
-  (*period_get net pwd*)
-  match (`OK,"swipe") with
+  match period_get net pwd with
   | (`OK,str) ->
     begin
       match str with
       | "null" -> failwith "need to set periods, upload students, remove"
+      | "update" -> failwith "need to upload students, remove"
       | "match" ->
         print_endline ("\nIt's time to generate matches. Enter 'matchify' to run the matching algorithm and store matches. Enter 'reset' to reset class, or 'quit' to quit'.");
+        prof_match net pwd
       | _ ->
         print_endline ("\nYour class is already running. Your only option is to reset. Enter 'reset' to reset, or 'quit' to quit.");
         reset_outer net pwd
@@ -110,6 +112,7 @@ and
         print_endline ("\nenter 'swipe' to swipe, 'profile' to view your profile, or 'quit' to quit");
         swipe_period net pwd
       | "match" ->
+        (* TODO: handling if prof hasn't run matchify algorithm yet *)
         print_endline ("\nThe system is done matching partners.\n");
         print_endline ("\nHere's your match:\n\n");
         match_period net pwd
@@ -138,6 +141,7 @@ and
   print_string ("> ");
   match parse_command (read_line ()) with
   | Goto SwipePage ->
+    (* TODO: this takes admin password, not student *)
     let students = get_all_students pwd in
     begin
       match get_student net pwd with
@@ -158,7 +162,7 @@ and
 and
 
   update_period net pwd =
-  print_string ("> ");
+  print_string ("\n> ");
   match parse_command (read_line ()) with
   | Goto ProfilePage -> outer_profile_loop net pwd
   | Quit -> quit_check_outer net pwd student_main_outer
@@ -247,7 +251,7 @@ and
     print_endline ("\nError in finding profile. Please try again.");
     outer_profile_loop net pwd
   | Some s ->
-    print_endline ("\nEnter the 4-digit class number that you want to add or remove, or 'quit' to quit. ");
+    print_endline ("\nEnter the 4-digit CS class number that you want to add or remove, or 'quit' to quit. ");
     print_string ("\n> ");
     begin
       match parse_command (read_line ()) with
@@ -357,15 +361,15 @@ and
 
 and
 
-  inner_swipe_loop pl net pwd s_results s =
+  inner_swipe_loop pl net pwd s_results compat =
   print_string("\n> ");
   match parse_command (read_line ()) with
   | Swipe Left ->
-    let new_results = SwipeStudentPool.swipe s_results (snd s) (Some(-1.0)) in
+    let new_results = SwipeStudentPool.swipe s_results (snd compat) (Some(-1.0*.(fst compat))) in
     let new_pool = StudentPool.pop pl in
     outer_swipe_loop new_pool net pwd new_results
   | Swipe Right ->
-    let new_results = SwipeStudentPool.swipe s_results (snd s) (Some(fst s)) in
+    let new_results = SwipeStudentPool.swipe s_results (snd compat) (Some(fst compat)) in
     let new_pool = StudentPool.pop pl in
     outer_swipe_loop new_pool net pwd new_results
   | Quit ->
@@ -373,7 +377,7 @@ and
     quit_loop_swipe pl net pwd s_results
   | _ ->
     print_endline ("\nUnrecognized command. Please enter 'L', 'R', or 'quit'.");
-    inner_swipe_loop pl net pwd s_results s
+    inner_swipe_loop pl net pwd s_results compat
 
 and
 
@@ -397,7 +401,7 @@ and
 
 let main () =
   print_endline("\nWelcome to OLoml!  Let's find you the love of your CS life. AKA your only life.");
-  print_endline("\nEnter your credentials to get started:");
+  print_endline("\nEnter your credentials to get started, or 'quit' to quit:");
   try get_authed () with
   | QuitREPL -> print_endline ("Quitting")
   (* outer_swipe_loop test_student_pool "bb123" "yo" (SwipeStudentPool.init_swipes test_students) *)

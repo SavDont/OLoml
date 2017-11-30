@@ -146,9 +146,8 @@ let printable_student st =
 
 let get_student net pwd =
   match Loml_client.student_get net pwd "student" with
-  | (`No_response,str) -> None
   | (`OK,str) -> Some (parse_student str)
-  | _ -> failwith "impossible"
+  | _ -> None
 
 (* [course_lst_to_json lst] gives the yojson List format to lst, such that
  * it can be included in a yojson association list. *)
@@ -173,15 +172,13 @@ let update_profile net pwd fields =
   let fields_mapped =
     `Assoc(List.map field_to_json fields) |> Yojson.Basic.to_string in
   match Loml_client.student_post net pwd fields_mapped with
-  | (`No_response,str) -> false
   | (`OK,str) -> true
-  | _ -> failwith "impossible"
+  | _ -> false
 
 let get_match net pwd =
   match Loml_client.student_get net pwd "match" with
-  | (`No_response,str) -> None
   | (`OK,str) -> Some (parse_student str)
-  | _ -> failwith "impossible"
+  | _ -> None
 
 (* [student_to_json st] gives the yojson form of a student. *)
 let student_to_json st =
