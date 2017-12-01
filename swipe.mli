@@ -17,7 +17,7 @@ module type Swipe = sig
   val swipe : swipe_results -> swipe_item -> swipe_value option -> swipe_results
 
 (* [gen_swipe_results sr] gives the json representation of sr. *)
-  val gen_swipe_results : swipe_results -> Yojson.Basic.json
+  val gen_swipe_results : string -> swipe_results -> Yojson.Basic.json
 
 (* [init_swipes si_lst] generates swipe_results from a list of swipe_items,
  * such that each swipe_item is assigned a default swipe_value. *)

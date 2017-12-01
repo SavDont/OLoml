@@ -21,6 +21,7 @@ module type TupleComparable = sig
   val tuple_comparison : (rank * item) -> (rank * item) -> int
   val tuple_gen : item -> item -> (rank * item)
   val opt_key_to_string : rank option -> string
+  val get_id : item -> string
 end
 
 module MakePool (T : TupleComparable) : Pool
@@ -90,6 +91,9 @@ module StudentScores : TupleComparable
     match k_opt with
     | None -> "0.0"
     | Some v -> (string_of_float v)^"0"
+
+  let get_id st =
+    st.netid
 end
 
 module StudentPool = MakePool(StudentScores)

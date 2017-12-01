@@ -36,6 +36,14 @@ let set_period_query dbh periods =
         VALUES ($update_dt, $swipe_dt, $match_dt)"
   else ()
 
+let get_period_query dbh =
+  match PGSQL (dbh) "SELECT Update, Swipe, Match FROM $periods_tbl" with
+  |(jupdate, jmatch, jswipe) ->
+    let upd = ("update", jupdate) in
+    let mat = ("match", jmatch) in
+    let swi = ("swipe", jswipe) in
+  let jsonobj = `Assoc[upd;mat;swi] in Yojson.Basic.to_string jsonobj
+
 let get_student_query dbh netid =
   match PGSQL(dbh) "SELECT * FROM $stu_tbl WHERE Netid = $netid" with
   |(jnetid,jname,jyr,jsched,jcourses,jhrs,jprof,jloc) ->
