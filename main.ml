@@ -42,10 +42,11 @@ and
   | (`OK,str) ->
     begin
       match str with
-      | "null" -> failwith "need to set periods, upload students, remove"
+      | "null" -> print_endline ("\nNo period has been set yet. Enter 'period' to set the valid periods for the class. Enter 'reset' to reset class, or 'quit' to quit.");
+        prof_set_period net pwd
       | "update" -> failwith "need to upload students, remove"
       | "match" ->
-        print_endline ("\nIt's time to generate matches. Enter 'matchify' to run the matching algorithm and store matches. Enter 'reset' to reset class, or 'quit' to quit'.");
+        print_endline ("\nIt's time to generate matches. Enter 'matchify' to run the matching algorithm and store matches. Enter 'reset' to reset class, or 'quit' to quit.");
         prof_match net pwd
       | _ ->
         print_endline ("\nYour class is already running. Your only option is to reset. Enter 'reset' to reset, or 'quit' to quit.");
@@ -55,7 +56,32 @@ and
     print_endline("\nError: Terminating program.");
 
 and
-
+  prof_set_period net pwd =
+  match parse_command (read_line ()) with
+  | Period -> print_endline ("\nPlease type the start date of the update period in the form 'MM DD YYYY'");
+    let upDate = read_line () |> str_to_time in
+    print_endline ("\nPlease type the start date of the swipe period in the form 'MM DD YYYY'");
+    let swDate = read_line () |> str_to_time in
+    print_endline ("\nPlease type the start date of the match period in the form 'MM DD YYYY'");
+    let mtDate = read_line () |> str_to_time in
+    match (upDate, swDate, mtDate) with
+    | (Some d1, Some d2, Some d3) -> print_endline ("\nPlease type the json file directory to import students");
+      let dir = read_line () in
+      let pdSuccess = set_periods d1 d2 d3 pwd in
+      let impSuccess = import_students dir pwd in
+      match (pdSuccess, impSuccess) with
+      | (true, true) -> print_endline ("\n Class setup completed!");
+        prof_main_outer net pwd
+      | _ -> print_endline ("\nError");
+        prof_main_outer net pwd
+    | _ -> print_endline("\nUnrecognized date. Enter 'period', 'reset', or 'quit'.");
+      prof_set_period net pwd
+  | Quit -> quit_check_outer net pwd prof_main_outer
+  | Reset -> print_endline ("\nAre you sure you want to reset? Enter 'yes' or 'no'.");
+    reset_inner net pwd
+  | _ -> print_endline("\nUnrecognized command. Enter 'period', 'reset', or 'quit'.");
+    prof_set_period net pwd
+and
   prof_match net pwd =
   match parse_command (read_line ()) with
   | Matchify -> failwith "unimplemented"
@@ -65,7 +91,7 @@ and
     reset_inner net pwd
   | _ ->
     print_endline ("\nUnrecognized command. Enter 'matchify', 'reset', or 'quit'.");
-
+    prof_match net pwd
 and
 
   reset_outer net pwd =
