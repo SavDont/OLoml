@@ -86,6 +86,10 @@ let rec printable_lst = function
   | h::m::t -> h^", "^(printable_lst (m::t))
   | h::t -> h
 
+let listify str =
+  if str = "" then []
+  else String.split_on_char ',' str |> List.map String.trim
+
 (* [sched_to_str sched acc pos] gives the string representation of
  * a boolean list which represents a schedule.
  * Requires: sched is a valid schedule list.  That is, it is of length
@@ -119,14 +123,14 @@ let ext_str jsn_str =
 
 let parse_student st_str =
   let jsn = from_string st_str in
-  let courses = jsn |> Util.member "courses_taken" |> Util.to_list in
-  let sched = jsn |> Util.member "schedule" |> Util.to_list in
+  let courses = jsn |> Util.member "courses_taken" |> ext_str in
+  let sched = jsn |> Util.member "schedule" |> ext_str in
   {
     name = jsn |> Util.member "name" |> ext_str;
     netid = jsn |> Util.member "netid" |> ext_str;
     year = jsn |> Util.member "year" |> ext_str |> parse_yr;
-    schedule = sched |> List.map Util.to_bool;
-    courses_taken = courses |> List.map Util.to_int;
+    schedule = sched |> listify |> List.map bool_of_string;
+    courses_taken = courses |> listify |> List.map int_of_string;
     hours_to_spend = jsn |> Util.member "hours_to_spend" |> Util.to_int;
     profile_text = jsn |> Util.member "profile_text" |> ext_str;
     location = jsn |> Util.member "location" |> ext_str |> parse_loc
@@ -149,25 +153,6 @@ let get_student net pwd =
   | (`OK,str) -> Some (parse_student str)
   | _ -> None
 
-(* [course_lst_to_json lst] gives the yojson List format to lst, such that
- * it can be included in a yojson association list. *)
-let course_lst_to_json c_lst =
-  `List ((List.map (fun i -> `Int i)) c_lst)
-
-(* [sched_lst_to_json lst] gives the yojson List format to lst, such that
- * it can be included in a yojson association list. *)
-let sched_lst_to_json s_lst =
-  `List ((List.map (fun b -> `Bool b)) s_lst)
-
-(* [field_to_json fld] gives the yojson association tuple corresponding
- * to the update field. *)
-let field_to_json = function
-  | Schedule s -> ("schedule",sched_lst_to_json s)
-  | Courses c -> ("courses_taken",course_lst_to_json c)
-  | Hours h -> ("hours_to_spend",`Int h)
-  | Location l -> ("location",`String (loc_to_str l))
-  | Text t ->  ("profile_text",`String t)
-
 let update_profile net pwd fields =
   let fields_mapped =
     `Assoc(List.map field_to_json fields) |> Yojson.Basic.to_string in
@@ -185,8 +170,8 @@ let student_to_json st =
   let name = ("name", `String st.name) in
   let netid = ("netid", `String st.netid) in
   let year = ("year", `String (year_to_str st.year)) in
-  let sched = ("schedule", sched_lst_to_json st.schedule) in
-  let courses = ("courses_taken", (course_lst_to_json st.courses_taken)) in
+  let sched = ("schedule", `String (st.schedule |> List.map string_of_bool |> printable_lst)) in
+  let courses = ("courses_taken", `String (st.courses_taken |> List.map string_of_int |> printable_lst)) in
   let hrs = ("hours_to_spend", `Int st.hours_to_spend) in
   let prof = ("profile_text", `String st.profile_text) in
   let loc = ("location", `String (loc_to_str st.location)) in
