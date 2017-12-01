@@ -36,7 +36,7 @@ val set_period_query : 'a -> string -> unit
  * by performing a query on the Periods table in the database that selects all
  * the start dates in the period table. The string representation of the json
  * has fields "update", "match" and "swipe" each with float options containing
- * the start dates of each of these periods 
+ * the start dates of each of these periods
 *)
 val get_period_query : 'a -> string
 
@@ -73,3 +73,6 @@ val admin_change_query : 'a -> string -> string
 (*[reset_class dbh] returns unit. This function updates the database [dbh] by
  *deleting all the information in all the tables in the database*)
 val reset_class : 'a -> unit
+
+(*[set_swipes dbh] This function updates the database [dbh] by *)
+val set_swipes : 'a -> string -> string -> unit
