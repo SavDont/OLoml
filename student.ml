@@ -153,6 +153,13 @@ let get_student net pwd =
   | (`OK,str) -> Some (parse_student str)
   | _ -> None
 
+let field_to_json = function
+  | Schedule s -> ("schedule", `String (s |> List.map string_of_bool |> printable_lst))
+  | Courses c -> ("courses_taken",`String (c |> List.map string_of_int |> printable_lst))
+  | Hours h -> ("hours_to_spend",`Int h)
+  | Location l -> ("location",`String (loc_to_str l))
+  | Text t ->  ("profile_text",`String t)
+
 let update_profile net pwd fields =
   let fields_mapped =
     `Assoc(List.map field_to_json fields) |> Yojson.Basic.to_string in
