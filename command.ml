@@ -16,6 +16,7 @@ type command =
   | Field of int
   | Reset
   | Matchify
+  | Period
   | Remove
   | Unknown of string
 
@@ -38,5 +39,9 @@ let parse_command txt =
   else if txt_lower = "3" then Field 3
   else if txt_lower = "reset" then Reset
   else if txt_lower = "matchify" then Matchify
+<<<<<<< HEAD
+  else if txt_lower = "period" then Period
+=======
   else if txt_lower = "remove" then Remove
+>>>>>>> 232f9230049e293c88020c38d0107a18b0961026
   else Unknown txt_lower

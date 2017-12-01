@@ -9,6 +9,10 @@ type timePeriodDate
  * imports in api.ml*)
 val import_students: string -> string -> bool
 
+(* [str_to_time dt] takes a string of the form "YYYY MM DD" and parses it into
+ * a timePeriodDate object
+ * If the string is not of the right form, it returns a*)
+val str_to_time: string -> timePeriodDate option
 (* [set_period upDate swDate mtDate pwd] takes three timePeriodDate variables
  * representing the dates of each of these actions and sets those dates within
  * the database. Returns [true] iff the function successfully validates the

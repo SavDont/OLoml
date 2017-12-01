@@ -32,6 +32,14 @@ let import_students dir pwd =
     then true
     else false
 
+let str_to_time str =
+  let strLst = String.split_on_char ' ' str in
+  if List.length strLst <> 3 then None
+  else
+    try let intLst = List.map int_of_string strLst in
+      Some (List.hd intLst, List.hd (List.tl intLst), List.hd (List.tl (List.tl intLst))) with
+    | Failure _ -> None
+
 (* [tm_record (m, d, y)] is the record formed using the timePeriodDate tuple
  * sent into the function. This converts the timePeriodDate to a type tm from
  * the Unix library.
