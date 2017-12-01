@@ -1,7 +1,8 @@
 open Oclient
 
 (* api specific parameters parameters *)
-let base_url = "http://192.168.1.9:8000/test/"
+let base_url = "http://en-cs-3110project2.coecis.cornell.edu:8000/test/"
+(*let base_url = "http://192.168.1.9:8000/test/"*)
 let credentials_endpoint = "credentials/"
 let period_endpoint = "period/"
 let student_endpoint = "student/"
