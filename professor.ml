@@ -49,16 +49,18 @@ let tm_record (m, d, y) = {
 }
 let set_periods upDate swDate mtDate pwd =
   if valid_date upDate && valid_date swDate && valid_date mtDate
-  then let uRecord = tm_record upDate in
-    let sRecord = tm_record swDate in
-    let mRecord = tm_record mtDate in
+  then let uTime = upDate |> tm_record |> mktime |> fst in
+    let sTime = swDate |> tm_record |> mktime |> fst in
+    let mTime = mtDate |> tm_record |> mktime |> fst in
     let strJson = "{
-                    \"update\" : " ^ (uRecord |> mktime |> fst |> string_of_float) ^ ",
-                    \"swipe\" : " ^ (sRecord |> mktime |> fst |> string_of_float) ^ ",
-                    \"match\" : " ^ (mRecord |> mktime |> fst |> string_of_float) ^
-                                                                "}" in
-    if fst (Loml_client.period_post pwd strJson) = `OK
-    then true
+                    \"update\" : " ^ (uTime |> string_of_float) ^ ",
+                    \"swipe\" : " ^ (sTime |> string_of_float) ^ ",
+                    \"match\" : " ^ (mTime |> string_of_float) ^
+                  "}" in
+    if sTime > time () && mTime > time () && uTime < sTime && sTime < mTime then
+      if fst (Loml_client.period_post pwd strJson) = `OK
+      then true
+      else false
     else false
   else false
 
