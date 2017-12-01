@@ -6,7 +6,7 @@ module type Swipe = sig
   type swipe_item
   type swipe_results
   val swipe : swipe_results -> swipe_item -> swipe_value option -> swipe_results
-  val gen_swipe_results : swipe_results -> json
+  val gen_swipe_results : string -> swipe_results -> json
   val init_swipes : swipe_item list -> swipe_results
   val write_swipes : string -> string -> swipe_results -> bool
 end
@@ -34,23 +34,27 @@ module MakeSwipe (T : TupleComparable) : Swipe
  * elements are separated by commas, and the list is surrounded by brackets. *)
   let rec lst_to_string = function
     | [] -> ""
-    | h::m::t -> (T.opt_key_to_string h)^","^(lst_to_string (m::t))
-    | h::t -> (T.opt_key_to_string h)^(lst_to_string (t))
+    | h::m::t ->
+      let id = T.get_id (fst h) in
+      let sc = T.opt_key_to_string (snd h) in
+      "{\""^(id)^"\""^":"^(sc)^"},"^(lst_to_string (m::t))
+    | h::t ->
+      let id = T.get_id (fst h)in
+      let sc = T.opt_key_to_string (snd h) in
+      "{\""^(id)^"\""^":"^(sc)^"}"^(lst_to_string (t))
 
-  let gen_swipe_results s_results =
-    let just_scores = List.map (fun (si,d) -> d) s_results in
-    let str_lst = "["^(lst_to_string just_scores)^"]" in
-    from_string str_lst
+  let gen_swipe_results net s_results =
+    let res_string = "["^(lst_to_string s_results)^"]" in
+    `Assoc[(net,`String res_string)]
 
   let init_swipes s_lst =
     List.map (fun s -> (s, None)) s_lst
 
   let write_swipes net pwd s_results =
-    let res_str = s_results |> gen_swipe_results |> to_string in
+    let res_str = s_results |> gen_swipe_results net |> to_string in
     match Loml_client.swipes_post net pwd res_str with
-    | (`No_response, str) -> false
     | (`OK, str) -> true
-    | _ -> failwith "impossible"
+    | _ -> false
 
 end
 
