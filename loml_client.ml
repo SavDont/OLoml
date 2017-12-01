@@ -1,18 +1,9 @@
 open Oclient
-
-(* api specific parameters parameters *)
-let base_url = "http://en-cs-3110project2.coecis.cornell.edu:8000/test/"
-(*let base_url = "http://192.168.1.9:8000/test/"*)
-let credentials_endpoint = "credentials/"
-let period_endpoint = "period/"
-let student_endpoint = "student/"
-let admin_endpoint = "admin/"
-let swipes_endpoint = "swipes/"
-let matches_endpoint = "matches/"
+open Loml_lib
 
 let test name =
   let headers = make_headers [] in
-  let uri = make_uri base_url "" in
+  let uri = make_uri base_url test_endpoint in
   let body = make_body name in
   post_req ?headers:(Some headers) ?body:(Some body) uri
 
