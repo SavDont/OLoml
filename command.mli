@@ -17,6 +17,7 @@ type command =
   | Field of int
   | Reset
   | Matchify
+  | Period
   | Remove
   | Unknown of string
 
