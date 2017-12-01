@@ -44,12 +44,14 @@ and
       match str with
       | "null" -> print_endline ("\nNo period has been set yet. Enter 'period' to set the valid periods for the class. Enter 'reset' to reset class, or 'quit' to quit.");
         prof_set_period net pwd
-      | "update" -> failwith "need to upload students, remove"
+      | "update" ->
+        print_endline ("\nStudents are currently updating profiles. Enter 'remove' to remove a student from the class, 'reset' to reset the entire class, or 'quit' to quit.");
+        failwith "need to upload students, remove"
       | "match" ->
         print_endline ("\nIt's time to generate matches. Enter 'matchify' to run the matching algorithm and store matches. Enter 'reset' to reset class, or 'quit' to quit.");
         prof_match net pwd
       | _ ->
-        print_endline ("\nYour class is already running. Your only option is to reset. Enter 'reset' to reset, or 'quit' to quit.");
+        print_endline ("\nYour class is currently running and matches cannot be generated until the match period you set. Your only option is to reset. Enter 'reset' to reset, or 'quit' to quit.");
         reset_outer net pwd
     end
   | _ ->
@@ -84,7 +86,17 @@ and
 and
   prof_match net pwd =
   match parse_command (read_line ()) with
-  | Matchify -> failwith "unimplemented"
+  | Matchify ->
+    print_endline ("\nRunning algorithm...this might take a bit.");
+    let s_results = gen_class_results pwd in
+    begin
+      match matchify s_results pwd with
+      | true ->
+        print_endline ("\nMatches generated and stored successfully. Returning to main page.");
+        prof_main_outer net pwd
+      | _ ->
+        failwith "add error message"
+    end
   | Quit -> quit_check_outer net pwd prof_main_outer
   | Reset ->
     print_endline ("\nAre you sure you want to reset? Enter 'yes' or 'no'.");

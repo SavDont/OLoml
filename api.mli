@@ -1,5 +1,6 @@
-(* test callback, will not be there in final version *)
-val test: HttpServer.request -> HttpServer.response
+(* test callbacks, will not be there in final version *)
+val test_post: HttpServer.request -> HttpServer.response
+val test_get: HttpServer.request -> HttpServer.response
 
 (* [check_credentials req] is the endpoint that determines whether a username
  * and password combination is valid
@@ -231,12 +232,22 @@ val matches_post : HttpServer.request -> HttpServer.response
  *    if [resp.status] is `OK
  *      [resp.res_body] should be a text json representation of the database
  *      data in the following form:
+ *      if header [scope] is "student":
  *      {netID:
  *        {k1 : v1, k2 : v2, ... kn : vn}
  *      }
  *      where netID is the netid from above, ki is a column in the database and
  *      vi is the value associated with that column for the student with a netid
  *      corresponding to netID
+ *      if header [scope] is "match":
+ *      {matchedStudent:
+ *        {k1 : v1, k2 : v2, ... kn : vn}
+ *      }
+ *      where matchedStudent is the netid of the student matched with student
+ *      netID, ki is a column in the database and vi is the value associated 
+ *      with that column for the student with a netid corresponding to
+ *      matchedStudent
+ *      
  *    if [res.status] is `Unauthorized
  *      [res.res_body] should be "Incorrect netid or password"
  *    if [res.status] is `No_response
