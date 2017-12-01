@@ -45,7 +45,7 @@ and
       | "null" -> failwith "need to set periods, upload students, remove"
       | "update" ->
         print_endline ("\nStudents are currently updating profiles. Enter 'remove' to remove a student from the class, 'reset' to reset the entire class, or 'quit' to quit.");
-        failwith "need to upload students, remove"
+        prof_update net pwd
       | "match" ->
         print_endline ("\nIt's time to generate matches. Enter 'matchify' to run the matching algorithm and store matches. Enter 'reset' to reset class, or 'quit' to quit'.");
         prof_match net pwd
@@ -55,6 +55,19 @@ and
     end
   | _ ->
     print_endline("\nError: Terminating program.");
+
+and
+
+  prof_update net pwd =
+  match parse_command (read_line ()) with
+  | Remove -> failwith "unimplemented"
+  | Quit -> quit_check_outer net pwd prof_main_outer
+  | Reset ->
+    print_endline ("\nAre you sure you want to reset? Enter 'yes' or 'no'.");
+    reset_inner net pwd
+  | _ ->
+    print_endline ("\nUnrecognized command. Enter 'remove','quit', or 'reset'");
+    prof_update net pwd
 
 and
 
@@ -77,6 +90,7 @@ and
     reset_inner net pwd
   | _ ->
     print_endline ("\nUnrecognized command. Enter 'matchify', 'reset', or 'quit'.");
+    prof_match net pwd
 
 and
 
