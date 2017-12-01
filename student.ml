@@ -25,30 +25,12 @@ type location =
  *   false means they are not. *)
 type schedule = bool list
 
-type skill_type =
-  | Java
-  | Python
-  | C
-  | Ruby
-  | Javascript
-  | SQL
-  | OCaml
-
-type skills =
-  {
-    excellent : skill_type list;
-    great : skill_type list;
-    good : skill_type list;
-    some_exposure : skill_type list
-  }
-
 type student = {
   name : string;
   netid : string;
   year : classYear;
   schedule : schedule;
   courses_taken : int list;
-  skills : skills;
   hours_to_spend : int;
   location : location;
   profile_text : string;
@@ -57,7 +39,6 @@ type student = {
 type updateData =
   | Schedule of schedule
   | Courses of int list
-  | Skill of skills
   | Hours of int
   | Location of location
   | Text of string
@@ -98,55 +79,12 @@ let parse_loc loc =
   else if loc = "West Campus" then West
   else Collegetown
 
-(* [skill_to_str sk] gives the string representation of the skill variant. *)
-let skill_to_str = function
-  | Java -> "Java"
-  | Python -> "Python"
-  | C -> "C"
-  | Ruby -> "Ruby"
-  | Javascript -> "Javascript"
-  | SQL -> "SQL"
-  | OCaml -> "OCaml"
-
-(* [skill_to_str sk] gives the variant representation of the skill string.
- * Requires: sk must be "Java", "Python", "C", "Ruby", "Javascript",
- * "SQL", or "OCaml"*)
-let parse_skill sk =
-  if sk = "Java" then Java
-  else if sk = "Python" then Python
-  else if sk = "C" then C
-  else if sk = "Ruby" then Ruby
-  else if sk = "Javascript" then Javascript
-  else if sk = "SQL" then SQL
-  else OCaml
-
-(* [skill_to_json sk] gives the json representation of a skill type,
- * such that it can be converted to a string using yojson and stored in
- * a database. *)
-let skill_to_json sk =
-  let map_func = List.map (fun s -> `String (skill_to_str s)) in
-  let ex = ("excellent", `List (map_func sk.excellent)) in
-  let gr = ("great", `List (map_func sk.great)) in
-  let go = ("good", `List (map_func sk.good)) in
-  let se = ("some_exposure",`List (map_func sk.some_exposure)) in
-  `Assoc[ex;gr;go;se]
-
 (* [printable_lst lst] gives the string representation of lst.
  * each element is separated by a comma. *)
 let rec printable_lst = function
   | [] -> ""
   | h::m::t -> h^", "^(printable_lst (m::t))
   | h::t -> h
-
-(* [printable_skill sk] gives the string representation of a skill type,
- * such that it can be printed in the command line *)
-let printable_skill sk =
-  let map_func = List.map skill_to_str in
-  let ex = "Excellent: "^(map_func sk.excellent |> printable_lst) in
-  let gr = "Great: "^(map_func sk.good |> printable_lst) in
-  let go = "Good: "^(map_func sk.great |> printable_lst) in
-  let se = "Some Exposure: "^(map_func sk.some_exposure |> printable_lst) in
-  ex^"\n"^gr^"\n"^go^"\n"^se
 
 (* [sched_to_str sched acc pos] gives the string representation of
  * a boolean list which represents a schedule.
@@ -183,22 +121,12 @@ let parse_student st_str =
   let jsn = from_string st_str in
   let courses = jsn |> Util.member "courses_taken" |> Util.to_list in
   let sched = jsn |> Util.member "schedule" |> Util.to_list in
-  let skills_jsn = jsn |> Util.member "skills" in
-  let parse_sk sk = sk |> Util.to_list |> List.map to_string |> List.map parse_skill in
-  let skills =
-  {
-    excellent = skills_jsn |> Util.member "excellent" |> parse_sk;
-    great = skills_jsn |> Util.member "great" |> parse_sk;
-    good = skills_jsn |> Util.member "good" |> parse_sk;
-    some_exposure = skills_jsn |> Util.member "some_exposure" |> parse_sk
-  } in
   {
     name = jsn |> Util.member "name" |> ext_str;
     netid = jsn |> Util.member "netid" |> ext_str;
     year = jsn |> Util.member "year" |> ext_str |> parse_yr;
     schedule = sched |> List.map Util.to_bool;
     courses_taken = courses |> List.map Util.to_int;
-    skills = skills;
     hours_to_spend = jsn |> Util.member "hours_to_spend" |> Util.to_int;
     profile_text = jsn |> Util.member "profile_text" |> ext_str;
     location = jsn |> Util.member "location" |> ext_str |> parse_loc
@@ -211,17 +139,15 @@ let printable_student st =
   let course_lst = List.map string_of_int st.courses_taken in
   let course_lst_cs = List.map (fun s -> "CS "^s) course_lst in
   let courses = "Has taken: "^(printable_lst course_lst_cs) in
-  let skills = "Skills:\n"^(printable_skill st.skills) in
   let hrs = "Willing to spend "^(string_of_int st.hours_to_spend)^" hours on this project" in
   let sched = "Available:\n"^(sched_to_str st.schedule "" 0) in
   let about = "About me: "^st.profile_text in
-  header^"\n\n"^yr^"\n\n"^loc^"\n\n"^courses^"\n\n"^skills^"\n\n"^sched^"\n"^hrs^"\n\n"^about
+  header^"\n\n"^yr^"\n\n"^loc^"\n\n"^courses^"\n\n"^sched^"\n"^hrs^"\n\n"^about
 
 let get_student net pwd =
   match Loml_client.student_get net pwd "student" with
-  | (`No_response,str) -> None
   | (`OK,str) -> Some (parse_student str)
-  | _ -> failwith "impossible"
+  | _ -> None
 
 (* [course_lst_to_json lst] gives the yojson List format to lst, such that
  * it can be included in a yojson association list. *)
@@ -238,7 +164,6 @@ let sched_lst_to_json s_lst =
 let field_to_json = function
   | Schedule s -> ("schedule",sched_lst_to_json s)
   | Courses c -> ("courses_taken",course_lst_to_json c)
-  | Skill sk -> ("skills",skill_to_json sk)
   | Hours h -> ("hours_to_spend",`Int h)
   | Location l -> ("location",`String (loc_to_str l))
   | Text t ->  ("profile_text",`String t)
@@ -247,15 +172,13 @@ let update_profile net pwd fields =
   let fields_mapped =
     `Assoc(List.map field_to_json fields) |> Yojson.Basic.to_string in
   match Loml_client.student_post net pwd fields_mapped with
-  | (`No_response,str) -> false
   | (`OK,str) -> true
-  | _ -> failwith "impossible"
+  | _ -> false
 
 let get_match net pwd =
   match Loml_client.student_get net pwd "match" with
-  | (`No_response,str) -> None
   | (`OK,str) -> Some (parse_student str)
-  | _ -> failwith "impossible"
+  | _ -> None
 
 (* [student_to_json st] gives the yojson form of a student. *)
 let student_to_json st =
@@ -264,11 +187,10 @@ let student_to_json st =
   let year = ("year", `String (year_to_str st.year)) in
   let sched = ("schedule", sched_lst_to_json st.schedule) in
   let courses = ("courses_taken", (course_lst_to_json st.courses_taken)) in
-  let skills = ("skills", (skill_to_json st.skills)) in
   let hrs = ("hours_to_spend", `Int st.hours_to_spend) in
   let prof = ("profile_text", `String st.profile_text) in
   let loc = ("location", `String (loc_to_str st.location)) in
-  `Assoc[name;netid;year;sched;courses;skills;hrs;prof;loc]
+  `Assoc[name;netid;year;sched;courses;hrs;prof;loc]
 
 (* Requires: s1 and s2 must have valid schedules of the same length
  * (21 entries) *)
@@ -298,7 +220,6 @@ let course_score {courses_taken = c1} {courses_taken = c2} =
   let pre_score = max 0.0 (common_course_count c1 c2 0.0) -. course_dev in
   pre_score /. 10.0 (* considering this a "perfect" score *)
 
-
 (* Function of deviation in hours willing to spend *)
 let hour_score {hours_to_spend = h1} {hours_to_spend = h2} =
   let hour_dev = abs (h1-h2) in
@@ -307,31 +228,6 @@ let hour_score {hours_to_spend = h1} {hours_to_spend = h2} =
   else if hour_dev < 20 then 0.5
   else if hour_dev < 30 then 0.25
   else 0.0
-
-(* [find_skill sk sk_lst] gives an integer representing the skill level
- * of a skill within sk_lst.  A skill that is "excellent" is ranked a 4.0,
- * while a skill that is not present in sk_lst is ranked 0.0. *)
-let find_skill sk sk_lst =
-  if List.mem sk sk_lst.excellent then 4.0
-  else if List.mem sk sk_lst.great then 3.0
-  else if List.mem sk sk_lst.good then 2.0
-  else if List.mem sk sk_lst.some_exposure then 1.0
-  else 0.0
-
-(* Function of how many skills you share, how skill level compares in skills
- * you share
- * if you share a skill and skill level is same, +4.  1 apart, +3, 2 apart + 2
- * 3 apart, +1.  *)
-let skill_score {skills = s1} {skills = s2} =
-  let rec iterate sk_lst1 sk_lst2 acc lev =
-    match sk_lst1 with
-    | [] -> acc
-    | h::t ->
-      let diff = abs_float (lev -. find_skill h sk_lst2) in
-      iterate t sk_lst2 (acc +. (4.0 -. diff)) lev in
-  let fst = iterate s1.excellent s2 0.0 4.0 +. iterate s1.great s2 0.0 3.0 in
-  let snd = iterate s1.good s2 0.0 2.0 +. iterate s1.some_exposure s2 0.0 1.0 in
-  (fst +. snd)/.14.0 (* full score assumes someone is good at every skill *)
 
 let loc_score {location = l1} {location = l2} =
   if l1 = l2 then 1.0 else 0.0

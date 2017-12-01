@@ -61,3 +61,5 @@ val change_stu_query : 'a -> string -> string -> string -> unit
  * Requires: the json must only contain fields "name", "netid" and "year" and
  * all values must be non-null*)
 val admin_change_query : 'a -> string -> string
+
+(*[delete_class dbh tbl ]*)
