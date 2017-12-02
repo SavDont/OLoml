@@ -21,11 +21,13 @@ type classYear =
   | Soph
   | Jun
   | Sen
+  | Empty
 
 type location =
   | North
   | West
   | Collegetown
+  | Empty
 
 (* Type representing a student's available time slots throughout a single week.
  * Each schedule must be of length exactly 21.  It is parsed as follows:

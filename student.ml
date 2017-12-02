@@ -7,11 +7,13 @@ type classYear =
   | Soph
   | Jun
   | Sen
+  | Empty
 
 type location =
   | North
   | West
   | Collegetown
+  | Empty
 
 (* Type representing a student's available time slots throughout a single week.
  * Each schedule must be of length exactly 21.  It is parsed as follows:
@@ -57,6 +59,7 @@ let year_to_str = function
   | Soph -> "Sophomore"
   | Jun -> "Junior"
   | Sen -> "Senior"
+  | Empty -> ""
 
 (* [parse_yr] gives the variant representation of the year string, yr.
  * Requires: yr must be "Freshman", "Sophomore", "Junior", or "Senior".*)
@@ -64,20 +67,23 @@ let parse_yr yr =
   if yr = "Freshman" then Fresh
   else if yr = "Sophomore" then Soph
   else if yr = "Junior" then Jun
-  else Sen
+  else if yr = "Senior" then Sen
+  else Empty
 
 (* [loc_to_str] gives the string representation of the location variant. *)
 let loc_to_str = function
   | North -> "North Campus"
   | West -> "West Campus"
   | Collegetown -> "Collegetown"
+  | Empty -> ""
 
 (* [parse_loc loc] gives the variant representation of the location string.
  * Requires: loc must be "North Campus", "West Campus", or "Collegetown"*)
 let parse_loc loc =
   if loc = "North Campus" then North
   else if loc = "West Campus" then West
-  else Collegetown
+  else if loc = "Collegetown" then Collegetown
+  else Empty
 
 (* [printable_lst lst] gives the string representation of lst.
  * each element is separated by a comma. *)
@@ -85,10 +91,6 @@ let rec printable_lst = function
   | [] -> ""
   | h::m::t -> h^", "^(printable_lst (m::t))
   | h::t -> h
-
-let listify str =
-  if str = "" then []
-  else String.split_on_char ',' str |> List.map String.trim
 
 (* [sched_to_str sched acc pos] gives the string representation of
  * a boolean list which represents a schedule.
@@ -118,20 +120,33 @@ let rec sched_to_str sched acc pos =
  * Requires: the double quotations must contain the entirety of the string
  * within [jsn_str], and they must exist. *)
 let ext_str jsn_str =
-  let str = to_string jsn_str in
-  String.sub str 1 (String.length str - 2)
+  match Util.to_string_option jsn_str with
+  | None -> ""
+  | Some s -> s
+
+let rem_double_quote s = String.sub s 1 (String.length s - 2)
+
+let ext_int jsn_int =
+  match Util.to_int_option jsn_int with
+  | None -> -1
+  | Some s -> s
+
+let ext_lst jsn_lst =
+  match Util.to_string_option jsn_lst with
+  | None -> "[]"
+  | Some s -> s
 
 let parse_student st_str =
   let jsn = from_string st_str in
-  let courses = jsn |> Util.member "courses_taken" |> ext_str in
-  let sched = jsn |> Util.member "schedule" |> ext_str in
+  let courses = jsn |> Util.member "courses_taken" |> ext_lst |> from_string in
+  let sched = jsn |> Util.member "schedule" |> ext_lst |> from_string in
   {
     name = jsn |> Util.member "name" |> ext_str;
     netid = jsn |> Util.member "netid" |> ext_str;
     year = jsn |> Util.member "year" |> ext_str |> parse_yr;
-    schedule = sched |> listify |> List.map bool_of_string;
-    courses_taken = courses |> listify |> List.map int_of_string;
-    hours_to_spend = jsn |> Util.member "hours_to_spend" |> Util.to_int;
+    schedule = sched |> Util.to_list |> List.map Util.to_bool;
+    courses_taken = courses |> Util.to_list |> List.map Util.to_int;
+    hours_to_spend = jsn |> Util.member "hours_to_spend" |> ext_int;
     profile_text = jsn |> Util.member "profile_text" |> ext_str;
     location = jsn |> Util.member "location" |> ext_str |> parse_loc
   }
@@ -172,13 +187,16 @@ let get_match net pwd =
   | (`OK,str) -> Some (parse_student str)
   | _ -> None
 
+let to_jsn_str lst map_func =
+  `List (List.map map_func lst) |> to_string
+
 (* [student_to_json st] gives the yojson form of a student. *)
 let student_to_json st =
   let name = ("name", `String st.name) in
   let netid = ("netid", `String st.netid) in
   let year = ("year", `String (year_to_str st.year)) in
-  let sched = ("schedule", `String (st.schedule |> List.map string_of_bool |> printable_lst)) in
-  let courses = ("courses_taken", `String (st.courses_taken |> List.map string_of_int |> printable_lst)) in
+  let sched = ("schedule", `String (to_jsn_str st.schedule (fun x -> `Bool x)))in
+  let courses = ("courses_taken", `String (to_jsn_str st.courses_taken (fun x -> `Int x))) in
   let hrs = ("hours_to_spend", `Int st.hours_to_spend) in
   let prof = ("profile_text", `String st.profile_text) in
   let loc = ("location", `String (loc_to_str st.location)) in
