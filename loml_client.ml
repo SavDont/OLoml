@@ -1,5 +1,5 @@
 open Oclient
-open Server_lib
+open Backend_lib
 
 let test name =
   let headers = make_headers [] in
@@ -19,7 +19,7 @@ let period_get username password =
   let uri = make_uri base_url period_endpoint in
   get_req ?headers:(Some headers) uri
 
-let period_post password reqBody = 
+let period_post password reqBody =
   let headers = make_headers [("password",password)] in
   let body = make_body reqBody in
   let uri = make_uri base_url period_endpoint in
@@ -31,14 +31,14 @@ let swipes_get password =
   let uri = make_uri base_url swipes_endpoint in
   get_req ?headers:(Some headers) uri
 
-let swipes_post netID password reqBody = 
+let swipes_post netID password reqBody =
   let headers = make_headers [("password",password)] in
   let body = make_body reqBody in
   let uri = make_uri base_url swipes_endpoint in
   post_req ?headers:(Some headers) ?body:(Some body) uri
 
 (* matches client *)
-let matches_post password reqBody = 
+let matches_post password reqBody =
   let headers = make_headers [("password",password)] in
   let body = make_body reqBody in
   let uri = make_uri base_url matches_endpoint in
@@ -46,7 +46,7 @@ let matches_post password reqBody =
 
 (* student clients *)
 let student_get netID password scope =
-  let headers = 
+  let headers =
     make_headers [("netid",netID); ("password",password); ("scope", scope)] in
   let uri = make_uri base_url student_endpoint in
   get_req ?headers:(Some headers) uri
@@ -75,4 +75,3 @@ let admin_delete password scope reqBody =
   let body = make_body reqBody in
   let uri = make_uri base_url admin_endpoint in
   delete_req ?headers:(Some headers) ?body:(Some body) uri
-

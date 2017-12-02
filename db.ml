@@ -1,6 +1,5 @@
-open Pgocaml
+open PGOCaml
 open Camlp4
-open Sql
 open Yojson.Basic
 
 (*Table names*)
@@ -11,7 +10,7 @@ let periods_tbl = "Periods"
 let dbh = PGOCaml.connect ()
 
 let check_cred_query netid pwd =
-  match (PGSQL(dbh) "SELECT Password FROM $creds_tbl WHERE Netid = $netid") with
+  match PGSQL(dbh) "SELECT Password FROM $creds_tbl WHERE Netid = $netid" with
   | i -> if i = pwd then true else false
   | _ -> false
 
