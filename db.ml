@@ -7,7 +7,7 @@ let stu_tbl = "students"
 let match_tbl = "matches"
 let creds_tbl = "credentials"
 let periods_tbl = "periods"
-let dbh = PGOCaml.connect (database = "loml")
+let dbh = PGOCaml.connect ~host:"localhost" ~port:"5432" ~dbname:"loml" ~user:"postgres"
 
 let check_cred_query netid pwd =
   match PGSQL(dbh) "SELECT Password FROM $creds_tbl WHERE Netid = $netid" with
