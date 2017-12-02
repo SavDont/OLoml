@@ -11,7 +11,7 @@ let matches_endpoint = "matches/"
 let test_endpoint = "test/"
 
 (* database parameters *)
-let stu_tbl = "Students"
-let match_tbl = "Matches"
-let creds_tbl = "Credentials"
-let periods_tbl = "Periods"
+let stu_tbl = "students"
+let match_tbl = "matches"
+let creds_tbl = "credentials"
+let periods_tbl = "periods"
