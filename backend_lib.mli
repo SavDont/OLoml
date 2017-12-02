@@ -14,4 +14,8 @@ val matches_endpoint : string
 val test_endpoint : string
 
 (* database specific parameters *)
+val stu_tbl : string 
+val match_tbl : string
+val creds_tbl : string
+val periods_tbl : string
 

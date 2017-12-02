@@ -22,7 +22,7 @@ server:
 	make && ./server.byte
 
 compile:
-	ocamlbuild -use-ocamlfind api.cmo httpServer.cmo loml_client.cmo loml_lib.cmo main.cmo oclient.cmo pool.cmo server.cmo student.cmo swipe.cmo professor.cmo command.cmo match.cmo
+	ocamlbuild -use-ocamlfind api.cmo backend_lib.cmo httpServer.cmo loml_client.cmo main.cmo oclient.cmo pool.cmo server.cmo student.cmo swipe.cmo professor.cmo command.cmo match.cmo
 
 play:
 	ocamlbuild -use-ocamlfind main.byte && ./main.byte

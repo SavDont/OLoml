@@ -1,5 +1,5 @@
 open Oclient
-open Loml_lib
+open Server_lib
 
 let test name =
   let headers = make_headers [] in

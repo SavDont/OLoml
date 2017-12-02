@@ -9,3 +9,9 @@ let matches_endpoint = "matches/"
 
 (* remove for prod *)
 let test_endpoint = "test/"
+
+(* database parameters *)
+let stu_tbl = "Students"
+let match_tbl = "Matches"
+let creds_tbl = "Credentials"
+let periods_tbl = "Periods"
