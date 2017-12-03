@@ -296,8 +296,6 @@ let reset_periods =
   let reset = P.create db ("TRUNCATE periods") in
   match P.execute_null reset [||] with |_ -> ()
 
-let reset_class =
-  reset_students; reset_swipes; reset_matches; reset_credentials; reset_periods;
 
 let rec delete_students_helper un nets =
   match nets with
@@ -310,6 +308,9 @@ let rec delete_students_helper un nets =
   |[] -> ()
 
 let delete_students students =
-  let jsn = from_string matches in
+  let jsn = from_string students in
   let netids = jsn |> Util.keys in (*string list of netids for first students*)
   delete_students_helper () netids
+
+let reset_class =
+  reset_students; reset_swipes; reset_matches; reset_credentials; reset_periods;
