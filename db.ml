@@ -1,24 +1,41 @@
-open PGOCaml
-open Camlp4
 open Yojson.Basic
+open Mysql
+module P = Mysql.Prepared
+open Printf
 
-(*Table names*)
+let db = quick_connect ~host:("localhost") ~port:(3306) ~database:("test") ~user:("root") ~password:("admin123") ()
+
+(*Table names
 let stu_tbl = "students"
 let match_tbl = "matches"
 let creds_tbl = "credentials"
 let periods_tbl = "periods"
-let dbh = PGOCaml.connect ~host:"localhost" ~port:"5432" ~dbname:"loml" ~user:"postgres"
+*)
 
 let check_cred_query netid pwd =
-  match PGSQL(dbh) "SELECT Password FROM $creds_tbl WHERE Netid = $netid" with
-  | i -> if i = pwd then true else false
-  | _ -> false
+  let select = P.create db ("SELECT password FROM credentials WHERE netid = ?") in
+  let t1 = P.execute_null select [|Some netid|] in
+    match P.fetch t1 with
+    | Some arr ->
+      begin match Array.get arr 0 with
+        |Some n -> n = pwd
+        |None -> false
+      end
+    | None -> false
 
 let check_period_set =
+  let select = P.create db ("SELECT * FROM periods") in
+  let t1 = P.execute_null select [||] in
+  match (P.fetch t1) with
+  | Some arr ->
+    if Array.mem None arr then false else true
+  | None -> false
+  (*
   if ((PGSQL(dbh) "SELECT Update FROM $periods_tbl") != None
       ||  (PGSQL(dbh) "SELECT Swipe FROM $periods_tbl") != None
       ||  (PGSQL(dbh) "SELECT Match FROM $periods_tbl") != None) then true
   else false
+*)
 
 let set_period_query periods =
   let jsn = from_string periods in
