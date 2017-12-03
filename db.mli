@@ -43,6 +43,10 @@ val get_student_query : string -> string
  * Requires: table exist inside the database and netID exists in the table*)
 val get_stu_match_query : string -> string
 
+(*[post_matches_query matches] returns unit. It updates the matches table in
+ * the databse so to include the netid, netid pairs of student matches*)
+val post_matches_query : string -> unit
+
 (* [change_stu_query net info] returns unit. This function updates the
  * Students table in the database that holds all the information about
  * students based on the data passed in through the string of json object
@@ -62,9 +66,14 @@ val change_stu_query : string -> string -> unit
  * all values must be non-null*)
 val admin_change_query : string -> unit
 
-(*[reset_class] returns unit. This function updates the database [dbh] by
+(*[reset_class] returns unit. This function updates the database by
  *deleting all the information in all the tables in the database*)
 val reset_class : unit
+
+(*[delete_students students] returns unit. This function updates the database
+ *by deleting the students who have netids matching the ones in the string of
+ *json representation passed into the function through (students)*)
+val delete_students : string -> unit
 
 (*[set_swipes netid swipes] This function updates the database by  TODO
   val set_swipes : string -> string -> unit *)

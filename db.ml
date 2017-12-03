@@ -298,3 +298,18 @@ let reset_periods =
 
 let reset_class =
   reset_students; reset_swipes; reset_matches; reset_credentials; reset_periods;
+
+let rec delete_students_helper un nets =
+  match nets with
+  |h1::t1 ->
+      let insert = P.create db ("DELETE FROM students WHERE netid = ?") in
+        let res = begin match ignore (P.execute insert [|h1|]) with
+          |_-> ()
+        end in
+        delete_students_helper res t1
+  |[] -> ()
+
+let delete_students students =
+  let jsn = from_string matches in
+  let netids = jsn |> Util.keys in (*string list of netids for first students*)
+  delete_students_helper () netids
