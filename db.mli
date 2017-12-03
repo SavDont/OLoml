@@ -2,10 +2,10 @@
  * on the Credentials table inside the database
  * that gets the corresponding password for a user [creds] through the
  * credentials table in the database and comparing it to the password that the
- * user enters [pwd]
+ * user enters [pwd]. returns true if pwd matches the database value
  * requires: the table must exist inside the database and must contain
  * columns "NetId" and "Password"*)
-val check_cred_query : string -> string -> string
+val check_cred_query : string -> string -> bool
 
 (* [val check_period_query date] gives the result of performing a query
  * on the Periods table inside the database that gets the current period based
