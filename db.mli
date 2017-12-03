@@ -66,14 +66,16 @@ val change_stu_query : string -> string -> unit
  * all values must be non-null*)
 val admin_change_query : string -> unit
 
-(*[reset_class] returns unit. This function updates the database by
- *deleting all the information in all the tables in the database*)
-val reset_class : unit
-
 (*[delete_students students] returns unit. This function updates the database
  *by deleting the students who have netids matching the ones in the string of
  *json representation passed into the function through (students)*)
 val delete_students : string -> unit
 
-(*[set_swipes netid swipes] This function updates the database by  TODO
-  val set_swipes : string -> string -> unit *)
+(*[set_swipesswipes] returns unit. This function updates the database by storing
+  swipe results for each student passed in through the string representation of
+  a json (swipes) *)
+val set_swipes : string -> unit
+
+(*[reset_class] returns unit. This function updates the database by
+ *deleting all the information in all the tables in the database*)
+val reset_class : unit

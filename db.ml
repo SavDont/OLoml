@@ -312,5 +312,32 @@ let delete_students students =
   let netids = jsn |> Util.keys in (*string list of netids for first students*)
   delete_students_helper () netids
 
+  let rec get_swipe_json net1s swipes j=
+    match net1s with
+    |h::t -> (get_swipe_json t ((j |> Util.member h |>
+                            Yojson.Basic.to_string):: swipes) j)
+    |[] -> swipes
+
+  let rec set_swipes_helper un nets1 s=
+    match nets1 with
+    |h1::t1 ->
+      begin match s with
+      |h2::t2 ->
+        let insert = P.create db ("INSERT INTO swipes (netid, swipes) VALUES
+        (?, ?)") in
+        let res = begin match ignore (P.execute insert [|h1;h2|]) with
+          |_-> ()
+        end in
+        set_swipes_helper res t1 t2
+      |[] -> ()
+      end
+    |[] -> ()
+
+let set_swipes swipes =
+  let jsn = from_string swipes in
+  let netids1 = jsn |> Util.keys in
+  let swipes = get_swipe_json netids1 [] jsn in
+  set_swipes_helper () netids1 swipes
+
 let reset_class =
   reset_students; reset_swipes; reset_matches; reset_credentials; reset_periods;
