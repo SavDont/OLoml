@@ -164,6 +164,49 @@ let get_stu_match_query netid =
       let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
       Yojson.Basic.to_string jsonobj
 
+let ext_str jsn_str =
+  match Util.to_string_option jsn_str with
+  | None -> ""
+  | Some s -> s
+
+let ext_int jsn_int =
+  match Util.to_int_option jsn_int with
+  | None -> -1
+  | Some s -> s
+
+let ext_lst jsn_lst =
+  match Util.to_string_option jsn_lst with
+  | None -> "[]"
+  | Some s -> s
+
+let rec get_pair ones twos j=
+  match ones with
+  |h::t -> (get_pair t ((j |> Util.member h |>ext_str):: twos) j)
+  |[] -> twos
+
+let rec post_match_helper un firsts seconds =
+  match firsts with
+  |h1::t1 ->
+    begin match seconds with
+    |h2::t2 ->
+      let insert = P.create db ("INSERT INTO matches (stu1, stu2) VALUES
+      (?, ?)") in
+      let res = begin match ignore (P.execute insert [|h1;h2|]) with
+        |_-> ()
+      end in
+      post_match_helper res t1 t2
+    |[] -> ()
+    end
+  |[] -> ()
+
+
+let post_matches_query matches =
+  let jsn = from_string matches in
+  let firsts = jsn |> Util.keys in (*string list of netids for first students*)
+  let seconds = get_pair firsts [] jsn in
+  post_match_helper () firsts seconds
+
+
 (*helper functions that change each specific field if the field exists in the
  * json *)
 let change_sched net info =
