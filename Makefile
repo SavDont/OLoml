@@ -1,10 +1,23 @@
+export NO_CUSTOM=1
+
+SOURCES=mysql.mli mysql.ml mysql_stubs.c
+RESULT=mysql
+VERSION=1.2.2
+
+LIBINSTALL_FILES=$(wildcard *.mli *.cmi *.cma *.cmx *.cmxa *.a *.so *.cmxs)
+
+CFLAGS=-g -O2 -DHAVE_CONFIG_H -Wall -Wextra
+CPPFLAGS=-I/usr/include/mysql
+CLIBS=$(foreach x, $(filter -l%, -L/usr/lib/x86_64-linux-gnu -lmysqlclient -lpthread -lz -lm -lrt -ldl ), $(patsubst -l%,%,${x}))
+LDFLAGS=$(filter-out -l%, -L/usr/lib/x86_64-linux-gnu -lmysqlclient -lpthread -lz -lm -lrt -ldl )
+OCAMLMKLIB_FLAGS=$(LDFLAGS)
+OCAMLFIND_INSTFLAGS=-patch-version "$(VERSION)"
 OBJS1=httpServer.cmo
 OBJS2=api.cmo
 NAME=server
 OFIND=ocamlfind ocamlc -thread -package cohttp.lwt,cohttp.async,lwt.ppx
-PROJECT := db
-LINK_PKG := pgocaml
-COMP_PKG := pgocaml,pgocaml.syntax
+
+
 
 $(NAME).byte: $(OBJS1) $(OBJS2)
 		$(OFIND) -linkpkg -o $@ $(OBJS1) $(OBJS2) $(NAME).ml
@@ -13,6 +26,25 @@ $(NAME).byte: $(OBJS1) $(OBJS2)
 		$(OFIND) -c $<i
 		$(OFIND) -c $<
 
+		build: all opt
+		all: byte-code-library
+
+		ifeq (yes,yes)
+		CMXS=mysql.cmxs
+
+		clean::
+			rm -f mysql.cmxs
+		endif
+
+		opt: native-code-library $(CMXS)
+		reallyall: byte-code-library native-code-library $(CMXS) htdoc
+
+		install: libinstall
+		uninstall: libuninstall
+
+		db: reallyall
+			ocamlc -custom -I . -thread unix.cma threads.cma mysql.cma db.ml -o db.byte
+			$(OCAMLOPT) -I . -thread unix.cmxa threads.cmxa mysql.cmxa db.ml -o db.native
 clean:
 		ocamlbuild -clean
 		rm *.cm*
@@ -28,9 +60,3 @@ play:
 	ocamlbuild -use-ocamlfind main.byte && ./main.byte
 
 all: $(PROJECT)
-
-$(PROJECT): $(PROJECT).cmo
-	ocamlfind ocamlc -package $(LINK_PKG) -linkpkg -o $@ $<
-
-$(PROJECT).cmo: $(PROJECT).ml
-	ocamlfind ocamlc -package $(COMP_PKG) -syntax camlp4o -c $<
