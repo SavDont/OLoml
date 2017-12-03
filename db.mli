@@ -7,12 +7,6 @@
  * columns "NetId" and "Password"*)
 val check_cred_query : string -> string -> bool
 
-(* [val check_period_query date] gives the result of performing a query
- * on the Periods table inside the database that gets the current period based
- * on which starting date is greater than the current date.
- * requires: the table must exist inside the database and must contain
- * columns "Update", "Swipe" and "Match"*)
-val check_period_query : string -> string
 
 (* [check_period_set] returns true if the values in any of the
 * columns in the Periods table are not null. returns false otherwise.
@@ -66,11 +60,11 @@ val change_stu_query : string -> string -> unit
  * row if the netid is in the table already.
  * Requires: the json must only contain fields "name", "netid" and "year" and
  * all values must be non-null*)
-val admin_change_query : string -> string
+val admin_change_query : string -> unit
 
 (*[reset_class] returns unit. This function updates the database [dbh] by
  *deleting all the information in all the tables in the database*)
 val reset_class : unit
 
-(*[set_swipes netid swipes] This function updates the database by  TODO*)
-val set_swipes : string -> string -> unit
+(*[set_swipes netid swipes] This function updates the database by  TODO
+  val set_swipes : string -> string -> unit *)
