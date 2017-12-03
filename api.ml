@@ -141,14 +141,6 @@ let student_post (req:HttpServer.request) =
                  make_resp `OK "Success" in
   create_callback req ["netid"; "password"] student_login body
 
-let admin_get (req:HttpServer.request) =
-  let body (req:HttpServer.request) = 
-    begin match Header.get req.headers "scope" with
-          | _ ->
-            failwith "TACO Need admin get endpoint"
-    end in
-  create_callback req ["password"; "scope";] admin_login body
-
 let admin_post (req:HttpServer.request) = 
   let body (req:HttpServer.request) = 
     admin_change_query req.req_body; make_resp `OK "Success" in

@@ -303,64 +303,6 @@ val student_get : HttpServer.request -> HttpServer.response
  *)
 val student_post : HttpServer.request -> HttpServer.response
 
-(* [admin_get req] is the callback that handles all admin-level GET requests.
- * admin-level GET requests can retrieve information about both an individual
- * student and about the entire class
- * requires:
- * [req.headers]
- *   header [password] that specifies the admin password
- *   header [scope] that specifies the scope of info we are trying to GET.
- *     [scope] can only be "student_indiv", "swipe_indiv", "match_indiv",
- *     "student_all", "swipe_all", or "match_all"
- *     if [scope] is "student_indiv", retrieve an individual student row
- *     from the database
- *     if [scope] is "swipe_indiv", retrieve the swipe results for an individual
- *     student
- *     if [scope] is "match_indiv", retrieve the match for an individual student
- *     if [scope] is "student_all", retrieve all students from the database
- *     if [scope] is "swipe_all", retrieve the swipe results from all students
- *     in the database
- *     if [scope] is "match_all", retrieve the match for all students from the
- *     database
- *   header [netid] that specifies the netid of the student we are trying to GET
- *     data about
- *     needed iff [scope] is "student_indiv", "swipe_indiv", or "match_indiv"
- * [req.params] - ignored
- * [req.req_body] - ignored
- *
- * returns:
- * HttpServer.response [res]
- *  [res.headers]
- *    [res.headers] should be the default plain text Cohttp Header
- *  [res.status]
- *    [res.status] should be `OK iff the admin password was authenticated
- *     and valid data was retrieved from the database
- *    [res.status] should be `Unauthorized iff password did not authenticate
- *    [res.status] should be `No_response otherwise
- *  [res.res_body]
- *    if [res.status] is `OK
- *      [res.res_body] should be a text json representation
- *      of the database data in the following form:
- *      {s1 :
- *         {k1 : s1v1, k2 : s1v2, ... kn : s1vn},
- *       s2 :
- *         {k1 : s2v1, k2 : s2v2, ... kn : s2vn},
- *                           ...
- *       sn:
- *         {k1 : snv1, k2 : snv2, ... kn : snvn}
- *       }
- *      where si is a netid, kj is a column in the database and sivj is the
- *      value associated with column kj for student with netid si in the
- *      database
- *    if the request is swipes then each key is a string representing netid of
- *    the other person swiped on    
- *    if [res.status] is `Unauthorized,
- *      [res.res_body] should be "Incorrect password"
- *    if [res.status] is `No_response
- *      [res.res_body] should be "No valid response. Try again later"
- *)
-val admin_get : HttpServer.request -> HttpServer.response
-
 (* [admin_post req] is the callback that handles all admin-level POST requests.
  * admin-level POST requests can add/update info for any number of specified
  * students
