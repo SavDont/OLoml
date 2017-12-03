@@ -56,12 +56,12 @@ let create_callback (req:HttpServer.request) header_keys login_f body =
     make_resp `No_response "No valid response. Try again later"
 
 (* requests *)
-let test_post req = 
+let test_post req =
   let status = `OK in
   let res_body = "Hello " ^ req.req_body ^ "" in
   make_resp status res_body
 
-let test_get req = 
+let test_get req =
   let status = `OK in
   let res_body = "Hello World!" in
   make_resp status res_body
@@ -77,7 +77,7 @@ let period_get (req:HttpServer.request) =
 let period_post (req:HttpServer.request) =
   let body (req:HttpServer.request) =
     begin match check_period_set with
-      | true -> 
+      | true ->
         set_period_query req.req_body;
         make_resp `OK "Success"
       | false ->
@@ -86,10 +86,10 @@ let period_post (req:HttpServer.request) =
   create_callback req ["password";] admin_login body
 
 let swipes_get (req:HttpServer.request) =
-  let body (req:HttpServer.request) = 
+  let body (req:HttpServer.request) =
     begin match current_period () with
       | "swipe"
-      | "match" -> 
+      | "match" ->
         failwith "TACO Need get swipes query"
         (* make_resp `OK resp_body *)
       | _ ->
@@ -98,20 +98,20 @@ let swipes_get (req:HttpServer.request) =
   create_callback req ["password";] admin_login body
 
 let swipes_post (req:HttpServer.request) =
-  let body (req:HttpServer.request) = 
+  let body (req:HttpServer.request) =
     begin match current_period () with
-      | "swipe" -> 
+      | "swipe" ->
         failwith "TACO Need swipes post"
         (* make_resp `OK "Success" *)
       | _ ->
-        make_resp `Unauthorized "Incorrect period" 
+        make_resp `Unauthorized "Incorrect period"
     end in
   create_callback req ["netid"; "password";] student_login body
 
 let matches_post (req:HttpServer.request) =
-  let body (req:HttpServer.request) = 
+  let body (req:HttpServer.request) =
     begin match current_period () with
-      | "match" -> 
+      | "match" ->
         failwith "TACO Need matches post"
         (* make_resp `OK "Success" *)
       | _ ->
@@ -123,15 +123,15 @@ let student_get (req:HttpServer.request) =
   let body (req:HttpServer.request) =
     begin match Header.get req.headers "scope" |> get_some with
       | "student" ->
-        let res_body = 
+        let res_body =
           get_student_query (Header.get req.headers "netid" |> get_some) in
         make_resp `OK res_body
       | "match" ->
-        let res_body = 
+        let res_body =
           get_stu_match_query (Header.get req.headers "netid" |> get_some) in
         make_resp `OK res_body
       | _ ->
-        make_resp `No_response "No valid response. Try again later" 
+        make_resp `No_response "No valid response. Try again later"
     end in
   create_callback req ["netid"; "password"; "scope";] student_login body
 
@@ -141,13 +141,22 @@ let student_post (req:HttpServer.request) =
                  make_resp `OK "Success" in
   create_callback req ["netid"; "password"] student_login body
 
-let admin_post (req:HttpServer.request) = 
-  let body (req:HttpServer.request) = 
+let admin_post (req:HttpServer.request) =
+  let body (req:HttpServer.request) =
     admin_change_query req.req_body; make_resp `OK "Success" in
   create_callback req ["password";] admin_login body
 
+let admin_get (req:HttpServer.request) =
+  let body (req:HttpServer.request) =
+    begin match Header.get req.headers "scope" with
+          | _ ->
+            failwith "TACO Need admin get endpoint"
+    end in
+  create_callback req ["password"; "scope";] admin_login body
+
+
 let admin_delete (req:HttpServer.request) =
-  let body (req:HttpServer.request) = 
+  let body (req:HttpServer.request) =
     begin match Header.get req.headers "scope" |> get_some with
       | "class" ->
         reset_class;
