@@ -168,46 +168,56 @@ let get_stu_match_query netid =
  * json *)
 let change_sched net info =
   let jsn = from_string info in
-  begin match jsn |> Util.member "schedule" |> Util.to_string_option with
-    |None -> ()
-    |i -> PGSQL(dbh) "INSERT INTO students (schedule) VALUES ($i)
-                WHERE Netid = $net"
-  end
+  match jsn |> Util.member "schedule" |> Util.to_string_option with
+  |Some i ->
+      let insert = P.create db ("UPDATE students SET schedule = ?
+                  WHERE Netid = ?") in
+      ignore (P.execute insert [|info; net|])
+  |_ -> ()
 
-  let change_courses net info =
-    let jsn = from_string info in
-    begin match jsn |> Util.member "classes_taken" |> Util.to_string_option with
-      |None -> ()
-      |i -> PGSQL(dbh) "UPDATE $stu_tbl SET Courses = $i WHERE Netid = $net"
-    end
+let change_courses net info =
+  let jsn = from_string info in
+  match jsn |> Util.member "classes_taken" |> Util.to_string_option with
+  |Some i ->
+    let insert = P.create db ("UPDATE students SET courses=?
+                WHERE Netid = ?") in
+    ignore (P.execute insert [|info; net|])
+  |_ -> ()
 
-  let change_hours net info =
-    let jsn = from_string info in
-    begin match jsn |> Util.member "hours_to_spend" |> Util.to_int_option with
-      |None -> ()
-      |i -> PGSQL(dbh) "UPDATE $stu_tbl SET Hours = $i WHERE Netid = $net"
-    end
 
-  let change_prof net info =
-    let jsn = from_string info in
-    begin match jsn |> Util.member "profile_text" |> Util.to_string_option with
-      |None -> ()
-      |i -> PGSQL(dbh) "UPDATE $stu_tbl SET Profile = $i WHERE Netid = $net"
-    end
+let change_hours net info =
+  let jsn = from_string info in
+  match jsn |> Util.member "classes_taken" |> Util.to_int_option with
+  |Some i ->
+    let insert = P.create db ("UPDATE students SET hours=?
+                  WHERE Netid = ?") in
+    ignore (P.execute insert [|info; net|])
+  |_ -> ()
 
-  let change_loc net info =
-    let jsn = from_string info in
-    begin match jsn |> Util.member "location" |> Util.to_string_option with
-      |None -> ()
-      |i -> PGSQL(dbh) "UPDATE $stu_tbl SET Location = $i WHERE Netid = $net"
-    end
+let change_prof net info =
+  let jsn = from_string info in
+  match jsn |> Util.member "profile_text" |> Util.to_string_option with
+  |Some i ->
+    let insert = P.create db ("UPDATE students SET profile=?
+                    WHERE Netid = ?") in
+    ignore (P.execute insert [|info; net|])
+  |_ -> ()
+
+let change_loc net info =
+  let jsn = from_string info in
+  match jsn |> Util.member "location" |> Util.to_string_option with
+  |Some i ->
+    let insert = P.create db ("UPDATE students SET location=?
+                      WHERE Netid = ?") in
+    ignore (P.execute insert [|info; net|])
+  |_ -> ()
 
 let change_stu_query net info =
-  let a = change_sched dbh net info in
-  let b = change_courses dbh net info in
-  let c = change_hours dbh net info in
-  let d = change_prof dbh net info in
-  let e = change_loc dbh net info in
+  let a = change_sched net info in
+  let b = change_courses net info in
+  let c = change_hours net info in
+  let d = change_prof net info in
+  let e = change_loc net info in
   match [a;b;c;d;e] with
   |_ -> ()
 
@@ -216,9 +226,32 @@ let admin_change_query info =
   let new_name = jsn |> Util.member "name" |> Util.to_string_option in
   let new_id = jsn |> Util.member "netid" |> Util.to_string_option in
   let new_year = jsn |> Util.member "year" |> Util.to_string_option in
-  PGSQL(dbh) "INSERT INTO $stu_tbl (Netid, Name, Year) VALUES
-    ($new_id, $new_name, $new_year) ON DUPLICATE KEY UPDATE
-    Name = $new_name, Year = $new_year"
+  match (new_name, new_id, new_year) with
+  |(Some name, Some id, Some yr) ->
+    let insert = P.create db ("INSERT INTO students (netid, name, year) VALUES
+      (?, ?, ?) ON DUPLICATE KEY UPDATE Name = ?, Year = ?") in
+    ignore (P.execute insert [|id; name; yr; name; yr|])
+  |_ -> ()
+
+let reset_students =
+  let reset = P.create db ("TRUNCATE students") in
+  match P.execute_null reset [||] with |_ -> ()
+
+let reset_swipes =
+  let reset = P.create db ("TRUNCATE swipes") in
+  match P.execute_null reset [||] with |_ -> ()
+
+let reset_matches =
+  let reset = P.create db ("TRUNCATE matches") in
+  match P.execute_null reset [||] with |_ -> ()
+
+let reset_credentials =
+  let reset = P.create db ("TRUNCATE credentials") in
+  match P.execute_null reset [||] with |_ -> ()
+
+let reset_periods =
+  let reset = P.create db ("TRUNCATE periods") in
+  match P.execute_null reset [||] with |_ -> ()
 
 let reset_class =
-  PGSQL(dbh) "TRUNCATE $stu_tbl, $match_tbl, $creds_tbl, $periods_tbl"
+  reset_students; reset_swipes; reset_matches; reset_credentials; reset_periods;
