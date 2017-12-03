@@ -339,5 +339,68 @@ let set_swipes swipes =
   let swipes = get_swipe_json netids1 [] jsn in
   set_swipes_helper () netids1 swipes
 
+let rec loop t str=
+  match P.fetch t with
+  | Some arr ->
+    begin match (Array.get arr 0, Array.get arr 1) with
+      |(Some jnetid, Some jswipes) -> let s = (jnetid, `String jswipes) in
+        let obj = `Assoc[s] in
+        loop t str ^ (Yojson.Basic.to_string obj)
+      |_ -> str
+    end
+  | None -> str
+
+let get_swipes =
+  let select =P.create db ("SELECT * FROM swipes") in
+  let t1 = P.execute_null select [||] in
+  loop t1 ""
+
+
+
+(*let get_student_query netid =
+  let select = P.create db ("SELECT * FROM students WHERE netid = ?") in
+  let t1 = P.execute_null select [|Some netid|] in
+    match P.fetch t1 with
+    | Some arr ->
+      begin match (Array.get arr 0, Array.get arr 1, Array.get arr 2,
+                   Array.get arr 3, Array.get arr 4, Array.get arr 5,
+                   Array.get arr 6,Array.get arr 7) with
+      |(Some jnetid,Some jname,Some jyr,Some jsched,Some jcourses,
+        Some jhrs,Some jprof,Some jloc) ->
+          let name = ("name", `String jname) in
+          let netid = ("netid", `String jnetid) in
+          let year = ("year", `String jyr) in
+          let sched = ("schedule", `String jsched) in
+          let courses = ("courses_taken", `String jcourses) in
+          let hrs = ("hours_to_spend", `String jhrs) in
+          let prof = ("profile_text", `String jprof) in
+          let loc = ("location", `String jloc) in
+          let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
+          Yojson.Basic.to_string jsonobj
+        |_ ->
+          let name = ("name", `Null) in
+          let netid = ("netid", `Null) in
+          let year = ("year", `Null) in
+          let sched = ("schedule", `Null) in
+          let courses = ("courses_taken", `Null) in
+          let hrs = ("hours_to_spend", `Null) in
+          let prof = ("profile_text", `Null) in
+          let loc = ("location", `Null) in
+          let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
+          Yojson.Basic.to_string jsonobj
+      end
+  | None ->
+    let name = ("name", `Null) in
+    let netid = ("netid", `Null) in
+    let year = ("year", `Null) in
+    let sched = ("schedule", `Null) in
+    let courses = ("courses_taken", `Null) in
+    let hrs = ("hours_to_spend", `Null) in
+    let prof = ("profile_text", `Null) in
+    let loc = ("location", `Null) in
+    let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
+    Yojson.Basic.to_string jsonobj
+
+*)
 let reset_class =
-  reset_students; reset_swipes; reset_matches; reset_credentials; reset_periods;
+  reset_students; reset_swipes; reset_matches; reset_credentials; reset_periods
