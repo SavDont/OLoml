@@ -42,65 +42,127 @@ let set_period_query periods =
   let update_dt = jsn |> Util.member "update" |> Util.to_float_option in
   let swipe_dt = jsn |> Util.member "swipe" |> Util.to_float_option in
   let match_dt = jsn |> Util.member "match" |> Util.to_float_option in
-  if check_period_set dbh then
-    (* commenting out because you can directly store Some in DB
-       begin match (update_dt, swipe_dt, match_st) with
-      |Some u * Some s * Some m ->
-        PGSQL(dbh) "INSERT INTO $periods_tbl (Update, Swipe, Match)
-        VALUES ($u, $s, $m)"
-        |_ -> *)
-        PGSQL(dbh) "INSERT INTO $periods_tbl (Update, Swipe, Match)
-        VALUES ($update_dt, $swipe_dt, $match_dt)"
-  else ()
+  match (update_dt, swipe_dt, match_dt) with
+  |(Some u , Some s , Some m) ->
+    if check_period_set = false then
+      let insert = P.create db ( "INSERT INTO periods VALUES (?,?,?)") in
+        ignore (P.execute insert [|ml2float u;ml2float s;ml2float m|])
+    else ()
+  |_ -> ()
+
+  (*
+      PGSQL(dbh) "INSERT INTO $periods_tbl (Update, Swipe, Match)
+      VALUES ($update_dt, $swipe_dt, $match_dt)" *)
 
 let get_period_query =
-  match PGSQL (dbh) "SELECT Update, Swipe, Match FROM $periods_tbl" with
-  |(jupdate, jmatch, jswipe) ->
-    let upd = ("update", jupdate) in
-    let mat = ("match", jmatch) in
-    let swi = ("swipe", jswipe) in
-  let jsonobj = `Assoc[upd;mat;swi] in Yojson.Basic.to_string jsonobj
+  let select = P.create db ("SELECT * FROM periods") in
+  let t1 = P.execute_null select [||] in
+    match P.fetch t1 with
+    | Some arr ->
+      begin match (Array.get arr 0, Array.get arr 1, Array.get arr 2) with
+        |(Some u, Some s, Some m) ->
+          let upd = ("update", `String u) in
+          let mat = ("match", `String m) in
+          let swi = ("swipe", `String s) in
+          let jsonobj = `Assoc[upd;swi;mat] in Yojson.Basic.to_string jsonobj
+        |_ ->
+          let upd = ("update", `Null) in
+          let mat = ("match", `Null) in
+          let swi = ("swipe", `Null) in
+          let jsonobj = `Assoc[upd;swi;mat] in Yojson.Basic.to_string jsonobj
+      end
+    | None ->
+      let upd = ("update", `Null) in
+      let mat = ("match", `Null) in
+      let swi = ("swipe", `Null) in
+      let jsonobj = `Assoc[upd;swi;mat] in Yojson.Basic.to_string jsonobj
 
 let get_student_query netid =
-  match PGSQL(dbh) "SELECT * FROM $stu_tbl WHERE Netid = $netid" with
-  |(jnetid,jname,jyr,jsched,jcourses,jhrs,jprof,jloc) ->
-    let name = ("name", jname) in
-    let netid = ("netid", jnetid) in
-    let year = ("year", jyr) in
-    let sched = ("schedule", jsched) in
-    let courses = ("courses_taken", jcourses) in
-    let hrs = ("hours_to_spend", jhrs) in
-    let prof = ("profile_text", jprof) in
-    let loc = ("location", jloc)) in
-  let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
-  Yojson.Basic.to_string jsonobj
-
-let get_stu_match_query netid =
-  let partner = PGSQL(dbh) "SELECT Match FROM $match_tbl WHERE Stu1 = $netid" in
-  match partner with
-  |Some i ->
-    if i = "UNMATCHED" then
-      let name = ("name", None) in
-      let netid = ("netid", Some "UNMATCHED") in
-      let year = ("year", None) in
-      let sched = ("schedule", None) in
-      let courses = ("courses_taken", None) in
-      let hrs = ("hours_to_spend", None) in
-      let prof = ("profile_text", None) in
-      let loc = ("location", None)) in
-      let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
-      Yojson.Basic.to_string jsonobj
-    else get_student_query dbh i
-  |_ -> let name = ("name", None) in
-    let netid = ("netid", None) in
-    let year = ("year", None) in
-    let sched = ("schedule", None) in
-    let courses = ("courses_taken", None) in
-    let hrs = ("hours_to_spend", None) in
-    let prof = ("profile_text", None) in
-    let loc = ("location", None)) in
+  let select = P.create db ("SELECT * FROM students WHERE netid = ?") in
+  let t1 = P.execute_null select [|Some netid|] in
+    match P.fetch t1 with
+    | Some arr ->
+      begin match (Array.get arr 0, Array.get arr 1, Array.get arr 2,
+                   Array.get arr 3, Array.get arr 4, Array.get arr 5,
+                   Array.get arr 6,Array.get arr 7) with
+      |(Some jnetid,Some jname,Some jyr,Some jsched,Some jcourses,
+        Some jhrs,Some jprof,Some jloc) ->
+          let name = ("name", `String jname) in
+          let netid = ("netid", `String jnetid) in
+          let year = ("year", `String jyr) in
+          let sched = ("schedule", `String jsched) in
+          let courses = ("courses_taken", `String jcourses) in
+          let hrs = ("hours_to_spend", `String jhrs) in
+          let prof = ("profile_text", `String jprof) in
+          let loc = ("location", `String jloc) in
+          let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
+          Yojson.Basic.to_string jsonobj
+        |_ ->
+          let name = ("name", `Null) in
+          let netid = ("netid", `Null) in
+          let year = ("year", `Null) in
+          let sched = ("schedule", `Null) in
+          let courses = ("courses_taken", `Null) in
+          let hrs = ("hours_to_spend", `Null) in
+          let prof = ("profile_text", `Null) in
+          let loc = ("location", `Null) in
+          let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
+          Yojson.Basic.to_string jsonobj
+      end
+  | None ->
+    let name = ("name", `Null) in
+    let netid = ("netid", `Null) in
+    let year = ("year", `Null) in
+    let sched = ("schedule", `Null) in
+    let courses = ("courses_taken", `Null) in
+    let hrs = ("hours_to_spend", `Null) in
+    let prof = ("profile_text", `Null) in
+    let loc = ("location", `Null) in
     let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
     Yojson.Basic.to_string jsonobj
+
+let get_stu_match_query netid =
+  let select = P.create db ("SELECT stu2 FROM matches WHERE netid = ?") in
+  let t1 = P.execute_null select [|Some netid|] in
+    match P.fetch t1 with
+    | Some arr ->
+      begin match Array.get arr 0 with
+        |Some n ->
+          if n = "UNMATCHED" then
+            let name = ("name", `Null) in
+            let netid = ("netid", `String "UNMATCHED") in
+            let year = ("year", `Null) in
+            let sched = ("schedule", `Null) in
+            let courses = ("courses_taken", `Null) in
+            let hrs = ("hours_to_spend", `Null) in
+            let prof = ("profile_text", `Null) in
+            let loc = ("location", `Null) in
+            let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
+            Yojson.Basic.to_string jsonobj
+          else get_student_query n
+        |None ->
+          let name = ("name", `Null) in
+          let netid = ("netid", `Null) in
+          let year = ("year", `Null) in
+          let sched = ("schedule", `Null) in
+          let courses = ("courses_taken", `Null) in
+          let hrs = ("hours_to_spend", `Null) in
+          let prof = ("profile_text", `Null) in
+          let loc = ("location", `Null) in
+          let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
+          Yojson.Basic.to_string jsonobj
+      end
+    | None ->
+      let name = ("name", `Null) in
+      let netid = ("netid", `Null) in
+      let year = ("year", `Null) in
+      let sched = ("schedule", `Null) in
+      let courses = ("courses_taken", `Null) in
+      let hrs = ("hours_to_spend", `Null) in
+      let prof = ("profile_text", `Null) in
+      let loc = ("location", `Null) in
+      let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
+      Yojson.Basic.to_string jsonobj
 
 (*helper functions that change each specific field if the field exists in the
  * json *)
@@ -108,7 +170,7 @@ let change_sched net info =
   let jsn = from_string info in
   begin match jsn |> Util.member "schedule" |> Util.to_string_option with
     |None -> ()
-    |i -> PGSQL(dbh) "INSERT INTO $stu_tbl (Schedule) VALUES ($i)
+    |i -> PGSQL(dbh) "INSERT INTO students (schedule) VALUES ($i)
                 WHERE Netid = $net"
   end
 
