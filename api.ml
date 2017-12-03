@@ -9,10 +9,10 @@ let make_resp status res_body =
   {headers; status; res_body}
 
 (* returns true if every element in the list is a member of headers *)
-let rec check_headers_mem headers keys =
+let rec check_headers headers keys =
   match keys with
   | [] -> true
-  | h::t -> if Header.mem headers h then check_headers_mem headers t else false
+  | h::t -> if Header.mem headers h then check_headers headers t else false
 
 let get_some = function
   | Some x -> x
@@ -28,12 +28,21 @@ let test_get req =
   let res_body = "Hello World!" in
   make_resp status res_body
 
-(* [are_valid_credentials username password] returns [true] iff username and
- * password are a valid username password combination in the database and 
- * [false] otherwise *)
-let are_valid_credentials user password =
-  failwith "Unimplemented"
-  (* check_cred_query creds_tbl user password *)
+(* login helpers *)
+let generic_login headers password =
+  let username = Header.get headers "username" |> get_some in
+  check_cred_query username password
+
+let admin_login headers password =
+  check_cred_query "admin" password
+
+let student_login headers password =
+  let netID = Header.get headers "netid" |> get_some in
+  check_cred_query netID password
+
+let login_wrapper headers username_f =
+  let password = Header.get headers "password" |> get_some in
+  username_f headers password
 
 (* [current_period] is a string representing the current period.
  * returns:
@@ -42,49 +51,154 @@ let are_valid_credentials user password =
  *  "match" if the current period is the match period
  *  "null" if the periods have not been initialize yet *)
 let current_period () =
-(*   if not (check_period_set periods_tbl) then "null"
-  else get_period_query periods_tbl *)
-  failwith "Unimplemented"
+  if not check_period_set then "null"
+  else get_period_query
 
+
+(* requests *)
 let credentials_post (req:HttpServer.request) =
-  failwith "Unimplemented"
-(*   if check_headers_mem req.headers ["username"; "password"] then
-    let username = Header.get req.headers "username" |> get_some in
-    let password = Header.get req.headers "password" |> get_some in
-    let res_body =
-      (check_cred_query creds_tbl username password) |> string_of_bool in
-    make_resp `OK res_body
+  if check_headers req.headers ["username"; "password"] then
+    if login_wrapper req.headers generic_login then
+      make_resp `OK ""
+    else
+      make_resp `Unauthorized ""
   else
-    make_resp `Unauthorized "" *)
+    make_resp `No_response "No valid response. Try again later"
 
+let period_get (req:HttpServer.request) =
+  if check_headers req.headers ["username"; "password"] then
+    if login_wrapper req.headers generic_login then
+      make_resp `OK get_period_query
+    else
+      make_resp `Unauthorized ""
+  else
+    make_resp `No_response "No valid response. Try again later"
 
-let period_get req =
-  failwith "Unimplemented"
+let period_post (req:HttpServer.request) =
+  if check_headers req.headers ["password";] then
+    if login_wrapper req.headers admin_login then
+      match check_period_set with
+      | true -> 
+        set_period_query req.req_body;
+        make_resp `OK "Success"
+      | false ->
+        make_resp `Unauthorized "Period already set"
+    else
+      make_resp `Unauthorized "Incorrect password"
+  else
+    make_resp `No_response "No valid response. Try again later"
 
-let period_post req =
-  failwith "Unimplemented"
+let swipes_get (req:HttpServer.request) =
+  if check_headers req.headers ["password";] then
+    if login_wrapper req.headers admin_login then
+      match current_period () with
+      | "swipe"
+      | "match" -> 
+        failwith "TACO Need get swipes query"
+        (* make_resp `OK resp_body *)
+      | _ ->
+        make_resp `Unauthorized "Incorrect period"
+    else
+      make_resp `Unauthorized "Incorrect password"
+  else
+    make_resp `No_response "No valid response. Try again later"
 
-let swipes_get req =
-  failwith "Unimplemented"
+let swipes_post (req:HttpServer.request) =
+  if check_headers req.headers ["netid"; "password";] then
+    if login_wrapper req.headers student_login then
+      match current_period () with
+      | "swipe" -> 
+        failwith "TACO Need swipes post"
+        (* make_resp `OK "Success" *)
+      | _ ->
+        make_resp `Unauthorized "Incorrect period"
+    else
+      make_resp `Unauthorized "Incorrect password"
+  else
+    make_resp `No_response "No valid response. Try again later"
 
-let swipes_post req =
-  failwith "Unimplemeted"
+let matches_post (req:HttpServer.request) =
+  if check_headers req.headers ["password";] then
+    if login_wrapper req.headers admin_login then
+      match current_period () with
+      | "match" -> 
+        failwith "TACO Need matches post"
+        (* make_resp `OK "Success" *)
+      | _ ->
+        make_resp `Unauthorized "Incorrect period"
+    else
+      make_resp `Unauthorized "Incorrect password"
+  else
+    make_resp `No_response "No valid response. Try again later"
 
-let matches_post req =
-  failwith "Unimplemented"
+let student_get (req:HttpServer.request) = 
+  if check_headers req.headers ["netid"; "password"; "scope";] then
+    if login_wrapper req.headers student_login then
+      match Header.get req.headers "scope" |> get_some with
+        | "student" ->
+          let res_body = 
+            get_student_query (Header.get req.headers "netid" |> get_some) in
+          make_resp `OK res_body
+        | "match" ->
+          let res_body = 
+            get_stu_match_query (Header.get req.headers "netid" |> get_some) in
+          make_resp `OK res_body
+        | _ ->
+          make_resp `No_response "No valid response. Try again later"
+    else
+      make_resp `Unauthorized "Incorrect password"
+  else
+    make_resp `No_response "No valid response. Try again later"
 
-let student_get req = 
-  failwith "Unimplemented"
+let student_post (req:HttpServer.request) =
+  if check_headers req.headers ["netid"; "password";] then
+    match login_wrapper req.headers student_login with
+      | true ->
+          change_stu_query
+            (Header.get req.headers "netid" |> get_some) req.req_body;
+          make_resp `OK "Success"
+      | false ->
+        make_resp `Unauthorized "Incorrect password"
+  else
+    make_resp `No_response "No valid response. Try again later"
 
-let student_post req =
-  failwith "Unimplemented"
+let admin_get (req:HttpServer.request) =
+  if check_headers req.headers ["password"; "scope";] then
+    match login_wrapper req.headers admin_login with
+      | true ->
+        begin match Header.get req.headers "scope" with
+          | _ ->
+            failwith "TACO Need admin get endpoint"
+        end
+      | false ->
+        make_resp `Unauthorized "Incorrect password"
+  else
+    make_resp `No_response "No valid response. Try again later"
 
-let admin_get req =
-  failwith "Unimplemented"
+let admin_post (req:HttpServer.request) = 
+  if check_headers req.headers ["password";] then
+    match login_wrapper req.headers admin_login with
+      | true ->
+        admin_change_query req.req_body;
+        make_resp `OK "Success"
+      | false ->
+        make_resp `Unauthorized "Incorrect password"
+  else
+    make_resp `No_response "No valid response. Try again later"
 
-let admin_post req = 
-  failwith "Unimplemented"
-
-let admin_delete req = 
-  failwith "Unimplemented"
+let admin_delete (req:HttpServer.request) = 
+  if check_headers req.headers ["password"; "scope";] then
+    match login_wrapper req.headers admin_login with
+      | true ->
+        begin match Header.get req.headers "scope" |> get_some with
+          | "class" ->
+            reset_class;
+            make_resp `OK "Success"
+          | _ ->
+            failwith "TACO need admin delete partial"
+        end
+      | false ->
+        make_resp `Unauthorized "Incorrect password"
+  else
+    make_resp `No_response "No valid response. Try again later"
 
