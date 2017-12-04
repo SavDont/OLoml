@@ -43,8 +43,7 @@ let valid_student s =
     let netIDNotEmpty = if netID <> "" then true else false in
     let nameNotEmpty = if name <> "" then true else false in
     let yrNotEmpty = if yr <> "" then true else false in
-    schedCheck && courseCheck && locCheck && hrCheck
-    && netIDNotEmpty && nameNotEmpty && yrNotEmpty with
+    netIDNotEmpty && nameNotEmpty && yrNotEmpty with
   | _ -> false
 
 (* [checkDuplicates acc lst] takes a boolean accumulator [acc] and a list [lst]
