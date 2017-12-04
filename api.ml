@@ -11,18 +11,17 @@ open Yojson.Basic
  *  "match" if the current period is the match period
  *  "null" if the periods have not been initialize yet *)
 let current_period () =
-  (* if not (check_period_set ()) then "null"
+  if not (check_period_set ()) then "null"
   else
     let period_jsn = get_period_query () |> from_string in
-    let upd = period_jsn |> Util.member "update" |> Util.to_float in
-    let swi = period_jsn |> Util.member "swipe" |> Util.to_float in
-    let mat = period_jsn |> Util.member "match" |> Util.to_float in
+    let upd = period_jsn |> Util.member "update" |> to_string |> float_of_string in
+    let swi = period_jsn |> Util.member "swipe" |> to_string |> float_of_string in
+    let mat = period_jsn |> Util.member "match" |> to_string |> float_of_string in
     let today = Unix.time () |> Unix.localtime |> Unix.mktime |> fst in
     if today < upd then "null"
     else if today > upd && today < swi then "update"
     else if today > swi && today < mat then "swipe"
-     else "match" *)
-  "null"
+    else "match"
 
 let get_some = function
   | Some x -> x
