@@ -104,8 +104,8 @@ let set_periods upDate swDate mtDate pwd =
     let strJson = to_string (`Assoc[("update", `Float uTime);("swipe",`Float sTime);("match",`Float mTime)]) in
     if sTime > time () && mTime > time () && uTime < sTime && sTime < mTime then
       fst (Loml_client.period_post pwd strJson) = `OK
-    else (print_endline ("\n1");false)
-  else (print_endline("\n2");false)
+    else false
+  else false
 
 let remove_student netID pwd =
   let strJson = "{ \"" ^ netID ^ "\": 1 }" in
