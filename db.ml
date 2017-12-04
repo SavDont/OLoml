@@ -39,9 +39,9 @@ let check_period_set () =
 
 let set_period_query periods =
     let jsn = from_string periods in
-    let update_dt = jsn |> Util.member "update" |> Util.to_float |> string_of_float in
-    let swipe_dt = jsn |> Util.member "swipe" |> Util.to_float |> string_of_float in
-    let match_dt = jsn |> Util.member "match" |> Util.to_float |> string_of_float in
+    let update_dt = jsn |> Util.member "update" |> Util.to_string in
+    let swipe_dt = jsn |> Util.member "swipe" |> Util.to_string in
+    let match_dt = jsn |> Util.member "match" |> Util.to_string in
     if check_period_set ()= false then
       let insert = P.create db ( "INSERT INTO periods VALUES (?,?,?)") in
       ignore (P.execute insert [|update_dt;swipe_dt;match_dt|]); P.close insert
