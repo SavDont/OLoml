@@ -32,12 +32,7 @@ let valid_date (m, d, y) =
                 else d<=28 && d>=1
 (* [valid_student s] takes a tuple of type string*json and it outputs whether
  * the student json is valid representation of the file or not. The json must
- * follow the following rules:
- *  1. Schedule must be either a list of 21 values or 0 VALUES
- *  2. All courses the courses list must be a valid course listed in Student
- *  3. Location must be one of the three locations listed in student
- *  4. Hours must be greater than or equal to -1
- *  5. Name, netID, and year cannot be empty
+ * not have netID, name, and yr as empt representations
  * Returns: bool*)
 let valid_student s =
   try let j = snd s in
@@ -45,18 +40,6 @@ let valid_student s =
     let netID = j |> member "netid" |> to_string in
     let name = j |> member "name" |> to_string in
     let yr = j |> member "year" |> to_string in
-    let sched = j |> member "schedule" |> to_list |> filter_bool in
-    let courses = j |> member "courses" |> to_list |> filter_int in
-    let hr = j |> member "hours" |> to_int in
-    let loc = j |> member "location" |> to_string in
-    let schedCheck = if List.length sched = 21 || List.length sched = 0
-      then true
-      else false in
-    let courseBool = List.map Student.valid_course courses in
-    let courseCheck = List.fold_right (fun acc x -> acc && x) courseBool true in
-    let locCheck = List.mem loc
-        ["North Campus"; "West Campus"; "Collegetown"] in
-    let hrCheck = hr >= -1 in
     let netIDNotEmpty = if netID <> "" then true else false in
     let nameNotEmpty = if name <> "" then true else false in
     let yrNotEmpty = if yr <> "" then true else false in
