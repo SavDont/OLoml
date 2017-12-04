@@ -98,7 +98,7 @@ let tm_record (m, d, y) = {
 }
 let set_periods swDate mtDate pwd =
   if valid_date swDate && valid_date mtDate
-  then let uTime = time () in
+  then let uTime = time () |> localtime |> mktime |> fst in
     let sTime = swDate |> tm_record |> mktime |> fst in
     let mTime = mtDate |> tm_record |> mktime |> fst in
     let strJson = to_string (`Assoc[("update", `String ((uTime+.0.01) |> string_of_float));("swipe",`String ((sTime +. 0.01)|>string_of_float));("match",`String ((mTime +.0.01)|>string_of_float))]) in
