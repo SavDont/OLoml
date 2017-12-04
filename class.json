@@ -2,77 +2,23 @@
   "sd549" :
       { "netid" : "sd549",
         "name" : "Sav",
-         "year" : "junior",
-        "schedule" : [
-          true, false, true,
-          false, false, true,
-          false, true, false,
-          true, false, false,
-          true, true, true,
-          true, true, true,
-          true, false, true
-        ],
-        "courses" : [2110, 3110, 3410, 4320],
-        "hours" : 5,
-        "profile" : "I'm all about that North North, that up top, that OVO and that XO",
-        "location" : "Collegetown"
+         "year" : "junior"
       },
   "ab2466" :
           { "netid" : "ab2466",
             "name" : "Aayush",
-             "year" : "junior",
-            "schedule" : [
-              true, false, true,
-              false, true, true,
-              true, true, true,
-              true, true, true,
-              false, true, false,
-              false, true, true,
-              false, false, false
-            ],
-            "courses" : [2110, 3110],
-            "hours" : 200,
-            "profile" : "This guy is a joke",
-            "location" : "North Campus"
+             "year" : "junior"
           },
   "mg954" :
-              { "netid" : "mg954",
-                "name" : "Myra",
-                 "year" : "junior",
-                "schedule" : [
-                  false, false, false,
-                  false, false, false,
-                  true, true, false,
-                  true, true, true,
-                  false, true, false,
-                  false, true, true,
-                  false, false, false
-                ],
-                "courses" : [2110, 3110, 3410, 4320, 4850, 2112],
-                "hours" : 0,
-                "profile" : "Skrrr Rah Pop pop ka ka ka, skiddidy bi bop pop pop kun kun kun",
-                "location" : "West Campus"
-              },
-              "sed87" :
-                  { "netid" : "sed87",
-                    "name" : "Sam",
-                     "year" : "junior",
-                    "schedule" : [
-                      false, false, true,
-                      true, true, true,
-                      true, true, true,
-                      true, true, true,
-                      true, true, false,
-                      false, true, true,
-                      true, true, true
-                    ],
-                    "courses" : [2110],
-                    "hours" : 10,
-                    "profile" : "Ok fish butter, chicken cutter (okay)
-Maserati, we get mozzarella, (okay) ayy
-Go'n, you doin' that wrong (out of here), Al Capone",
-                    "location" : "Collegetown"
-                  }
+          { "netid" : "mg954",
+            "name" : "Myra",
+            "year" : "junior"
+          },
+  "sed87" :
+          { "netid" : "sed87",
+            "name" : "Sam",
+            "year" : "junior"
+          }
 
 
 }
