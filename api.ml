@@ -71,16 +71,16 @@ let credentials_post (req:HttpServer.request) =
   create_callback req ["username"; "password"] generic_login body
 
 let period_get (req:HttpServer.request) =
-  let body _ = make_resp `OK (get_period_query()) in
+  let body _ = make_resp `OK (current_period ()) in
   create_callback req ["username"; "password"] generic_login body
 
 let period_post (req:HttpServer.request) =
   let body (req:HttpServer.request) =
     begin match (check_period_set()) with
-      | true ->
+      | false ->
         set_period_query req.req_body;
         make_resp `OK "Success"
-      | false ->
+      | true ->
         make_resp `Unauthorized "Period already set"
     end in
   create_callback req ["password";] admin_login body
