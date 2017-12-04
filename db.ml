@@ -264,17 +264,33 @@ let change_stu_query net info =
   match [a;b;c;d;e] with
   |_ -> ()
 
+let rec insert_student s =
+  let new_name = s |> Util.member "name" |> Util.to_string_option in
+  let new_id = s |> Util.member "netid" |> Util.to_string_option in
+  let new_year = s |> Util.member "year" |> Util.to_string_option in
+  begin
+    match (new_name, new_id, new_year) with
+    |(Some name, Some id, Some yr) ->
+      let insert = P.create db ("INSERT INTO students (netid, name, year) VALUES
+        (?, ?, ?) ON DUPLICATE KEY UPDATE Name = ?, Year = ?") in
+      ignore (P.execute insert [|id; name; yr; name; yr|]); P.close insert
+    | _ -> ()
+  end
+
 let admin_change_query info =
   let jsn = from_string info in
-  let new_name = jsn |> Util.member "name" |> Util.to_string_option in
-  let new_id = jsn |> Util.member "netid" |> Util.to_string_option in
-  let new_year = jsn |> Util.member "year" |> Util.to_string_option in
-  match (new_name, new_id, new_year) with
-  |(Some name, Some id, Some yr) ->
-    let insert = P.create db ("INSERT INTO students (netid, name, year) VALUES
-      (?, ?, ?) ON DUPLICATE KEY UPDATE Name = ?, Year = ?") in
-    ignore (P.execute insert [|id; name; yr; name; yr|]); P.close insert
-  |_ -> ()
+  begin
+    match jsn with
+    | `Assoc lst -> let jsnLst = List.map snd lst in
+      let rec student_list_insert ls =
+      begin
+        match ls with
+        | h::t -> insert_student h; student_list_insert t
+        | [] -> ()
+      end in
+      student_list_insert jsnLst
+    | _ -> ()
+  end
 
 let reset_students =
   let reset = P.create db ("TRUNCATE students") in
