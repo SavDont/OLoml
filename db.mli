@@ -12,7 +12,7 @@ val check_cred_query : string -> string -> bool
 * columns in the Periods table are not null. returns false otherwise.
 * Requires: the table must exist inside the database and must contain columns
 * "Update", "Swipe", and "Match" *)
-val check_period_set : bool
+val check_period_set : unit -> bool
 
 (* [set_period_query periods] returns unit. If check_period_set
  * returns true then this function queries the database and updates
@@ -30,7 +30,7 @@ val set_period_query : string -> unit
  * has fields "update", "match" and "swipe" each with float options containing
  * the start dates of each of these periods
 *)
-val get_period_query : string
+val get_period_query : unit -> string
 
 (* [get_student_query netid] returns a string representation of the
  * json produced by selecting all columns from the Students table for a specifc
@@ -78,12 +78,12 @@ val set_swipes : string -> unit
 
 (*[get_swipes] returns a string representation of json for
  * the swipes in the swipes table*)
-val get_swipes : string
+val get_swipes : unit -> string
 
 (*[get_all_students] returns a string representation of json for all of the
  * students in the students table of the database.*)
-val get_all_students : string
+val get_all_students : unit -> string
 
 (*[reset_class] returns unit. This function updates the database by
  *deleting all the information in all the tables in the database*)
-val reset_class : unit
+val reset_class : unit -> unit

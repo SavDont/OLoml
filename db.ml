@@ -18,18 +18,18 @@ let check_cred_query netid pwd =
     match P.fetch t1 with
     | Some arr ->
       begin match Array.get arr 0 with
-        |Some n -> n = pwd
-        |None -> false
+        |Some n -> P.close select; n = pwd
+        |None -> P.close select; false
       end
-    | None -> false
+    | None -> P.close select; false
 
-let check_period_set =
+let check_period_set () =
   let select = P.create db ("SELECT * FROM periods") in
   let t1 = P.execute_null select [||] in
   match (P.fetch t1) with
   | Some arr ->
-    if Array.mem None arr then false else true
-  | None -> false
+    P.close select; if Array.mem None arr then false else true
+  | None -> P.close select; false
   (*
   if ((PGSQL(dbh) "SELECT Update FROM $periods_tbl") != None
       ||  (PGSQL(dbh) "SELECT Swipe FROM $periods_tbl") != None
@@ -44,7 +44,7 @@ let set_period_query periods =
   let match_dt = jsn |> Util.member "match" |> Util.to_float_option in
   match (update_dt, swipe_dt, match_dt) with
   |(Some u , Some s , Some m) ->
-    if check_period_set = false then
+    if check_period_set ()= false then
       let insert = P.create db ( "INSERT INTO periods VALUES (?,?,?)") in
         ignore (P.execute insert [|ml2float u;ml2float s;ml2float m|])
     else ()
@@ -54,24 +54,24 @@ let set_period_query periods =
       PGSQL(dbh) "INSERT INTO $periods_tbl (Update, Swipe, Match)
       VALUES ($update_dt, $swipe_dt, $match_dt)" *)
 
-let get_period_query =
+let get_period_query ()=
   let select = P.create db ("SELECT * FROM periods") in
   let t1 = P.execute_null select [||] in
     match P.fetch t1 with
     | Some arr ->
       begin match (Array.get arr 0, Array.get arr 1, Array.get arr 2) with
-        |(Some u, Some s, Some m) ->
+        |(Some u, Some s, Some m) -> P.close select;
           let upd = ("update", `String u) in
           let mat = ("match", `String m) in
           let swi = ("swipe", `String s) in
           let jsonobj = `Assoc[upd;swi;mat] in Yojson.Basic.to_string jsonobj
-        |_ ->
+        |_ -> P.close select;
           let upd = ("update", `Null) in
           let mat = ("match", `Null) in
           let swi = ("swipe", `Null) in
           let jsonobj = `Assoc[upd;swi;mat] in Yojson.Basic.to_string jsonobj
       end
-    | None ->
+    | None -> P.close select;
       let upd = ("update", `Null) in
       let mat = ("match", `Null) in
       let swi = ("swipe", `Null) in
@@ -86,7 +86,7 @@ let get_student_query netid =
                    Array.get arr 3, Array.get arr 4, Array.get arr 5,
                    Array.get arr 6,Array.get arr 7) with
       |(Some jnetid,Some jname,Some jyr,Some jsched,Some jcourses,
-        Some jhrs,Some jprof,Some jloc) ->
+        Some jhrs,Some jprof,Some jloc) -> P.close select;
           let name = ("name", `String jname) in
           let netid = ("netid", `String jnetid) in
           let year = ("year", `String jyr) in
@@ -97,7 +97,7 @@ let get_student_query netid =
           let loc = ("location", `String jloc) in
           let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
           Yojson.Basic.to_string jsonobj
-        |_ ->
+        |_ -> P.close select;
           let name = ("name", `Null) in
           let netid = ("netid", `Null) in
           let year = ("year", `Null) in
@@ -109,7 +109,7 @@ let get_student_query netid =
           let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
           Yojson.Basic.to_string jsonobj
       end
-  | None ->
+  | None -> P.close select;
     let name = ("name", `Null) in
     let netid = ("netid", `Null) in
     let year = ("year", `Null) in
@@ -127,7 +127,7 @@ let get_stu_match_query netid =
     match P.fetch t1 with
     | Some arr ->
       begin match Array.get arr 0 with
-        |Some n ->
+        |Some n -> P.close select;
           if n = "UNMATCHED" then
             let name = ("name", `Null) in
             let netid = ("netid", `String "UNMATCHED") in
@@ -140,7 +140,7 @@ let get_stu_match_query netid =
             let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
             Yojson.Basic.to_string jsonobj
           else get_student_query n
-        |None ->
+        |None -> P.close select;
           let name = ("name", `Null) in
           let netid = ("netid", `Null) in
           let year = ("year", `Null) in
@@ -152,7 +152,7 @@ let get_stu_match_query netid =
           let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
           Yojson.Basic.to_string jsonobj
       end
-    | None ->
+    | None -> P.close select;
       let name = ("name", `Null) in
       let netid = ("netid", `Null) in
       let year = ("year", `Null) in
@@ -192,7 +192,7 @@ let rec post_match_helper un firsts seconds =
       let insert = P.create db ("INSERT INTO matches (stu1, stu2) VALUES
       (?, ?)") in
       let res = begin match ignore (P.execute insert [|h1;h2|]) with
-        |_-> ()
+        |_-> P.close insert; ()
       end in
       post_match_helper res t1 t2
     |[] -> ()
@@ -215,7 +215,7 @@ let change_sched net info =
   |Some i ->
       let insert = P.create db ("UPDATE students SET schedule = ?
                   WHERE Netid = ?") in
-      ignore (P.execute insert [|info; net|])
+      ignore (P.execute insert [|info; net|]); P.close insert
   |_ -> ()
 
 let change_courses net info =
@@ -224,7 +224,7 @@ let change_courses net info =
   |Some i ->
     let insert = P.create db ("UPDATE students SET courses=?
                 WHERE Netid = ?") in
-    ignore (P.execute insert [|info; net|])
+    ignore (P.execute insert [|info; net|]); P.close insert
   |_ -> ()
 
 
@@ -234,7 +234,7 @@ let change_hours net info =
   |Some i ->
     let insert = P.create db ("UPDATE students SET hours=?
                   WHERE Netid = ?") in
-    ignore (P.execute insert [|info; net|])
+    ignore (P.execute insert [|info; net|]); P.close insert
   |_ -> ()
 
 let change_prof net info =
@@ -243,7 +243,7 @@ let change_prof net info =
   |Some i ->
     let insert = P.create db ("UPDATE students SET profile=?
                     WHERE Netid = ?") in
-    ignore (P.execute insert [|info; net|])
+    ignore (P.execute insert [|info; net|]); P.close insert
   |_ -> ()
 
 let change_loc net info =
@@ -252,7 +252,7 @@ let change_loc net info =
   |Some i ->
     let insert = P.create db ("UPDATE students SET location=?
                       WHERE Netid = ?") in
-    ignore (P.execute insert [|info; net|])
+    ignore (P.execute insert [|info; net|]); P.close insert
   |_ -> ()
 
 let change_stu_query net info =
@@ -273,28 +273,28 @@ let admin_change_query info =
   |(Some name, Some id, Some yr) ->
     let insert = P.create db ("INSERT INTO students (netid, name, year) VALUES
       (?, ?, ?) ON DUPLICATE KEY UPDATE Name = ?, Year = ?") in
-    ignore (P.execute insert [|id; name; yr; name; yr|])
+    ignore (P.execute insert [|id; name; yr; name; yr|]); P.close insert
   |_ -> ()
 
 let reset_students =
   let reset = P.create db ("TRUNCATE students") in
-  match P.execute_null reset [||] with |_ -> ()
+  match P.execute_null reset [||] with |_ -> (); P.close reset
 
 let reset_swipes =
   let reset = P.create db ("TRUNCATE swipes") in
-  match P.execute_null reset [||] with |_ -> ()
+  match P.execute_null reset [||] with |_ -> (); P.close reset
 
 let reset_matches =
   let reset = P.create db ("TRUNCATE matches") in
-  match P.execute_null reset [||] with |_ -> ()
+  match P.execute_null reset [||] with |_ -> (); P.close reset
 
 let reset_credentials =
   let reset = P.create db ("TRUNCATE credentials") in
-  match P.execute_null reset [||] with |_ -> ()
+  match P.execute_null reset [||] with |_ -> (); P.close reset
 
 let reset_periods =
   let reset = P.create db ("TRUNCATE periods") in
-  match P.execute_null reset [||] with |_ -> ()
+  match P.execute_null reset [||] with |_ -> (); P.close reset
 
 
 let rec delete_students_helper un nets =
@@ -302,7 +302,7 @@ let rec delete_students_helper un nets =
   |h1::t1 ->
       let insert = P.create db ("DELETE FROM students WHERE netid = ?") in
         let res = begin match ignore (P.execute insert [|h1|]) with
-          |_-> ()
+          |_-> (); P.close insert
         end in
         delete_students_helper res t1
   |[] -> ()
@@ -326,7 +326,7 @@ let delete_students students =
         let insert = P.create db ("INSERT INTO swipes (netid, swipes) VALUES
         (?, ?)") in
         let res = begin match ignore (P.execute insert [|h1;h2|]) with
-          |_-> ()
+          |_-> (); P.close insert
         end in
         set_swipes_helper res t1 t2
       |[] -> ()
@@ -350,10 +350,10 @@ let rec loop t str=
     end
   | None -> str
 
-let get_swipes =
+let get_swipes ()=
   let select =P.create db ("SELECT * FROM swipes") in
   let t1 = P.execute_null select [||] in
-  loop t1 ""
+  P.close select; loop t1 ""
 
   let rec loop2 t jobj=
     match P.fetch t with
@@ -385,24 +385,14 @@ let get_swipes =
           let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
           loop2 t (Util.combine jobj jsonobj)
       end
-  | None ->
-    let name = ("name", `Null) in
-    let netid = ("netid", `Null) in
-    let year = ("year", `Null) in
-    let sched = ("schedule", `Null) in
-    let courses = ("courses_taken", `Null) in
-    let hrs = ("hours_to_spend", `Null) in
-    let prof = ("profile_text", `Null) in
-    let loc = ("location", `Null) in
-    let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
-    loop2 t (Util.combine jobj jsonobj)
+  | None -> jobj
 
-let get_all_students =
+let get_all_students ()=
   let select = P.create db ("SELECT * FROM students") in
   let t1 = P.execute_null select [||] in
   let jobj = loop2 t1 (`Assoc[]) in
-  Yojson.Basic.to_string jobj
+  P.close select; Yojson.Basic.to_string jobj
 
 
-let reset_class =
+let reset_class () =
   reset_students; reset_swipes; reset_matches; reset_credentials; reset_periods
