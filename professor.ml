@@ -101,7 +101,7 @@ let set_periods upDate swDate mtDate pwd =
   then let uTime = upDate |> tm_record |> mktime |> fst in
     let sTime = swDate |> tm_record |> mktime |> fst in
     let mTime = mtDate |> tm_record |> mktime |> fst in
-    let strJson = to_string (`Assoc[("update", `Float uTime);("swipe",`Float sTime);("match",`Float mTime)]) in
+     let strJson = to_string (`Assoc[("update", `String (uTime |> string_of_float));("swipe",`String (sTime|>string_of_float));("match",`String (mTime|>string_of_float))]) in
     if sTime > time () && mTime > time () && uTime < sTime && sTime < mTime then
       fst (Loml_client.period_post pwd strJson) = `OK
     else false

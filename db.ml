@@ -39,14 +39,14 @@ let check_period_set () =
 
 let set_period_query periods =
   let jsn = from_string periods in
-  let update_dt = jsn |> Util.member "update" |> Util.to_float_option in
-  let swipe_dt = jsn |> Util.member "swipe" |> Util.to_float_option in
-  let match_dt = jsn |> Util.member "match" |> Util.to_float_option in
+  let update_dt = jsn |> Util.member "update" |> Util.to_string_option in
+  let swipe_dt = jsn |> Util.member "swipe" |> Util.to_string_option in
+  let match_dt = jsn |> Util.member "match" |> Util.to_string_option in
   match (update_dt, swipe_dt, match_dt) with
   |(Some u , Some s , Some m) ->
     if check_period_set ()= false then
       let insert = P.create db ( "INSERT INTO periods VALUES (?,?,?)") in
-        ignore (P.execute insert [|string_of_float u;string_of_float s;string_of_float m|])
+        ignore (P.execute insert [|u;s;m|])
     else ()
   |_ -> ()
 
@@ -61,9 +61,9 @@ let get_period_query ()=
     | Some arr -> print_endline("\nMarker 1");
       begin match (Array.get arr 0, Array.get arr 1, Array.get arr 2) with
         |(Some u, Some s, Some m) -> print_endline("\nMarker 2: "^u);P.close select;
-          let upd = ("update", `Float u) in
-          let mat = ("match", `Float m) in
-          let swi = ("swipe", `Float s) in
+          let upd = ("update", `Float (Mysql.float2ml u)) in
+          let mat = ("match", `Float (Mysql.float2ml m)) in
+          let swi = ("swipe", `Float (Mysql.float2ml s)) in
           let jsonobj = `Assoc[upd;swi;mat] in Yojson.Basic.to_string jsonobj
         |_ -> print_endline("\nMarker 3");P.close select;
           let upd = ("update", `Null) in
