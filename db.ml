@@ -46,7 +46,7 @@ let set_period_query periods =
   |(Some u , Some s , Some m) ->
     if check_period_set ()= false then
       let insert = P.create db ( "INSERT INTO periods VALUES (?,?,?)") in
-        ignore (P.execute insert [|u;s;m|])
+        ignore (P.execute insert [|ml2float u;ml2float s;ml2float m|])
     else ()
   |_ -> ()
 
