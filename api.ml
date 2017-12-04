@@ -10,8 +10,8 @@ open Backend_lib
  *  "match" if the current period is the match period
  *  "null" if the periods have not been initialize yet *)
 let current_period () =
-  if not check_period_set then "null"
-  else get_period_query
+  if not (check_period_set ())then "null"
+  else get_period_query ()
 
 let get_some = function
   | Some x -> x
@@ -71,12 +71,12 @@ let credentials_post (req:HttpServer.request) =
   create_callback req ["username"; "password"] generic_login body
 
 let period_get (req:HttpServer.request) =
-  let body _ = make_resp `OK get_period_query in
+  let body _ = make_resp `OK (get_period_query ()) in
   create_callback req ["username"; "password"] generic_login body
 
 let period_post (req:HttpServer.request) =
   let body (req:HttpServer.request) =
-    begin match check_period_set with
+    begin match (check_period_set ())with
       | true ->
         set_period_query req.req_body;
         make_resp `OK "Success"
@@ -90,7 +90,7 @@ let swipes_get (req:HttpServer.request) =
     begin match current_period () with
       | "swipe"
       | "match" ->
-        make_resp `OK get_swipes;
+        make_resp `OK (get_swipes ());
       | _ ->
         make_resp `Unauthorized "Incorrect period"
     end in

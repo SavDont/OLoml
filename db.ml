@@ -23,7 +23,7 @@ let check_cred_query netid pwd =
       end
     | None -> false
 
-let check_period_set =
+let check_period_set () =
   let select = P.create db ("SELECT * FROM periods") in
   let t1 = P.execute_null select [||] in
   match (P.fetch t1) with
@@ -44,7 +44,7 @@ let set_period_query periods =
   let match_dt = jsn |> Util.member "match" |> Util.to_float_option in
   match (update_dt, swipe_dt, match_dt) with
   |(Some u , Some s , Some m) ->
-    if check_period_set = false then
+    if check_period_set ()= false then
       let insert = P.create db ( "INSERT INTO periods VALUES (?,?,?)") in
         ignore (P.execute insert [|ml2float u;ml2float s;ml2float m|])
     else ()
@@ -54,7 +54,7 @@ let set_period_query periods =
       PGSQL(dbh) "INSERT INTO $periods_tbl (Update, Swipe, Match)
       VALUES ($update_dt, $swipe_dt, $match_dt)" *)
 
-let get_period_query =
+let get_period_query ()=
   let select = P.create db ("SELECT * FROM periods") in
   let t1 = P.execute_null select [||] in
     match P.fetch t1 with
@@ -350,7 +350,7 @@ let rec loop t str=
     end
   | None -> str
 
-let get_swipes =
+let get_swipes ()=
   let select =P.create db ("SELECT * FROM swipes") in
   let t1 = P.execute_null select [||] in
   loop t1 ""
@@ -385,24 +385,14 @@ let get_swipes =
           let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
           loop2 t (Util.combine jobj jsonobj)
       end
-  | None ->
-    let name = ("name", `Null) in
-    let netid = ("netid", `Null) in
-    let year = ("year", `Null) in
-    let sched = ("schedule", `Null) in
-    let courses = ("courses_taken", `Null) in
-    let hrs = ("hours_to_spend", `Null) in
-    let prof = ("profile_text", `Null) in
-    let loc = ("location", `Null) in
-    let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
-    loop2 t (Util.combine jobj jsonobj)
+  | None -> jobj
 
-let get_all_students =
+let get_all_students ()=
   let select = P.create db ("SELECT * FROM students") in
   let t1 = P.execute_null select [||] in
   let jobj = loop2 t1 (`Assoc[]) in
   Yojson.Basic.to_string jobj
 
 
-let reset_class =
+let reset_class () =
   reset_students; reset_swipes; reset_matches; reset_credentials; reset_periods
