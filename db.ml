@@ -55,7 +55,7 @@ let set_period_query periods =
       VALUES ($update_dt, $swipe_dt, $match_dt)" *)
 
 let get_period_query ()=
-  let select = P.create db ("SELECT * FROM periods") in
+  let select = P.create db ("SELECT u, s, m FROM periods") in
   let t1 = P.execute_null select [||] in
     match P.fetch t1 with
     | Some arr -> print_endline("\nMarker 1");
