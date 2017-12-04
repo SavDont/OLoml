@@ -55,34 +55,34 @@ let valid_course c =
 
 (* [year_to_str y] gives the string representation of the year variant, y. *)
 let year_to_str = function
-  | Fresh -> "Freshman"
-  | Soph -> "Sophomore"
-  | Jun -> "Junior"
-  | Sen -> "Senior"
+  | Fresh -> "freshman"
+  | Soph -> "sophomore"
+  | Jun -> "junior"
+  | Sen -> "senior"
   | Empty -> ""
 
 (* [parse_yr] gives the variant representation of the year string, yr.
  * Requires: yr must be "Freshman", "Sophomore", "Junior", or "Senior".*)
 let parse_yr yr =
-  if yr = "Freshman" then Fresh
-  else if yr = "Sophomore" then Soph
-  else if yr = "Junior" then Jun
-  else if yr = "Senior" then Sen
+  if yr = "freshman" then Fresh
+  else if yr = "sophomore" then Soph
+  else if yr = "junior" then Jun
+  else if yr = "senior" then Sen
   else Empty
 
 (* [loc_to_str] gives the string representation of the location variant. *)
 let loc_to_str = function
-  | North -> "North Campus"
-  | West -> "West Campus"
-  | Collegetown -> "Collegetown"
+  | North -> "north campus"
+  | West -> "west campus"
+  | Collegetown -> "collegetown"
   | Empty -> ""
 
 (* [parse_loc loc] gives the variant representation of the location string.
  * Requires: loc must be "North Campus", "West Campus", or "Collegetown"*)
 let parse_loc loc =
-  if loc = "North Campus" then North
-  else if loc = "West Campus" then West
-  else if loc = "Collegetown" then Collegetown
+  if loc = "north campus" then North
+  else if loc = "west Campus" then West
+  else if loc = "collegetown" then Collegetown
   else Empty
 
 (* [printable_lst lst] gives the string representation of lst.
@@ -158,10 +158,14 @@ let printable_student st =
   let course_lst = List.map string_of_int st.courses_taken in
   let course_lst_cs = List.map (fun s -> "CS "^s) course_lst in
   let courses = "Has taken: "^(printable_lst course_lst_cs) in
-  let hrs = "Willing to spend "^(string_of_int st.hours_to_spend)^" hours on this project" in
+  let hrs =
+    (* empty hours = -1 *)
+    if st.hours_to_spend = -1 then "unknown"
+    else string_of_int st.hours_to_spend in
+  let hrs_str = "Willing to spend "^(hrs)^" hours on this project" in
   let sched = "Available:\n"^(sched_to_str st.schedule "" 0) in
   let about = "About me: "^st.profile_text in
-  header^"\n\n"^yr^"\n\n"^loc^"\n\n"^courses^"\n\n"^sched^"\n"^hrs^"\n\n"^about
+  header^"\n\n"^yr^"\n\n"^loc^"\n\n"^courses^"\n\n"^sched^"\n"^hrs_str^"\n\n"^about
 
 let get_student net pwd =
   match Loml_client.student_get net pwd "student" with
@@ -228,7 +232,8 @@ let course_score {courses_taken = c1} {courses_taken = c2} =
   let course_dev = abs((highest_course c1)-(highest_course c2))|>float_of_int in
   (* don't want negative scores *)
   let pre_score = max 0.0 (common_course_count c1 c2 0.0) -. course_dev in
-  pre_score /. 10.0 (* considering this a "perfect" score *)
+  let avg_num_courses = (float_of_int(List.length c1 + List.length c2))/.2.0 in
+  pre_score /. avg_num_courses
 
 (* Function of deviation in hours willing to spend *)
 let hour_score {hours_to_spend = h1} {hours_to_spend = h2} =
