@@ -80,6 +80,10 @@ val set_swipes : string -> unit
  * the swipes in the swipes table*)
 val get_swipes : string
 
+(*[get_all_students] returns a string representation of json for all of the
+ * students in the students table of the database.*)
+val get_all_students : string
+
 (*[reset_class] returns unit. This function updates the database by
  *deleting all the information in all the tables in the database*)
 val reset_class : unit

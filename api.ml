@@ -90,8 +90,7 @@ let swipes_get (req:HttpServer.request) =
     begin match current_period () with
       | "swipe"
       | "match" ->
-        failwith "TACO Need get swipes query"
-        (* make_resp `OK resp_body *)
+        make_resp `OK get_swipes;
       | _ ->
         make_resp `Unauthorized "Incorrect period"
     end in
@@ -101,8 +100,8 @@ let swipes_post (req:HttpServer.request) =
   let body (req:HttpServer.request) =
     begin match current_period () with
       | "swipe" ->
-        failwith "TACO Need swipes post"
-        (* make_resp `OK "Success" *)
+        set_swipes req.req_body;
+        make_resp `OK "Success"
       | _ ->
         make_resp `Unauthorized "Incorrect period"
     end in
@@ -112,8 +111,8 @@ let matches_post (req:HttpServer.request) =
   let body (req:HttpServer.request) =
     begin match current_period () with
       | "match" ->
-        failwith "TACO Need matches post"
-        (* make_resp `OK "Success" *)
+        post_matches_query req.req_body;
+        make_resp `OK "Success"
       | _ ->
         make_resp `Unauthorized "Incorrect period"
     end in
@@ -161,7 +160,9 @@ let admin_delete (req:HttpServer.request) =
       | "class" ->
         reset_class;
         make_resp `OK "Success"
-      | _ ->
-        failwith "TACO need admin delete partial"
+      | "subset" ->
+        delete_students req.req_body;
+        make_resp `OK "Success"
+      | _ -> make_resp `No_response "No valid response. Try again later"
     end in
   create_callback req ["password"; "scope";] admin_login body
