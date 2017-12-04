@@ -17,10 +17,10 @@ let current_period () =
     let upd = period_jsn |> Util.member "update" |> Util.to_float in
     let swi = period_jsn |> Util.member "swipe" |> Util.to_float in
     let mat = period_jsn |> Util.member "match" |> Util.to_float in
-    let today = Unix.time () |> Unix.localtime |> Unix.mktime |> fst in
+    let today = (Unix.time () |> Unix.localtime |> Unix.mktime |> fst) -. 1. in
     if today < upd then "null"
-    else if today > upd && today < swi then "update"
-    else if today > swi && today < mat then "swipe"
+    else if today >= upd && today < swi then "update"
+    else if today >= swi && today < mat then "swipe"
     else "match"
 
 let get_some = function
