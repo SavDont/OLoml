@@ -1,7 +1,12 @@
 open Oclient
 open Backend_lib
 
-let test name =
+let test_get () = 
+  let headers = make_headers [] in
+  let uri = make_uri base_url test_endpoint in
+  get_req ?headers:(Some headers) uri
+
+let test_post name =
   let headers = make_headers [] in
   let uri = make_uri base_url test_endpoint in
   let body = make_body name in
