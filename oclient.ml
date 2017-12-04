@@ -27,17 +27,23 @@ let handle_resp = fun (resp, body) ->
 
 (* helper to make get requests *)
 let get_req ?ctx ?headers uri = 
-  let lwt_resp = Client.get ?ctx ?headers uri >>= handle_resp in
-  Lwt_main.run lwt_resp
+  try 
+    let lwt_resp = Client.get ?ctx ?headers uri >>= handle_resp in
+    Lwt_main.run lwt_resp with
+  | _ -> (`No_response, "No valid response. Try again later")
 
 (* helper to make post requests *)
 let post_req ?ctx ?body ?chunked ?headers uri = 
-  let lwt_resp =
-    Client.post ?ctx ?body ?chunked ?headers uri >>= handle_resp in
-  Lwt_main.run lwt_resp
+  try
+    let lwt_resp =
+      Client.post ?ctx ?body ?chunked ?headers uri >>= handle_resp in
+    Lwt_main.run lwt_resp with
+  | _ -> (`No_response, "No valid response. Try again later")
 
 (* helper to make delete requests *)
 let delete_req ?ctx ?body ?chunked ?headers uri = 
-  let lwt_resp =
-    Client.delete ?ctx ?body ?chunked ?headers uri >>= handle_resp in
-  Lwt_main.run lwt_resp
+  try
+    let lwt_resp =
+      Client.delete ?ctx ?body ?chunked ?headers uri >>= handle_resp in
+    Lwt_main.run lwt_resp with
+  | _ -> (`No_response, "No valid response. Try again later")

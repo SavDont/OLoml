@@ -1,6 +1,7 @@
 open Cohttp
 
-val test: string -> Code.status_code*string
+val test_get: unit -> Code.status_code*string
+val test_post: string -> Code.status_code*string
 
 (* [credentials_post username password] returns a tuple containing the response
  * status and response body received after a POST request to the credentials api
