@@ -2,6 +2,7 @@ open HttpServer
 open Cohttp
 open Db
 open Backend_lib
+open Yojson.Basic
 
 (* [current_period] is a string representing the current period.
  * returns:
@@ -10,8 +11,17 @@ open Backend_lib
  *  "match" if the current period is the match period
  *  "null" if the periods have not been initialize yet *)
 let current_period () =
-  if not (check_period_set()) then "null"
-  else (get_period_query())
+  if not (check_period_set ()) then "null"
+  else
+    let period_jsn = get_period_query () |> from_string in
+    let upd = period_jsn |> Util.member "update" |> Util.to_float in
+    let swi = period_jsn |> Util.member "swipe" |> Util.to_float in
+    let mat = period_jsn |> Util.member "match" |> Util.to_float in
+    let today = Unix.time () |> Unix.localtime |> Unix.mktime |> fst in
+    if today < upd then "null"
+    else if today > upd && today < swi then "update"
+    else if today > swi && today < mat then "swipe"
+    else "match"
 
 let get_some = function
   | Some x -> x
