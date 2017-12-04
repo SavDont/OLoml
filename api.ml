@@ -71,7 +71,7 @@ let credentials_post (req:HttpServer.request) =
   create_callback req ["username"; "password"] generic_login body
 
 let period_get (req:HttpServer.request) =
-  let body _ = make_resp `OK (get_period_query()) in
+  let body _ = make_resp `OK (current_period ()) in
   create_callback req ["username"; "password"] generic_login body
 
 let period_post (req:HttpServer.request) =
