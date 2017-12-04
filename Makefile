@@ -28,25 +28,6 @@ $(NAME).byte: $(OBJS1) $(OBJS2) $(OBJS3) $(OBJS4)
 		$(OFIND) -c $<i
 		$(OFIND) -c $<
 
-		# build: all opt
-		# all: byte-code-library
-    #
-		# ifeq (yes,yes)
-		# CMXS=mysql.cmxs
-    #
-		# clean::
-		# 	rm -f mysql.cmxs
-		# endif
-    #
-		# opt: native-code-library $(CMXS)
-		# reallyall: byte-code-library native-code-library $(CMXS) htdoc
-    #
-		# install: libinstall
-		# uninstall: libuninstall
-    #
-		# db: reallyall
-		# 	ocamlc -custom -I . -thread unix.cma threads.cma mysql.cma db.ml -o db.byte
-		# 	$(OCAMLOPT) -I . -thread unix.cmxa threads.cmxa mysql.cmxa db.ml -o db.native
 clean:
 		ocamlbuild -clean
 		rm *.cm*
