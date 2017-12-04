@@ -400,7 +400,7 @@ let get_swipes =
 let get_all_students =
   let select = P.create db ("SELECT * FROM students") in
   let t1 = P.execute_null select [||] in
-  let jobj = loop2 t1 `Null in
+  let jobj = loop2 t1 (`Assoc[]) in
   Yojson.Basic.to_string jobj
 
 
