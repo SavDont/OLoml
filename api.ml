@@ -11,7 +11,7 @@ open Yojson.Basic
  *  "match" if the current period is the match period
  *  "null" if the periods have not been initialize yet *)
 let current_period () =
-  (* if not (check_period_set ()) then "null"
+  if not (check_period_set ()) then (print_endline("\nissa null"); "null")
   else
     let period_jsn = get_period_query () |> from_string in
     let upd = period_jsn |> Util.member "update" |> Util.to_float in
@@ -21,7 +21,7 @@ let current_period () =
     if today < upd then "null"
     else if today > upd && today < swi then "update"
     else if today > swi && today < mat then "swipe"
-     else "match" *)
+     else "match"
   "null"
 
 let get_some = function
