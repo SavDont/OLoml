@@ -55,34 +55,34 @@ let valid_course c =
 
 (* [year_to_str y] gives the string representation of the year variant, y. *)
 let year_to_str = function
-  | Fresh -> "Freshman"
-  | Soph -> "Sophomore"
-  | Jun -> "Junior"
-  | Sen -> "Senior"
+  | Fresh -> "freshman"
+  | Soph -> "sophomore"
+  | Jun -> "junior"
+  | Sen -> "senior"
   | Empty -> ""
 
 (* [parse_yr] gives the variant representation of the year string, yr.
  * Requires: yr must be "Freshman", "Sophomore", "Junior", or "Senior".*)
 let parse_yr yr =
-  if yr = "Freshman" then Fresh
-  else if yr = "Sophomore" then Soph
-  else if yr = "Junior" then Jun
-  else if yr = "Senior" then Sen
+  if yr = "freshman" then Fresh
+  else if yr = "sophomore" then Soph
+  else if yr = "junior" then Jun
+  else if yr = "senior" then Sen
   else Empty
 
 (* [loc_to_str] gives the string representation of the location variant. *)
 let loc_to_str = function
-  | North -> "North Campus"
-  | West -> "West Campus"
-  | Collegetown -> "Collegetown"
+  | North -> "north campus"
+  | West -> "west campus"
+  | Collegetown -> "collegetown"
   | Empty -> ""
 
 (* [parse_loc loc] gives the variant representation of the location string.
  * Requires: loc must be "North Campus", "West Campus", or "Collegetown"*)
 let parse_loc loc =
-  if loc = "North Campus" then North
-  else if loc = "West Campus" then West
-  else if loc = "Collegetown" then Collegetown
+  if loc = "north campus" then North
+  else if loc = "west Campus" then West
+  else if loc = "collegetown" then Collegetown
   else Empty
 
 (* [printable_lst lst] gives the string representation of lst.
@@ -158,10 +158,14 @@ let printable_student st =
   let course_lst = List.map string_of_int st.courses_taken in
   let course_lst_cs = List.map (fun s -> "CS "^s) course_lst in
   let courses = "Has taken: "^(printable_lst course_lst_cs) in
-  let hrs = "Willing to spend "^(string_of_int st.hours_to_spend)^" hours on this project" in
+  let hrs =
+    (* empty hours = -1 *)
+    if st.hours_to_spend = -1 then "unknown"
+    else string_of_int st.hours_to_spend in
+  let hrs_str = "Willing to spend "^(hrs)^" hours on this project" in
   let sched = "Available:\n"^(sched_to_str st.schedule "" 0) in
   let about = "About me: "^st.profile_text in
-  header^"\n\n"^yr^"\n\n"^loc^"\n\n"^courses^"\n\n"^sched^"\n"^hrs^"\n\n"^about
+  header^"\n\n"^yr^"\n\n"^loc^"\n\n"^courses^"\n\n"^sched^"\n"^hrs_str^"\n\n"^about
 
 let get_student net pwd =
   match Loml_client.student_get net pwd "student" with
@@ -202,42 +206,53 @@ let student_to_json st =
   let loc = ("location", `String (loc_to_str st.location)) in
   `Assoc[name;netid;year;sched;courses;hrs;prof;loc]
 
+(* For all compatibility functions below, if either student has
+ * incomplete information for a given field, that field gives a
+ * compatibility score of 0.0. *)
+
 (* Requires: s1 and s2 must have valid schedules of the same length
  * (21 entries) *)
 let sched_score {schedule = s1} {schedule = s2} =
-  let rec counter st1 st2 acc =
-  match st1, st2 with
-  |[],[] -> acc
-  |h1::t1, h2::t2 ->
-    if h1 = h2 then counter t1 t2 (acc+.1.0)
-    else counter t1 t2 acc
-  |_ -> failwith "schedules must be same length" in
-  (counter s1 s2 0.0) /. 21.0
+  if List.length s1 = 0 || List.length s2 = 0 then 0.0
+  else
+    let rec counter st1 st2 acc =
+    match st1, st2 with
+    |[],[] -> acc
+    |h1::t1, h2::t2 ->
+      if h1 = h2 then counter t1 t2 (acc+.1.0)
+      else counter t1 t2 acc
+    |_ -> failwith "schedules must be same length" in
+    (counter s1 s2 0.0) /. 21.0
 
 (* Function of how many classes in common + difference in highest
  * course level taken *)
 let course_score {courses_taken = c1} {courses_taken = c2} =
-  let rec common_course_count st1 st2 acc =
-    match st1 with
-    | [] -> acc
-    | h::t ->
-      if List.mem h st2 then common_course_count t st2 (acc+.1.0)
-      else common_course_count t st2 acc in
-  let highest_course lst =
-    (List.fold_left(fun acc elt-> if elt > acc then elt else acc) 0 lst)/1000 in
-  let course_dev = abs((highest_course c1)-(highest_course c2))|>float_of_int in
-  (* don't want negative scores *)
-  let pre_score = max 0.0 (common_course_count c1 c2 0.0) -. course_dev in
-  pre_score /. 10.0 (* considering this a "perfect" score *)
+  if c1 = [] || c2 = [] then 0.0
+  else
+    let rec common_course_count st1 st2 acc =
+      match st1 with
+      | [] -> acc
+      | h::t ->
+        if List.mem h st2 then common_course_count t st2 (acc+.1.0)
+        else common_course_count t st2 acc in
+    let highest_course lst =
+      (List.fold_left(fun acc elt-> if elt > acc then elt else acc) 0 lst)/1000 in
+    let course_dev = abs((highest_course c1)-(highest_course c2))|>float_of_int in
+    (* don't want negative scores *)
+    let pre_score = max 0.0 (common_course_count c1 c2 0.0) -. course_dev in
+    let avg_num_courses = (float_of_int(List.length c1 + List.length c2))/.2.0 in
+    pre_score /. avg_num_courses
 
 (* Function of deviation in hours willing to spend *)
 let hour_score {hours_to_spend = h1} {hours_to_spend = h2} =
-  let hour_dev = abs (h1-h2) in
-  if hour_dev < 5 then 1.0
-  else if hour_dev < 10 then 0.75
-  else if hour_dev < 20 then 0.5
-  else if hour_dev < 30 then 0.25
-  else 0.0
+  if h1 = -1 || h2 = -1 then 0.0
+  else
+    let hour_dev = abs (h1-h2) in
+    if hour_dev < 5 then 1.0
+    else if hour_dev < 10 then 0.75
+    else if hour_dev < 20 then 0.5
+    else if hour_dev < 30 then 0.25
+    else 0.0
 
 let loc_score {location = l1} {location = l2} =
-  if l1 = l2 then 1.0 else 0.0
+  if l1 = l2 && (not (l1 = Empty || l2 = Empty)) then 1.0 else 0.0
