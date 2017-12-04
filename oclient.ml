@@ -2,21 +2,12 @@ open Lwt
 open Cohttp
 open Cohttp_lwt_unix
 
-(* helpers to abstract Cohttp's data types *)
-(* [make_headers bindings] a Cohttp.Header.t with the key value bindings in 
- * [bindings]
- * requies: [binding] is a string*string association list that represents a 
- * key value pair as (key, value) *)
 let make_headers bindings = 
   Header.add_list (Header.init ()) bindings
 
-(* [make_uri endpoint] is a Uri.t representing a given endpoint at the base_url 
- * requires: [endpoint] is a valid endpoint on the base_url *)
 let make_uri base_url endpoint =
   base_url ^ endpoint |> Uri.of_string
 
-(* [make_body reqBody] is the Cohttp_lwt.Body.t formed from reqBody
- * requires: [reqBody] is a valid string request body *)
 let make_body reqBody = 
   Cohttp_lwt.Body.of_string reqBody
 
