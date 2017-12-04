@@ -159,7 +159,7 @@ let admin_delete (req:HttpServer.request) =
   let body (req:HttpServer.request) =
     begin match Header.get req.headers "scope" |> get_some with
       | "class" ->
-        reset_class;
+        reset_class ();
         make_resp `OK "Success"
       | "subset" ->
         delete_students req.req_body;
