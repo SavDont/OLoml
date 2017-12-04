@@ -56,20 +56,20 @@ let get_period_query ()=
   let select = P.create db ("SELECT u, s, m FROM periods") in
   let t1 = P.execute_null select [||] in
     match P.fetch t1 with
-    | Some arr -> print_endline("\nMarker 1");
+    | Some arr ->
       begin match (Array.get arr 0, Array.get arr 1, Array.get arr 2) with
-        |(Some u, Some s, Some m) -> print_endline("\nMarker 2: "^u);P.close select;
+        |(Some u, Some s, Some m) -> P.close select;
           let upd = ("update", `Float (Mysql.float2ml u)) in
           let mat = ("match", `Float (Mysql.float2ml m)) in
           let swi = ("swipe", `Float (Mysql.float2ml s)) in
           let jsonobj = `Assoc[upd;swi;mat] in Yojson.Basic.to_string jsonobj
-        |_ -> print_endline("\nMarker 3");P.close select;
+        |_ -> P.close select;
           let upd = ("update", `Null) in
           let mat = ("match", `Null) in
           let swi = ("swipe", `Null) in
           let jsonobj = `Assoc[upd;swi;mat] in Yojson.Basic.to_string jsonobj
       end
-    | None -> print_endline("\nMarker 4"); P.close select;
+    | None -> P.close select;
       let upd = ("update", `Null) in
       let mat = ("match", `Null) in
       let swi = ("swipe", `Null) in
