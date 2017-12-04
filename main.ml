@@ -171,9 +171,6 @@ and
         print_endline ("\nenter 'swipe' to swipe, 'profile' to view your profile, or 'quit' to quit");
         swipe_period net pwd
       | "match" ->
-        (* TODO: handling if prof hasn't run matchify algorithm yet *)
-        print_endline ("\nThe system is done matching partners.\n");
-        print_endline ("\nHere's your match:\n\n");
         match_period net pwd
       | "update" ->
         print_endline ("\nSwiping has not begun. Enter 'profile' to view your profile, or 'quit' to quit");
@@ -189,11 +186,13 @@ and
   match_period net pwd =
   match get_match net pwd with
   | Some s ->
+    print_endline ("\nThe system is done matching partners.\n");
+    print_endline ("\nHere's your match:\n\n");
     print_endline (printable_student s);
     print_endline ("\nMatching complete. Terminating program.");
   | None ->
-    print_endline ("\nError. Terminating program.");
-
+    print_endline ("\nSorry, your match isn't ready yet. Check back later.");
+    print_endline ("\nLogging out...");
 and
 
   swipe_period net pwd =
