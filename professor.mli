@@ -13,13 +13,13 @@ val import_students: string -> string -> bool
  * a timePeriodDate object
  * If the string is not of the right form, it returns a*)
 val str_to_time: string -> timePeriodDate option
-(* [set_period upDate swDate mtDate pwd] takes three timePeriodDate variables
+(* [set_period swDate mtDate pwd] takes two timePeriodDate variables
  * representing the dates of each of these actions and sets those dates within
  * the database. Returns [true] iff the function successfully validates the
  * dates and writes to database. Returns [false] otherwise
  * timePeriods variable representing the time
  * side effect: writes to the DB *)
-val set_periods: timePeriodDate -> timePeriodDate -> timePeriodDate -> string -> bool
+val set_periods: timePeriodDate -> timePeriodDate -> string -> bool
 
 (* [remove_student netID pwd] takes a student's netid and removes the associated
  * student from the database. Returns [true] if the function successfully

@@ -61,17 +61,15 @@ and
 
   prof_set_period net pwd =
   match parse_command (read_line ()) with
-  | Period -> print_endline ("\nPlease type the start date of the update period in the form 'MM DD YYYY'");
-    let upDate = read_line () |> str_to_time in
-    print_endline ("\nPlease type the start date of the swipe period in the form 'MM DD YYYY'");
+  | Period -> print_endline ("\nPlease type the start date of the swipe period in the form 'MM DD YYYY'");
     let swDate = read_line () |> str_to_time in
     print_endline ("\nPlease type the start date of the match period in the form 'MM DD YYYY'");
     let mtDate = read_line () |> str_to_time in
     begin
-      match (upDate, swDate, mtDate) with
-      | (Some d1, Some d2, Some d3) -> print_endline ("\nPlease type the json file directory to import students");
+      match (swDate, mtDate) with
+      | (Some d1, Some d2) -> print_endline ("\nPlease type the json file directory to import students");
         let dir = read_line () in
-        let pdSuccess = set_periods d1 d2 d3 pwd in
+        let pdSuccess = set_periods d1 d2 pwd in
         let impSuccess = import_students dir pwd in
       begin
         match (pdSuccess, impSuccess) with

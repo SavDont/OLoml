@@ -96,9 +96,9 @@ let tm_record (m, d, y) = {
   tm_yday = 0;
   tm_isdst = false;
 }
-let set_periods upDate swDate mtDate pwd =
-  if valid_date upDate && valid_date swDate && valid_date mtDate
-  then let uTime = upDate |> tm_record |> mktime |> fst in
+let set_periods swDate mtDate pwd =
+  if valid_date swDate && valid_date mtDate
+  then let uTime = time () in
     let sTime = swDate |> tm_record |> mktime |> fst in
     let mTime = mtDate |> tm_record |> mktime |> fst in
     let strJson = to_string (`Assoc[("update", `String ((uTime+.0.01) |> string_of_float));("swipe",`String ((sTime +. 0.01)|>string_of_float));("match",`String ((mTime +.0.01)|>string_of_float))]) in
