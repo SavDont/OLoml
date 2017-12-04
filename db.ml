@@ -355,12 +355,8 @@ let get_swipes =
   let t1 = P.execute_null select [||] in
   loop t1 ""
 
-
-
-(*let get_student_query netid =
-  let select = P.create db ("SELECT * FROM students WHERE netid = ?") in
-  let t1 = P.execute_null select [|Some netid|] in
-    match P.fetch t1 with
+  let rec loop2 t jobj=
+    match P.fetch t with
     | Some arr ->
       begin match (Array.get arr 0, Array.get arr 1, Array.get arr 2,
                    Array.get arr 3, Array.get arr 4, Array.get arr 5,
@@ -376,7 +372,7 @@ let get_swipes =
           let prof = ("profile_text", `String jprof) in
           let loc = ("location", `String jloc) in
           let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
-          Yojson.Basic.to_string jsonobj
+          loop2 t (Util.combine jobj jsonobj)
         |_ ->
           let name = ("name", `Null) in
           let netid = ("netid", `Null) in
@@ -387,7 +383,7 @@ let get_swipes =
           let prof = ("profile_text", `Null) in
           let loc = ("location", `Null) in
           let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
-          Yojson.Basic.to_string jsonobj
+          loop2 t (Util.combine jobj jsonobj)
       end
   | None ->
     let name = ("name", `Null) in
@@ -399,8 +395,14 @@ let get_swipes =
     let prof = ("profile_text", `Null) in
     let loc = ("location", `Null) in
     let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
-    Yojson.Basic.to_string jsonobj
+    loop2 t (Util.combine jobj jsonobj)
 
-*)
+let get_all_students =
+  let select = P.create db ("SELECT * FROM students") in
+  let t1 = P.execute_null select [||] in
+  let jobj = loop2 t1 `Null in
+  Yojson.Basic.to_string jobj
+
+
 let reset_class =
   reset_students; reset_swipes; reset_matches; reset_credentials; reset_periods
