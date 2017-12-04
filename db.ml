@@ -61,9 +61,9 @@ let get_period_query ()=
     | Some arr -> print_endline("\nMarker 1");
       begin match (Array.get arr 0, Array.get arr 1, Array.get arr 2) with
         |(Some u, Some s, Some m) -> print_endline("\nMarker 2: "^u);P.close select;
-          let upd = ("update", `Float (float_of_string u)) in
-          let mat = ("match", `Float (float_of_string m)) in
-          let swi = ("swipe", `Float (float_of_string s)) in
+          let upd = ("update", `Float u) in
+          let mat = ("match", `Float m) in
+          let swi = ("swipe", `Float s) in
           let jsonobj = `Assoc[upd;swi;mat] in Yojson.Basic.to_string jsonobj
         |_ -> print_endline("\nMarker 3");P.close select;
           let upd = ("update", `Null) in
