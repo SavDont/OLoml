@@ -100,8 +100,8 @@ let swipes_post (req:HttpServer.request) =
   let body (req:HttpServer.request) =
     begin match current_period () with
       | "swipe" ->
-        failwith "TACO Need swipes post"
-        (* make_resp `OK "Success" *)
+        set_swipes req.req_body;
+        make_resp `OK "Success"
       | _ ->
         make_resp `Unauthorized "Incorrect period"
     end in
