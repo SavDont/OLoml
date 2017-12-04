@@ -160,7 +160,9 @@ let admin_delete (req:HttpServer.request) =
       | "class" ->
         reset_class;
         make_resp `OK "Success"
-      | _ ->
-        failwith "TACO need admin delete partial"
+      | "subset" ->
+        delete_students req.req_body;
+        make_resp `OK "Success"
+      | _ -> make_resp `No_response "No valid response. Try again later"
     end in
   create_callback req ["password"; "scope";] admin_login body
