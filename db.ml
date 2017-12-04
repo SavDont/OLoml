@@ -292,23 +292,23 @@ let admin_change_query info =
     | _ -> ()
   end
 
-let reset_students =
+let reset_students () =
   let reset = P.create db ("TRUNCATE students") in
   match P.execute_null reset [||] with |_ -> (); P.close reset
 
-let reset_swipes =
+let reset_swipes () =
   let reset = P.create db ("TRUNCATE swipes") in
   match P.execute_null reset [||] with |_ -> (); P.close reset
 
-let reset_matches =
+let reset_matches () =
   let reset = P.create db ("TRUNCATE matches") in
   match P.execute_null reset [||] with |_ -> (); P.close reset
 
-let reset_credentials =
+let reset_credentials () =
   let reset = P.create db ("TRUNCATE credentials") in
   match P.execute_null reset [||] with |_ -> (); P.close reset
 
-let reset_periods =
+let reset_periods () =
   let reset = P.create db ("TRUNCATE periods") in
   match P.execute_null reset [||] with |_ -> (); P.close reset
 
@@ -411,4 +411,4 @@ let get_all_students ()=
 
 
 let reset_class () =
-  reset_students; reset_swipes; reset_matches; reset_credentials; reset_periods
+  reset_students (); reset_swipes (); reset_matches (); reset_credentials (); reset_periods ()
