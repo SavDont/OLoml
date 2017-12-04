@@ -58,20 +58,20 @@ let get_period_query ()=
   let select = P.create db ("SELECT * FROM periods") in
   let t1 = P.execute_null select [||] in
     match P.fetch t1 with
-    | Some arr ->
+    | Some arr -> print_endline("\nMarker 1");
       begin match (Array.get arr 0, Array.get arr 1, Array.get arr 2) with
-        |(Some u, Some s, Some m) -> P.close select;
+        |(Some u, Some s, Some m) -> print_endline("\nMarker 2");P.close select;
           let upd = ("update", `String u) in
           let mat = ("match", `String m) in
           let swi = ("swipe", `String s) in
           let jsonobj = `Assoc[upd;swi;mat] in Yojson.Basic.to_string jsonobj
-        |_ -> P.close select;
+        |_ -> print_endline("\nMarker 3");P.close select;
           let upd = ("update", `Null) in
           let mat = ("match", `Null) in
           let swi = ("swipe", `Null) in
           let jsonobj = `Assoc[upd;swi;mat] in Yojson.Basic.to_string jsonobj
       end
-    | None -> P.close select;
+    | None -> print_endline("\nMarker 4"); P.close select;
       let upd = ("update", `Null) in
       let mat = ("match", `Null) in
       let swi = ("swipe", `Null) in
