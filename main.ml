@@ -197,8 +197,7 @@ and
   print_string ("> ");
   match parse_command (read_line ()) with
   | Goto SwipePage ->
-    (* TODO: this takes admin password, not student *)
-    let students = get_all_students pwd in
+    let students = get_all_students () in
     begin
       match get_student net pwd with
       | None ->

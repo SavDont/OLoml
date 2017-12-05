@@ -30,7 +30,7 @@ val remove_student: string -> string -> bool
 
 (* [get_all_student pwd] reads from the database and returns a list of students.
  *)
-val get_all_students: string -> Student.student list
+val get_all_students: unit -> Student.student list
 
 (* [reset_class pwd] clears the database and returns [true] iff the function
  * successfully clears the database and [false] otherwise
