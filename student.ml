@@ -81,7 +81,7 @@ let loc_to_str = function
  * Requires: loc must be "North Campus", "West Campus", or "Collegetown"*)
 let parse_loc loc =
   if loc = "north campus" then North
-  else if loc = "west Campus" then West
+  else if loc = "west campus" then West
   else if loc = "collegetown" then Collegetown
   else Empty
 
