@@ -123,7 +123,6 @@ let rec jsn_students jsnLst = match jsnLst with
 let get_all_students () =
   match Loml_client.admin_get "password" "student_all" ~netID:"" with
   |(`OK,str) ->
-    print_endline(str);
     let jsn_str = from_string str in
     let jsn_lst = Util.to_list jsn_str in
     List.map (to_string) jsn_lst |> List.map parse_student
