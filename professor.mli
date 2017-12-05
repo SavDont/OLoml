@@ -28,10 +28,6 @@ val set_periods: timePeriodDate -> timePeriodDate -> string -> bool
  * side effect: writes to the DB *)
 val remove_student: string -> string -> bool
 
-(* [get_student netID pwd] returns Some s iff a student with netID exists in the
- * database and s is that student. Otherwise, return None *)
-val get_student: string -> string -> Student.student option
-
 (* [get_all_student pwd] reads from the database and returns a list of students.
  *)
 val get_all_students: string -> Student.student list

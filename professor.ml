@@ -113,15 +113,6 @@ let remove_student netID pwd =
   then true
   else false
 
-let get_student netID pwd =
-  let getReq = Loml_client.admin_get pwd "student_indiv" ~netID:netID in
-  if fst getReq = `OK
-  then
-    let jList = getReq |> snd |> from_string |> get_assoc_list in
-    if jList = [] then None
-    else Some (jList |> List.hd |> snd |> to_string |> parse_student)
-  else None
-
 (* [jsn_students jsnLst] takes a tuple list of type (string * json) and
  * *)
 let rec jsn_students jsnLst = match jsnLst with
