@@ -111,7 +111,7 @@ and
       match matchify s_results pwd with
       | true ->
         print_endline ("\nMatches generated and stored successfully. Returning to main page.");
-        prof_main_outer net pwd
+        print_endline ("\nLogging out...")
       | _ ->
         failwith "add error message"
     end
