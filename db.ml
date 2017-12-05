@@ -369,7 +369,7 @@ let set_swipes swipes =
   let insert = P.create db ("INSERT INTO swipes (netid, swipes) VALUES
   (?, ?)") in
   let res = begin match ignore (P.execute insert [|netid1;swipe_str|]) with
-    |_-> P.close insert
+    |_-> P.close insert end 
   (*let swipes = get_swipe_json netids1 [] jsn in
     set_swipes_helper () netids1 swipes*)
 
