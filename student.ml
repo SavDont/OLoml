@@ -131,21 +131,23 @@ let ext_int jsn_int =
   | None -> -1
   | Some s -> int_of_string s
 
-let ext_lst jsn_lst =
-  match Util.to_string_option jsn_lst with
-  | None -> "[]"
-  | Some s -> s
+let ext_courses jsn_str =
+  let courses = Util.member "courses_taken" jsn_str in
+  match courses with
+  | `String s ->
+    let str = from_string s in
+    let lst = Util.member "courses_taken" str in
+    Util.to_list lst |> List.map (Util.to_int)
+  | _ -> []
 
 let parse_student st_str =
   let jsn = from_string st_str in
-  let courses = jsn |> Util.member "courses_taken" |> ext_lst |> from_string in
-  let sched = jsn |> Util.member "schedule" |> ext_lst |> from_string in
   {
     name = jsn |> Util.member "name" |> ext_str;
     netid = jsn |> Util.member "netid" |> ext_str;
     year = jsn |> Util.member "year" |> ext_str |> parse_yr;
     schedule = [];
-    courses_taken = [];
+    courses_taken = ext_courses jsn;
     hours_to_spend = jsn |> Util.member "hours_to_spend" |> ext_int;
     profile_text = jsn |> Util.member "profile_text" |> ext_str;
     location = jsn |> Util.member "location" |> ext_str |> parse_loc
