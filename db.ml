@@ -228,7 +228,7 @@ let change_sched net info =
   |Some i ->
       let insert = P.create db ("UPDATE students SET schedule = ?
                   WHERE Netid = ?") in
-      ignore (P.execute insert [|info; net|]); P.close insert
+      ignore (P.execute insert [|i; net|]); P.close insert
   |_ -> ()
 
 let change_courses net info =
@@ -237,7 +237,7 @@ let change_courses net info =
   |Some i ->
     let insert = P.create db ("UPDATE students SET courses=?
                 WHERE Netid = ?") in
-    ignore (P.execute insert [|info; net|]); P.close insert
+    ignore (P.execute insert [|i; net|]); P.close insert
   |_ -> ()
 
 
@@ -247,7 +247,7 @@ let change_hours net info =
   |Some i ->
     let insert = P.create db ("UPDATE students SET hours=?
                   WHERE Netid = ?") in
-    ignore (P.execute insert [|info; net|]); P.close insert
+    ignore (P.execute insert [|i; net|]); P.close insert
   |_ -> ()
 
 let change_prof net info =
@@ -256,7 +256,7 @@ let change_prof net info =
   |Some i ->
     let insert = P.create db ("UPDATE students SET profile=?
                     WHERE Netid = ?") in
-    ignore (P.execute insert [|info; net|]); P.close insert
+    ignore (P.execute insert [|i; net|]); P.close insert
   |_ -> ()
 
 let change_loc net info =
@@ -265,7 +265,7 @@ let change_loc net info =
   |Some i ->
     let insert = P.create db ("UPDATE students SET location=?
                       WHERE Netid = ?") in
-    ignore (P.execute insert [|info; net|]); P.close insert
+    ignore (P.execute insert [|i; net|]); P.close insert
   |_ -> ()
 
 let change_stu_query net info =
