@@ -166,7 +166,7 @@ and
       match str with
       | "swipe" ->
         print_endline ("\nIt's time to swipe for potential matches. ");
-        print_endline ("\nenter 'swipe' to swipe, 'profile' to view your profile, or 'quit' to quit");
+        print_endline ("\nenter 'swipe' to swipe or 'quit' to quit");
         swipe_period net pwd
       | "match" ->
         match_period net pwd
@@ -209,7 +209,6 @@ and
         let pl = poolify s students in
         outer_swipe_loop pl net pwd swipes
     end
-  | Goto ProfilePage -> outer_profile_loop net pwd
   | Quit -> quit_check_outer net pwd student_main_outer
   | _ ->
     print_endline ("\nUnrecognized command. Enter 'swipe', 'profile', or 'quit'.");
@@ -229,42 +228,15 @@ and
 and
 
   outer_profile_loop net pwd =
-  match (get_student net pwd, snd (period_get net pwd)) with
-  | (None, _) ->
+  match get_student net pwd with
+  | None ->
     print_endline ("\nError retrieving profile. Try Again.");
     student_main_outer net pwd
-  | (Some s, "update") ->
+  | Some s ->
     print_endline (printable_student s);
     print_newline ();
     print_endline ("\nEnter 'update' to update your profile, or 'quit' to quit");
     inner_profile_loop net pwd
-  | (Some s, _) ->
-    print_endline (printable_student s);
-    print_newline ();
-    print_endline ("\nEnter 'update' to update your profile, 'swipe' to swipe, or 'quit' to quit");
-    inner_profile_loop_non_update net pwd
-
-and
-
-  inner_profile_loop_non_update net pwd =
-  print_string ("\n> ");
-  match parse_command (read_line ()) with
-  | Update -> update_loop net pwd
-  | Quit -> quit_check_outer net pwd outer_profile_loop
-  | Goto SwipePage -> let students = get_all_students pwd in
-    begin
-      match get_student net pwd with
-      | None ->
-        print_endline ("\nError retrieving swipes. Try Again.");
-        student_main_outer net pwd
-      | Some s ->
-        let swipes = init_swipes students in
-        let pl = poolify s students in
-        outer_swipe_loop pl net pwd swipes
-    end
-  | _ ->
-    print_endline ("\nUnrecognized command. Enter 'update', 'swipe' or 'quit'.");
-    inner_profile_loop_non_update net pwd
 
 and
 
