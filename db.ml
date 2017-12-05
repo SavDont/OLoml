@@ -368,21 +368,23 @@ let set_swipes swipes =
   let swipes = get_swipe_json netids1 [] jsn in
   set_swipes_helper () netids1 swipes
 
-let rec loop t str=
+let rec loop t jobj=
   match P.fetch t with
   | Some arr ->
     begin match (Array.get arr 0, Array.get arr 1) with
       |(Some jnetid, Some jswipes) -> let s = (jnetid, `String jswipes) in
         let obj = `Assoc[s] in
-        loop t str ^ (Yojson.Basic.to_string obj)
-      |_ -> str
+        loop t (obj::jobj)
+      |_ -> jobj
     end
-  | None -> str
+  | None -> jobj
 
 let get_swipes ()=
   let select =P.create db ("SELECT * FROM swipes") in
   let t1 = P.execute_null select [||] in
-  P.close select; loop t1 ""
+  let jobj = loop t1 ([]) in
+  let jobj_lst = `List jobj  in
+  P.close select; Yojson.Basic.to_string jobj_lst
 
   let rec loop2 t jobj=
     match P.fetch t with
