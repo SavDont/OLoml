@@ -1,34 +1,32 @@
 open Loml_client
 open Yojson.Basic
 
-type swipe_results_class = (string * string * int) list
+type swipe_results_class = (string * string * float) list
 
 type matching = (string * string) list
 
-(* [get_assoc_list jsn] takes a json argument and outputs the Association list
- * from it*)
-let get_assoc_list jsn = match jsn with
-  | `Assoc lst -> lst
-  | _ -> []
 
-(* [create_swipes netID lst] takes a tuple list of type string * `Int i and
+(* [create_swipes netID lst] takes a tuple list of type string * `Float f and
  * and a [netID] and creates a swipe_results_class tuple with the netID
  * and each tuple in the list [lst]
  * Requires: lst's second value in the tuple must be of the form `Int i
  * Returns: swipe_results_class*)
 let rec create_swipes netID lst = match lst with
-  | (str, `Int i)::t -> if compare netID str = -1
-    then (netID, str, i)::(create_swipes netID t)
-    else (str, netID, i)::(create_swipes netID t)
+  | (str, `Float f)::t -> if compare netID str = -1
+    then (netID, str, f)::(create_swipes netID t)
+    else if compare netID str = 1
+    then (str, netID, f)::(create_swipes netID t)
+    else
+      create_swipes netID t
   | [] -> []
   | _ -> failwith "impossible"
 
-(* [get_all_results swLst] takes a tuple list of string * `Assoc list and
+(* [get_all_results swLst] takes a tuple list of (string * (string * `Float f) list) list and
  * creates a variable of type swipe_results_class to represent all of the
  * the swipes
  * Returns: swipe_results_class*)
 let rec get_all_results swLst = match swLst with
-  | (netID, j)::t -> (create_swipes netID (get_assoc_list j)) @
+  | (netID, l)::t -> (create_swipes netID l) @
                      get_all_results t
   | [] -> []
 
@@ -41,9 +39,10 @@ let rec get_all_results swLst = match swLst with
  * alphabetically ordered
  * returns: int*)
 let rec find_compat_score lst netID1 netID2 = match lst with
-  | (n1, n2, i)::t -> if n1 = netID1 && n2 = netID2 then i
+  | (n1, n2, f)::t -> if (n1 = netID2 && n2 = netID1) ||
+			 (n1 = netID1 && n2 = netID2) then f
     else find_compat_score t netID1 netID2
-  | [] -> 0
+  | [] -> 0.0
 
 (* [rem_swipe lst netID1 netID2] takes a swipe_results_class and two strings
  * representing netids and removes the tuple with matching netids from the
@@ -53,9 +52,10 @@ let rec find_compat_score lst netID1 netID2 = match lst with
  * alphabetically ordered
  * returns: swipe_results_class*)
 let rec rem_swipe lst netID1 netID2 = match lst with
-  | (n1, n2, i)::t -> if n1 = netID1 && n2 = netID2
+  | (n1, n2, f)::t -> if (n1 = netID2 && n2 = netID1) ||
+			(n1 = netID1 && n2 = netID2)
     then rem_swipe t netID1 netID2
-    else (n1, n2, i)::(rem_swipe t netID1 netID2)
+    else (n1, n2, f)::(rem_swipe t netID1 netID2)
   | [] -> []
 
 (* [resolve_duplicates swResults] takes a swipe_results_class and resolves
@@ -65,9 +65,9 @@ let rec rem_swipe lst netID1 netID2 = match lst with
  * in alphabetical order in relation to one another
  * returns: swipe_results_class without duplicate netID pairs*)
 let rec resolve_duplicates swResults = match swResults with
-  | (n1, n2, i)::t -> let newScore = find_compat_score t n1 n2 in
+  | (n1, n2, f)::t -> let newScore = find_compat_score t n1 n2 in
     let newTl = rem_swipe t n1 n2 in
-    (n1, n2, i+newScore)::(resolve_duplicates newTl)
+    (n1, n2, f+.newScore)::(resolve_duplicates newTl)
   | [] -> []
 
 (* [get_unique_ids_sw swLst acc] takes a swipe_results_class and creates a list
@@ -84,11 +84,24 @@ let rec get_unique_ids_sw swLst acc = match swLst with
     else get_unique_ids_sw t acc
   | [] -> acc
 
+(* [swipe_list_conversion lst] takes a (string*`String str) list and converts it into a
+ * (string * (string * `Float f) list) list
+ * requires: the string in snd lst  must be a json formattable type
+ * returns: (string * (string * `Float f) list) list*)
+let rec swipe_list_conversion lst = match lst with
+  | h::t -> let netid = fst h in
+    let yoj = h |> snd |> Yojson.Basic.Util.to_string |> Yojson.Basic.from_string in
+    let asLst = yoj |> Yojson.Basic.Util.to_list |> Yojson.Basic.Util.filter_assoc |> List.flatten in
+    (netid, asLst)::(swipe_list_conversion t)
+  | [] -> []
+
+
 let gen_class_results pwd =
   let swReq = Loml_client.swipes_get pwd in
   if fst swReq = `OK
   then
-    let lst = swReq |> snd |> from_string |> get_assoc_list in
+    let lst = swReq |> snd |> from_string |>
+              Util.to_list |> Util.filter_assoc |> List.flatten |> swipe_list_conversion in
     let allSwipes = get_all_results lst in
     resolve_duplicates allSwipes
   else []
@@ -141,12 +154,12 @@ let rec duplicate_tuples lst = match lst with
 
 let matchify r pwd =
   let unmatchedInit = get_unique_ids_sw r [] in
-  let orderedSw = List.rev (List.sort
-                              (fun (_,_,i1) (_,_,i2) -> if i1 > i2 then 1
+  let orderedSw = List.sort
+                              (fun (_,_,i1) (_,_,i2) -> if i1 > i2 then -1
                               else if i1 = i2 then 0
-                              else -1) r) in
+                              else 1) r in
   let matches  = orderedSw |> get_matches |> duplicate_tuples in
-  let unmatched = find_unmatched matches unmatchedInit in
+  let unmatched =  find_unmatched matches unmatchedInit in
   let leftovers = List.map (fun s -> (s, "UNMATCHED")) unmatched in
   let all_matches = matches @ leftovers in
   let rec jsonify lst acc = match lst with

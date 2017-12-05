@@ -135,7 +135,7 @@ let get_student_query netid =
     Yojson.Basic.to_string jsonobj
 
 let get_stu_match_query netid =
-  let select = P.create db ("SELECT stu2 FROM matches WHERE netid = ?") in
+  let select = P.create db ("SELECT stu2 FROM matches WHERE stu1 = ?") in
   let t1 = P.execute_null select [|Some netid|] in
     match P.fetch t1 with
     | Some arr ->
@@ -217,7 +217,7 @@ let post_matches_query matches =
   let jsn = from_string matches in
   let firsts = jsn |> Util.keys in (*string list of netids for first students*)
   let seconds = get_pair firsts [] jsn in
-  post_match_helper () firsts seconds
+  post_match_helper () firsts (List.rev seconds)
 
 
 (*helper functions that change each specific field if the field exists in the
@@ -346,21 +346,6 @@ let delete_students students =
     |h::t -> (get_swipe_json t ((j |> Util.member h |>
                             Yojson.Basic.to_string):: swipes) j)
     |[] -> swipes
-
-  let rec set_swipes_helper un nets1 s=
-    match nets1 with
-    |h1::t1 ->
-      begin match s with
-      |h2::t2 ->
-        let insert = P.create db ("INSERT INTO swipes (netid, swipes) VALUES
-        (?, ?)") in
-        let res = begin match ignore (P.execute insert [|h1;h2|]) with
-          |_-> (); P.close insert
-        end in
-        set_swipes_helper res t1 t2
-      |[] -> ()
-      end
-    |[] -> ()
 
 let set_swipes swipes =
   let jsn = from_string swipes in
