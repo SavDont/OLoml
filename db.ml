@@ -347,21 +347,6 @@ let delete_students students =
                             Yojson.Basic.to_string):: swipes) j)
     |[] -> swipes
 
-  let rec set_swipes_helper un nets1 s=
-    match nets1 with
-    |h1::t1 ->
-      begin match s with
-      |h2::t2 ->
-        let insert = P.create db ("INSERT INTO swipes (netid, swipes) VALUES
-        (?, ?)") in
-        let res = begin match ignore (P.execute insert [|h1;h2|]) with
-          |_-> (); P.close insert
-        end in
-        set_swipes_helper res t1 t2
-      |[] -> ()
-      end
-    |[] -> ()
-
 let set_swipes swipes =
   let jsn = from_string swipes in
   let netid1 = jsn |> Util.keys |> List.hd in
