@@ -81,12 +81,12 @@ let get_student_query netid =
     match P.fetch t1 with
     | Some arr -> P.close select;
       let name =
-      begin match Array.get arr 0 with
+      begin match Array.get arr 1 with
         |Some i -> ("name", `String i)
         |None -> ("name", `Null)
       end in
       let netid =
-      begin match Array.get arr 1 with
+      begin match Array.get arr 0 with
         |Some i -> ("netid", `String i)
         |None -> ("netid", `Null)
       end in

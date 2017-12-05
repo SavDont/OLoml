@@ -253,7 +253,7 @@ and
 and
 
   update_loop net pwd =
-  print_endline ("\nWhat would you like to update? Enter '0' for location, '1' for classes taken, '2' for schedule, or '3' for hours willing to spend. Enter 'quit' to quit. ");
+  print_endline ("\nWhat would you like to update? Enter '0' for location, '1' for classes taken, '2' for schedule, '3' for hours willing to spend, or '4' for profile bio. Enter 'quit' to quit. ");
   print_string ("\n> ");
   match parse_command (read_line ()) with
   | Field 0 -> update_loc net pwd
@@ -269,6 +269,7 @@ and
     print_endline ("Answer 'yes' or 'no' to the following questions to build your schedule. You cannot quit until you've answered all of them:\n");
     update_sched net pwd time_str []
   | Field 3 -> update_hours net pwd
+  | Field 4 -> update_text net pwd
   | Quit -> quit_check_outer net pwd update_loop
   | _ ->
     print_endline ("\nUnrecognized command. Enter 'quit' or the number of field you want to update.");
@@ -372,6 +373,14 @@ and
   | _ ->
     print_string ("\nUnrecognized command. ");
     update_hours net pwd
+
+and
+
+  update_text net pwd =
+  print_endline ("\nEnter your bio: ");
+  print_string ("\n");
+  let txt = read_line () in
+  update_feedback net pwd [Text txt]
 
 and
 
