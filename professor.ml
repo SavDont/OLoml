@@ -120,14 +120,14 @@ let rec jsn_students jsnLst = match jsnLst with
                   parse_student)::(jsn_students t)
   | [] -> []
 
-let get_all_students pwd =
-  let getReq = Loml_client.admin_get pwd "student_all" ~netID:"" in
-  if fst getReq = `OK
-  then
-    let jsn_str = from_string (snd getReq) in
+let get_all_students () =
+  match Loml_client.admin_get "password" "student_all" ~netID:"" with
+  |(`OK,str) ->
+    print_endline(str);
+    let jsn_str = from_string str in
     let jsn_lst = Util.to_list jsn_str in
     List.map (to_string) jsn_lst |> List.map parse_student
-  else []
+  |(_,str) -> []
 
 let reset_class pwd =
   let emptyJson = "{}" in
