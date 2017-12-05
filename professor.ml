@@ -123,8 +123,10 @@ let rec jsn_students jsnLst = match jsnLst with
 let get_all_students pwd =
   let getReq = Loml_client.admin_get pwd "student_all" ~netID:"" in
   if fst getReq = `OK
-  then  let lst = getReq |> snd |> from_string |> get_assoc_list in
-    jsn_students lst
+  then
+    let jsn_str = from_string (snd getReq) in
+    let jsn_lst = Util.to_list jsn_str in
+    List.map (to_string) jsn_lst |> List.map parse_student
   else []
 
 let reset_class pwd =
