@@ -366,8 +366,7 @@ let set_swipes swipes =
   let jsn = from_string swipes in
   let netid1 = jsn |> Util.keys |> List.hd in
   let swipe_str = jsn |> Util.member netid1|> Util.to_string in
-  let insert = P.create db ("INSERT INTO swipes (netid, swipes) VALUES
-  (?, ?)") in
+  let insert = P.create db ("INSERT INTO swipes VALUES (?, ?)") in
   begin match ignore (P.execute insert [|netid1;swipe_str|]) with
     |_-> P.close insert
   end
