@@ -146,7 +146,7 @@ let parse_student st_str =
     year = jsn |> Util.member "year" |> ext_str |> parse_yr;
     schedule = sched |> Util.to_list |> List.map Util.to_bool;
     courses_taken = courses |> Util.to_list |> List.map Util.to_int;
-    hours_to_spend = jsn |> Util.member "hours_to_spend" |> ext_int;
+    hours_to_spend = jsn |> Util.member "hours_to_spend" |> ext_str |> int_of_string;
     profile_text = jsn |> Util.member "profile_text" |> ext_str;
     location = jsn |> Util.member "location" |> ext_str |> parse_loc
   }
