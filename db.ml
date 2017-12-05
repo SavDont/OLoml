@@ -135,7 +135,7 @@ let get_student_query netid =
     Yojson.Basic.to_string jsonobj
 
 let get_stu_match_query netid =
-  let select = P.create db ("SELECT stu2 FROM matches WHERE netid = ?") in
+  let select = P.create db ("SELECT stu2 FROM matches WHERE stu1 = ?") in
   let t1 = P.execute_null select [|Some netid|] in
     match P.fetch t1 with
     | Some arr ->
