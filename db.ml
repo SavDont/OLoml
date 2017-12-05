@@ -217,7 +217,7 @@ let post_matches_query matches =
   let jsn = from_string matches in
   let firsts = jsn |> Util.keys in (*string list of netids for first students*)
   let seconds = get_pair firsts [] jsn in
-  post_match_helper () firsts seconds
+  post_match_helper () firsts (List.rev seconds)
 
 
 (*helper functions that change each specific field if the field exists in the
