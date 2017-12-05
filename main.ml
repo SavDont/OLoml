@@ -250,7 +250,7 @@ and
   match parse_command (read_line ()) with
   | Update -> update_loop net pwd
   | Quit -> quit_check_outer net pwd outer_profile_loop
-  | Goto SwipePage -> let students = get_all_students pwd in
+  | Goto SwipePage -> let students = get_all_students () in
     begin
       match get_student net pwd with
       | None ->
