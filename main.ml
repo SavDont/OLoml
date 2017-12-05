@@ -339,20 +339,21 @@ and
 
   update_sched net pwd lst acc =
   match lst with
-  | [] ->
+  | [] -> let lst_rev = List.rev acc in
     begin
-      match List.filter (fun x -> x <> "yes" && x <> "no")lst |> List.length with
+      match List.filter (fun x -> x <> "yes" && x <> "no")lst_rev |> List.length with
       | i when i <> 0 ->
         print_endline ("\nError: some answers were not 'yes' or 'no'. Try again.\n");
         outer_profile_loop net pwd
       | _ ->
         let map_func = List.map (fun x -> if x = "yes" then true else false) in
-        update_feedback net pwd [Schedule (map_func lst)]
+        update_feedback net pwd [Schedule (map_func lst_rev)]
     end
   | h::t ->
     print_endline ("\nAre you usually free "^h^"?");
     print_string ("\n> ");
-    update_sched net pwd t (acc @ [read_line ()])
+    let resp = read_line() in
+    update_sched net pwd t (resp::acc)
 
 and
 
