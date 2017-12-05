@@ -39,7 +39,8 @@ let rec get_all_results swLst = match swLst with
  * alphabetically ordered
  * returns: int*)
 let rec find_compat_score lst netID1 netID2 = match lst with
-  | (n1, n2, f)::t -> if n1 = netID2 && n2 = netID1 then f
+  | (n1, n2, f)::t -> if (n1 = netID2 && n2 = netID1) ||
+			 (n1 = netID1 && n2 = netID2) then f
     else find_compat_score t netID1 netID2
   | [] -> 0.0
 
@@ -51,7 +52,8 @@ let rec find_compat_score lst netID1 netID2 = match lst with
  * alphabetically ordered
  * returns: swipe_results_class*)
 let rec rem_swipe lst netID1 netID2 = match lst with
-  | (n1, n2, f)::t -> if n1 = netID2 && n2 = netID1
+  | (n1, n2, f)::t -> if (n1 = netID2 && n2 = netID1) ||
+			(n1 = netID1 && n2 = netID2)
     then rem_swipe t netID1 netID2
     else (n1, n2, f)::(rem_swipe t netID1 netID2)
   | [] -> []
@@ -150,22 +152,29 @@ let rec duplicate_tuples lst = match lst with
   | (n1, n2)::t -> (n1, n2)::(n2, n1)::(duplicate_tuples t)
   | [] -> []
 
+let rec printLst lst = match lst with
+| h::t -> print_endline("\nunm: " ^ h);(printLst t)
+| [] -> ()
+let rec printMatches m = match m with
+| (s1, s2)::t -> print_endline("\n match:" ^ s1 ^ " ," ^ s2 );(printMatches t)
+| [] -> ()
+
 let matchify r pwd =
   let unmatchedInit = get_unique_ids_sw r [] in
-  let orderedSw = List.rev (List.sort
-                              (fun (_,_,i1) (_,_,i2) -> if i1 > i2 then 1
+  let orderedSw = printLst unmatchedInit; List.sort
+                              (fun (_,_,i1) (_,_,i2) -> if i1 > i2 then -1
                               else if i1 = i2 then 0
-                              else -1) r) in
+                              else 1) r in
   let matches  = orderedSw |> get_matches |> duplicate_tuples in
-  let unmatched = find_unmatched matches unmatchedInit in
-  let leftovers = List.map (fun s -> (s, "UNMATCHED")) unmatched in
+  let unmatched = printMatches (orderedSw |> get_matches |> duplicate_tuples);find_unmatched matches unmatchedInit in
+  let leftovers = printLst unmatched; List.map (fun s -> (s, "UNMATCHED")) unmatched in
   let all_matches = matches @ leftovers in
   let rec jsonify lst acc = match lst with
     | (n1, n2)::[] -> acc ^ "\"" ^ n1 ^ "\":\"" ^ n2 ^ "\""
     | (n1, n2)::t -> jsonify t (acc ^ "\"" ^ n1 ^ "\":\"" ^ n2 ^ "\",")
     | [] -> acc in
   let jStr = (jsonify all_matches "{") ^ "}" in
-  let mtchReq = Loml_client.matches_post pwd jStr in
+  let mtchReq = print_endline("\n jsn : " ^ jStr);Loml_client.matches_post pwd jStr in
   if fst mtchReq = `OK
   then true
   else false
