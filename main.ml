@@ -229,15 +229,42 @@ and
 and
 
   outer_profile_loop net pwd =
-  match get_student net pwd with
-  | None ->
+  match (get_student net pwd, snd (period_get net pwd)) with
+  | (None, _) ->
     print_endline ("\nError retrieving profile. Try Again.");
     student_main_outer net pwd
-  | Some s ->
+  | (Some s, "update") ->
     print_endline (printable_student s);
     print_newline ();
     print_endline ("\nEnter 'update' to update your profile, or 'quit' to quit");
     inner_profile_loop net pwd
+  | (Some s, _) ->
+    print_endline (printable_student s);
+    print_newline ();
+    print_endline ("\nEnter 'update' to update your profile, 'swipe' to swipe, or 'quit' to quit");
+    inner_profile_loop_non_update net pwd
+
+and
+
+  inner_profile_loop_non_update net pwd =
+  print_string ("\n> ");
+  match parse_command (read_line ()) with
+  | Update -> update_loop net pwd
+  | Quit -> quit_check_outer net pwd outer_profile_loop
+  | Goto SwipePage -> let students = get_all_students pwd in
+    begin
+      match get_student net pwd with
+      | None ->
+        print_endline ("\nError retrieving swipes. Try Again.");
+        student_main_outer net pwd
+      | Some s ->
+        let swipes = init_swipes students in
+        let pl = poolify s students in
+        outer_swipe_loop pl net pwd swipes
+    end
+  | _ ->
+    print_endline ("\nUnrecognized command. Enter 'update', 'swipe' or 'quit'.");
+    inner_profile_loop_non_update net pwd
 
 and
 
