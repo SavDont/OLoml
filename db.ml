@@ -233,7 +233,7 @@ let change_sched net info =
 
 let change_courses net info =
   let jsn = from_string info in
-  match jsn |> Util.member "classes_taken" |> Util.to_string_option with
+  match jsn |> Util.member "courses_taken" |> Util.to_string_option with
   |Some i ->
     let insert = P.create db ("UPDATE students SET courses=?
                 WHERE Netid = ?") in
