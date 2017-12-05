@@ -42,7 +42,7 @@ and
   | (`OK,str) ->
     begin
       match str with
-      | "null" -> print_endline ("\nNo period has been set yet. Enter 'period' to set the valid periods for the class. Enter 'reset' to reset class, or 'quit' to quit.");
+      | "null" -> print_endline ("\nThe class is not ready yet. Enter 'period' to set the valid periods for the class and import students. Enter 'reset' to reset class, or 'quit' to quit.");
         prof_set_period net pwd
       | "update" ->
         print_endline ("\nStudents are currently updating profiles. Enter 'remove' to remove a student from the class, 'reset' to reset the entire class, or 'quit' to quit.");
@@ -69,13 +69,18 @@ and
       match (swDate, mtDate) with
       | (Some d1, Some d2) -> print_endline ("\nPlease type the json file directory to import students");
         let dir = read_line () in
-        let pdSuccess = set_periods d1 d2 pwd in
         let impSuccess = import_students dir pwd in
       begin
-        match (pdSuccess, impSuccess) with
-        | (true, true) -> print_endline ("\n Class setup completed!");
-          prof_main_outer net pwd
-        | _ -> print_endline ("\nError");
+        match impSuccess with
+        | true  ->
+          let pdSuccess = set_periods d1 d2 pwd in
+          begin match pdSuccess with
+            | true -> 
+                print_endline ("\n Class setup completed!");
+                prof_main_outer net pwd
+            | _ -> print_endline("\n Can't setup class right now, try again later")
+          end
+        | _ -> print_endline ("\n Can't setup class right now, try again later");
           prof_main_outer net pwd
       end
       | _ -> print_endline("\nUnrecognized date. Enter 'period', 'reset', or 'quit'.");
