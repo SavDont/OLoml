@@ -37,7 +37,7 @@ let swipes_get password =
   get_req ?headers:(Some headers) uri
 
 let swipes_post netID password reqBody =
-  let headers = make_headers [("password",password)] in
+  let headers = make_headers [("netid", netID); ("password",password)] in
   let body = make_body reqBody in
   let uri = make_uri base_url swipes_endpoint in
   post_req ?headers:(Some headers) ?body:(Some body) uri
