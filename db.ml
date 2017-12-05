@@ -243,7 +243,7 @@ let change_courses net info =
 
 let change_hours net info =
   let jsn = from_string info in
-  match jsn |> Util.member "classes_taken" |> Util.to_int_option with
+  match jsn |> Util.member "hours_to_spend" |> Util.to_string_option with
   |Some i ->
     let insert = P.create db ("UPDATE students SET hours=?
                   WHERE Netid = ?") in
