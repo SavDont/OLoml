@@ -41,7 +41,7 @@ type student = {
 type updateData =
   | Schedule of schedule
   | Courses of int list
-  | Hours of int
+  | Hours of string
   | Location of location
   | Text of string
 
@@ -81,7 +81,7 @@ let loc_to_str = function
  * Requires: loc must be "North Campus", "West Campus", or "Collegetown"*)
 let parse_loc loc =
   if loc = "north campus" then North
-  else if loc = "west campus" then West
+  else if loc = "west Campus" then West
   else if loc = "collegetown" then Collegetown
   else Empty
 
@@ -127,9 +127,9 @@ let ext_str jsn_str =
 let rem_double_quote s = String.sub s 1 (String.length s - 2)
 
 let ext_int jsn_int =
-  match Util.to_int_option jsn_int with
+  match Util.to_string_option jsn_int with
   | None -> -1
-  | Some s -> s
+  | Some s -> int_of_string s
 
 let ext_lst jsn_lst =
   match Util.to_string_option jsn_lst with
@@ -175,7 +175,7 @@ let get_student net pwd =
 let field_to_json = function
   | Schedule s -> ("schedule", `String (s |> List.map string_of_bool |> printable_lst))
   | Courses c -> ("courses_taken",`String (c |> List.map string_of_int |> printable_lst))
-  | Hours h -> ("hours_to_spend",`Int h)
+  | Hours h -> ("hours_to_spend",`String h)
   | Location l -> ("location",`String (loc_to_str l))
   | Text t ->  ("profile_text",`String t)
 
@@ -193,18 +193,6 @@ let get_match net pwd =
 
 let to_jsn_str lst map_func =
   `List (List.map map_func lst) |> to_string
-
-(* [student_to_json st] gives the yojson form of a student. *)
-let student_to_json st =
-  let name = ("name", `String st.name) in
-  let netid = ("netid", `String st.netid) in
-  let year = ("year", `String (year_to_str st.year)) in
-  let sched = ("schedule", `String (to_jsn_str st.schedule (fun x -> `Bool x)))in
-  let courses = ("courses_taken", `String (to_jsn_str st.courses_taken (fun x -> `Int x))) in
-  let hrs = ("hours_to_spend", `Int st.hours_to_spend) in
-  let prof = ("profile_text", `String st.profile_text) in
-  let loc = ("location", `String (loc_to_str st.location)) in
-  `Assoc[name;netid;year;sched;courses;hrs;prof;loc]
 
 (* For all compatibility functions below, if either student has
  * incomplete information for a given field, that field gives a

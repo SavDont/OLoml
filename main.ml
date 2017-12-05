@@ -365,10 +365,10 @@ and
     begin
       match try (int_of_string i) with
         | Failure _ -> -1 with
-      | i when i < 0 ->
+      | v when v < 0 ->
         print_endline ("\nInvalid integer. Try again.");
         outer_profile_loop net pwd
-      | i -> update_feedback net pwd [Hours i]
+      | v -> update_feedback net pwd [Hours i]
     end
   | _ ->
     print_string ("\nUnrecognized command. ");

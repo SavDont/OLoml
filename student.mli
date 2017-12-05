@@ -55,7 +55,7 @@ type student = {
 type updateData =
   | Schedule of schedule
   | Courses of int list
-  | Hours of int
+  | Hours of string
   | Location of location
   | Text of string
 (* REMOVE LATER ~~~~~~~~~~~~~~~~~~~ *)
