@@ -172,9 +172,15 @@ let get_student net pwd =
   | (`OK,str) -> Some (parse_student str)
   | _ -> None
 
+let course_to_json lst =
+  `Assoc[("courses_taken",`List (List.map (fun i -> `Int i) lst))] |> to_string
+
+let sched_to_json lst =
+  `Assoc[("schedule",`List (List.map (fun b -> `Bool b) lst))] |> to_string
+
 let field_to_json = function
-  | Schedule s -> ("schedule", `String (s |> List.map string_of_bool |> printable_lst))
-  | Courses c -> ("courses_taken",`String (c |> List.map string_of_int |> printable_lst))
+  | Schedule s -> ("schedule", `String (sched_to_json s))
+  | Courses c -> ("courses_taken",`String (course_to_json c))
   | Hours h -> ("hours_to_spend",`String h)
   | Location l -> ("location",`String (loc_to_str l))
   | Text t ->  ("profile_text",`String t)
