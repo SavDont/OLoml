@@ -346,7 +346,7 @@ and
         print_endline ("\nError: some answers were not 'yes' or 'no'. Try again.\n");
         outer_profile_loop net pwd
       | _ ->
-        let map_func = List.map (fun x -> if x = "yes" then true else false) in
+        let map_func = List.map (fun x -> if x = "monday mornings" then true else false) in
         update_feedback net pwd [Schedule (map_func lst)]
     end
   | h::t ->
