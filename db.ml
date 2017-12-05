@@ -364,14 +364,13 @@ let delete_students students =
 
 let set_swipes swipes =
   let jsn = from_string swipes in
-  let netid1 = jsn |> Util.keys in
+  let netid1 = jsn |> Util.keys |> List.hd in
   let swipe_str = jsn |> Util.member netid1|> Util.to_string in
   let insert = P.create db ("INSERT INTO swipes (netid, swipes) VALUES
   (?, ?)") in
-  let res = begin match ignore (P.execute insert [|netid1;swipe_str|]) with
-    |_-> P.close insert end 
-  (*let swipes = get_swipe_json netids1 [] jsn in
-    set_swipes_helper () netids1 swipes*)
+  begin match ignore (P.execute insert [|netid1;swipe_str|]) with
+    |_-> P.close insert
+  end
 
 let rec loop t jobj=
   match P.fetch t with
