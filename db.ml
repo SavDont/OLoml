@@ -401,7 +401,7 @@ let get_swipes ()=
           let prof = ("profile_text", `String jprof) in
           let loc = ("location", `String jloc) in
           let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
-          loop2 t (Util.combine jobj jsonobj)
+          loop2 t (jsonobj::jobj)
         |_ ->
           let name = ("name", `Null) in
           let netid = ("netid", `Null) in
@@ -412,16 +412,18 @@ let get_swipes ()=
           let prof = ("profile_text", `Null) in
           let loc = ("location", `Null) in
           let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
-          loop2 t (Util.combine jobj jsonobj)
+          loop2 t (jsonobj::jobj)
       end
   | None -> jobj
 
 let get_all_students ()=
   let select = P.create db ("SELECT * FROM students") in
   let t1 = P.execute_null select [||] in
-  let jobj = loop2 t1 (`Assoc[]) in
-  P.close select; Yojson.Basic.to_string jobj
+  let jobj = loop2 t1 ([]) in
+  let jobj_lst = `List jobj  in
+  P.close select; Yojson.Basic.to_string jobj_lst
 
 
 let reset_class () =
-  reset_students (); reset_swipes (); reset_matches (); reset_credentials (); reset_periods ()
+  reset_students (); reset_swipes (); reset_matches ();
+  reset_credentials (); reset_periods ()
