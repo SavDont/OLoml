@@ -167,7 +167,8 @@ let printable_student st =
   let hrs_str = "Willing to spend "^(hrs)^" hours on this project" in
   let sched = "Available:\n"^(sched_to_str st.schedule "" 0) in
   let about = "About me: "^st.profile_text in
-  header^"\n\n"^yr^"\n\n"^loc^"\n\n"^courses^"\n\n"^sched^"\n"^hrs_str^"\n\n"^about
+  "\n\n"^header^"\n\n"^yr^"\n\n"^loc^"\n\n"^courses^"\n\n"^sched^"\n"^hrs_str
+  ^"\n\n"^about
 
 let get_student net pwd =
   match Loml_client.student_get net pwd "student" with

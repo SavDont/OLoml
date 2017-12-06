@@ -7,6 +7,15 @@ type loc =
   | MainPage
   | ProfilePage
 
+type wkday =
+  | Monday of int
+  | Tuesday of int
+  | Wednesday of int
+  | Thursday of int
+  | Friday of int
+  | Saturday of int
+  | Sunday of int
+
 type command =
   | Swipe of swipeDirection
   | Quit
@@ -18,7 +27,7 @@ type command =
   | Reset
   | Matchify
   | Period
-  | Remove
+  | Day of wkday
   | Unknown of string
 
 val parse_command : string -> command

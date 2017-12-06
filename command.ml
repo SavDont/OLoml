@@ -6,6 +6,15 @@ type loc =
   | MainPage
   | ProfilePage
 
+type wkday =
+  | Monday of int
+  | Tuesday of int
+  | Wednesday of int
+  | Thursday of int
+  | Friday of int
+  | Saturday of int
+  | Sunday of int
+
 type command =
   | Swipe of swipeDirection
   | Quit
@@ -17,11 +26,17 @@ type command =
   | Reset
   | Matchify
   | Period
-  | Remove
+  | Day of wkday
   | Unknown of string
 
+let parse_time str =
+  if str = "morning" then 0
+  else if str = "afternoon" then 1
+  else if str = "evening" then 2
+  else -1
+
 let parse_command txt =
-  let txt_lower = String.lowercase_ascii txt in
+  let txt_lower = String.lowercase_ascii txt |> String.trim in
   if txt_lower = "l" then Swipe Left
   else if txt_lower = "r" then Swipe Right
   else if txt_lower = "quit" then Quit
@@ -41,5 +56,19 @@ let parse_command txt =
   else if txt_lower = "reset" then Reset
   else if txt_lower = "matchify" then Matchify
   else if txt_lower = "period" then Period
-  else if txt_lower = "remove" then Remove
+  else if String.contains txt ','
+  then
+    let dt_lst = String.split_on_char ',' txt in
+    if List.length dt_lst <> 2 then Unknown txt
+    else
+      let time = parse_time (List.nth dt_lst 1) in
+      if time < 0 then Unknown txt
+      else if List.hd dt_lst = "monday" then Day (Monday(time))
+      else if List.hd dt_lst = "tuesday" then Day (Tuesday(time))
+      else if List.hd dt_lst = "wednesday" then Day (Wednesday(time))
+      else if List.hd dt_lst = "thursday" then Day (Thursday(time))
+      else if List.hd dt_lst = "friday" then Day (Friday(time))
+      else if List.hd dt_lst = "saturday" then Day (Saturday(time))
+      else if List.hd dt_lst = "sunday" then Day (Sunday(time))
+      else Unknown txt
   else Unknown txt_lower
