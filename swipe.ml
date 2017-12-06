@@ -45,7 +45,7 @@ module MakeSwipe (T : TupleComparable) : Swipe
 
   let gen_swipe_results net s_results =
     let res_string = "["^(lst_to_string s_results)^"]" in
-    `Assoc[(net,`String "yo")]
+    `Assoc[(net,`String res_string)]
 
   let init_swipes s_lst =
     List.map (fun s -> (s, None)) s_lst
