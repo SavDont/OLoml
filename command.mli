@@ -33,10 +33,17 @@ type command =
   | Save
   | Goto of loc
   | Update
-  | Field of int
   | Reset
   | Matchify
   | Period
+  | CLocation
+  | CClasses
+  | CSchedule
+  | CBio
+  | CHours
+  | North
+  | West
+  | CTown
   | Day of wkday
   | Unknown of string
 

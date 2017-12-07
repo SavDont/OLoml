@@ -293,22 +293,22 @@ and
 
   (* [update_loop] routes the type of update the student wants to perform.*)
   update_loop net pwd =
-  print_endline ("\nWhat would you like to update? Enter '0' for location, "^
-                 "'1' for classes taken, '2' for schedule, '3' for hours "^
-                 "willing to spend, or '4' for profile bio. Enter 'quit' to "^
+  print_endline ("\nWhat would you like to update? Enter 'location', "^
+                 "'classes', 'schedule', 'hours' for hours "^
+                 "willing to spend, or 'bio' for profile bio. Enter 'quit' to "^
                  "quit. ");
   print_string ("\n> ");
   match parse_command (read_line ()) with
-  | Field 0 -> update_loc net pwd
-  | Field 1 -> update_classes net pwd
-  | Field 2 -> update_sched net pwd
-  | Field 3 -> update_hours net pwd
-  | Field 4 -> update_text net pwd
+  | CLocation -> update_loc net pwd
+  | CClasses -> update_classes net pwd
+  | CSchedule -> update_sched net pwd
+  | CHours -> update_hours net pwd
+  | CBio -> update_text net pwd
   | Quit -> quit_check_outer net pwd update_loop
   | _ ->
     print_endline ("\nUnrecognized command. Enter 'quit' or the number of "^
                   "field you want to update.");
-    inner_profile_loop net pwd
+    update_loop net pwd
 
 and
 
@@ -336,14 +336,14 @@ and
 and
   (* [update_loc] handles update of a student's living location. *)
   update_loc net pwd =
-  print_endline ("\nEnter '0' to set location to North Campus, '1' to set "^
-                 "location to West Campus, or '2' to set location to "^
-                 "Collegetown. Enter 'quit' to quit. ");
+  print_endline ("\nEnter 'north' to set location to North Campus, 'west' "^
+                 " to set location to West Campus, or 'collegetown' to set "^
+                 "location to Collegetown. Enter 'quit' to quit. ");
   print_string ("\n> ");
   match parse_command (read_line ()) with
-  | Field 0 -> update_feedback net pwd [Location North]
-  | Field 1 -> update_feedback net pwd [Location West]
-  | Field 2 -> update_feedback net pwd [Location Collegetown]
+  | North -> update_feedback net pwd [Location North]
+  | West -> update_feedback net pwd [Location West]
+  | CTown -> update_feedback net pwd [Location Collegetown]
   | Quit -> quit_check_outer net pwd update_loc
   | _ ->
     print_endline ("\nUnrecognized command. Enter '0','1','2',or 'quit'.");
@@ -469,7 +469,7 @@ and
   (* [update_text] handles update of student bios. *)
   update_text net pwd =
   print_endline ("\nEnter your bio: ");
-  print_string ("\n");
+  print_string ("\n> ");
   let txt = read_line () in
   update_feedback net pwd [Text txt]
 
