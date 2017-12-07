@@ -144,21 +144,25 @@ let parse_student st_str =
   }
 
 let printable_student st =
-  let header = "Viewing profile for: "^st.name^" ("^st.netid^")" in
-  let yr = "Year: "^(year_to_str st.year) in
-  let loc = "Lives closest to: "^(loc_to_str st.location) in
-  let course_lst = List.map string_of_int st.courses_taken in
-  let course_lst_cs = List.map (fun s -> "CS "^s) course_lst in
-  let courses = "Has taken: "^(printable_lst course_lst_cs) in
-  let hrs =
-    (* empty hours = -1 *)
-    if st.hours_to_spend = -1 then "unknown"
-    else string_of_int st.hours_to_spend in
-  let hrs_str = "Willing to spend "^(hrs)^" hours on this project" in
-  let sched = "Available:\n"^(sched_to_str st.schedule "" 0) in
-  let about = "About me: "^st.profile_text in
-  "\n\n"^header^"\n\n"^yr^"\n\n"^loc^"\n\n"^courses^"\n\n"^sched^"\n"^hrs_str
-  ^"\n\n"^about
+  if st.netid = "UNMATCHED" then
+    "\n\nSorry, the system could not find a match for you. Please contact " ^
+    "your administrator for further instructions"
+  else
+    let header = "Viewing profile for: "^st.name^" ("^st.netid^")" in
+    let yr = "Year: "^(year_to_str st.year) in
+    let loc = "Lives closest to: "^(loc_to_str st.location) in
+    let course_lst = List.map string_of_int st.courses_taken in
+    let course_lst_cs = List.map (fun s -> "CS "^s) course_lst in
+    let courses = "Has taken: "^(printable_lst course_lst_cs) in
+    let hrs =
+      (* empty hours = -1 *)
+      if st.hours_to_spend = -1 then "unknown"
+      else string_of_int st.hours_to_spend in
+    let hrs_str = "Willing to spend "^(hrs)^" hours on this project" in
+    let sched = "Available:\n"^(sched_to_str st.schedule "" 0) in
+    let about = "About me: "^st.profile_text in
+    "\n\n"^header^"\n\n"^yr^"\n\n"^loc^"\n\n"^courses^"\n\n"^sched^"\n"^hrs_str
+    ^"\n\n"^about
 
 let get_student net pwd =
   match Loml_client.student_get net pwd "student" with
