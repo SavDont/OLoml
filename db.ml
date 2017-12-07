@@ -344,7 +344,7 @@ let delete_students students =
 
 let rem_swipes net =
   let reset = P.create db ("DELETE FROM credentials WHERE netid = ?") in
-  match P.execute_null reset [|net|] with |_ -> (); P.close reset
+  match P.execute_null reset [|Some net|] with |_ -> (); P.close reset
 
 let set_swipes swipes =
   let jsn = from_string swipes in
