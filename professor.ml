@@ -69,9 +69,7 @@ let import_students dir pwd =
       then
         let str = dir |> from_file |> to_string |> String.lowercase_ascii in
         let postResponse = Loml_client.admin_post pwd str in
-        if fst postResponse = `OK
-        then true
-        else false
+        fst postResponse = `OK
       else false with
   | _ -> false
 
@@ -116,16 +114,7 @@ let set_periods swDate mtDate pwd =
 
 let remove_student netID pwd =
   let strJson = "{ \"" ^ netID ^ "\": 1 }" in
-  if fst (Loml_client.admin_delete pwd "subset" strJson)  = `OK
-  then true
-  else false
-
-(* [jsn_students jsnLst] takes a tuple list of type (string * json) and
- * *)
-let rec jsn_students jsnLst = match jsnLst with
-  | (_, j)::t -> (j |> to_string |>
-                  parse_student)::(jsn_students t)
-  | [] -> []
+  fst (Loml_client.admin_delete pwd "subset" strJson)  = `OK
 
 let get_all_students () =
   match Loml_client.admin_get "password" "student_all" ~netID:"" with
@@ -138,6 +127,4 @@ let get_all_students () =
 let reset_class pwd =
   let emptyJson = "{}" in
   let delReq = Loml_client.admin_delete pwd "class" emptyJson in
-  if fst delReq = `OK
-  then true
-  else false
+  fst delReq = `OK

@@ -133,8 +133,7 @@ and
     begin
       match matchify s_results pwd with
       | true ->
-        print_endline ("\nMatches generated and stored successfully."^
-                       " Returning to main page.");
+        print_endline ("\nMatches generated and stored successfully.");
         print_endline ("\nLogging out...")
       | _ ->
         failwith "add error message"
