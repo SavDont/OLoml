@@ -30,12 +30,6 @@ let check_period_set () =
   | Some arr ->
     P.close select; if Array.mem None arr then false else true
   | None -> P.close select; false
-  (*
-  if ((PGSQL(dbh) "SELECT Update FROM $periods_tbl") != None
-      ||  (PGSQL(dbh) "SELECT Swipe FROM $periods_tbl") != None
-      ||  (PGSQL(dbh) "SELECT Match FROM $periods_tbl") != None) then true
-  else false
-*)
 
 let set_period_query periods =
     let jsn = from_string periods in
@@ -172,26 +166,24 @@ let get_stu_match_query netid =
       let jsonobj = `Assoc[name;netid;year;sched;courses;hrs;prof;loc] in
       Yojson.Basic.to_string jsonobj
 
+(* [ext_str jsn_str] gives "" if it is not possible to convert jsn_str to
+ * a string, or the string form of jsn_str if it is. *)
 let ext_str jsn_str =
   match Util.to_string_option jsn_str with
   | None -> ""
   | Some s -> s
 
-let ext_int jsn_int =
-  match Util.to_int_option jsn_int with
-  | None -> -1
-  | Some s -> s
-
-let ext_lst jsn_lst =
-  match Util.to_string_option jsn_lst with
-  | None -> "[]"
-  | Some s -> s
-
+(* [get_pair ones twos] takes in a list of keys in the json string and [] and
+ * returns the list of their corresponding values in the json string*)
 let rec get_pair ones twos j=
   match ones with
   |h::t -> (get_pair t ((j |> Util.member h |>ext_str):: twos) j)
   |[] -> twos
 
+(* [post_match_helper un firsts seconds] takes in a unit, and the list of
+ * all keys in the json string, and the list of all the value strings in
+ * the json string that represent the matches. It returns a unit but has
+ * the side effect of updating the matches table in the database*)
 let rec post_match_helper un firsts seconds =
   match firsts with
   |h1::t1 ->
@@ -217,6 +209,12 @@ let post_matches_query matches =
 
 (*helper functions that change each specific field if the field exists in the
  * json *)
+(*[change_sched net info] returns a unit and takes in a net_id and the
+ * string representation of json that represents the information the student
+ * wants to update about themself. It extracts the schedule field and if
+ * that field has some value in it, it has the side effect of updating the
+ * database so that the student in the students table with netid = netid
+ * has the new information in the schedule column*)
 let change_sched net info =
   let jsn = from_string info in
   match jsn |> Util.member "schedule" |> Util.to_string_option with
@@ -226,6 +224,12 @@ let change_sched net info =
       ignore (P.execute insert [|i; net|]); P.close insert
   |_ -> ()
 
+(*[change_courses net info] returns a unit and takes in a net_id and the
+ * string representation of json that represents the information the student
+ * wants to update about themself. It extracts the courses_taken field and if
+ * that field has some value in it, it has the side effect of updating the
+ * database so that the student in the students table with netid = netid
+ * has the new information in the courses column*)
 let change_courses net info =
   let jsn = from_string info in
   match jsn |> Util.member "courses_taken" |> Util.to_string_option with
@@ -235,7 +239,12 @@ let change_courses net info =
     ignore (P.execute insert [|i; net|]); P.close insert
   |_ -> ()
 
-
+(*[change_hours net info] returns a unit and takes in a net_id and the
+ * string representation of json that represents the information the student
+ * wants to update about themself. It extracts the hours_to_spend field and if
+ * that field has some value in it, it has the side effect of updating the
+ * database so that the student in the students table with netid = netid
+ * has the new information in the hours field*)
 let change_hours net info =
   let jsn = from_string info in
   match jsn |> Util.member "hours_to_spend" |> Util.to_string_option with
@@ -245,6 +254,12 @@ let change_hours net info =
     ignore (P.execute insert [|i; net|]); P.close insert
   |_ -> ()
 
+(*[change_prof net info] returns a unit and takes in a net_id and the
+ * string representation of json that represents the information the student
+ * wants to update about themself. It extracts the profile_text field and if
+ * that field has some value in it, it has the side effect of updating the
+ * database so that the student in the students table with netid = netid
+ * has the new information in the profile column*)
 let change_prof net info =
   let jsn = from_string info in
   match jsn |> Util.member "profile_text" |> Util.to_string_option with
@@ -254,6 +269,12 @@ let change_prof net info =
     ignore (P.execute insert [|i; net|]); P.close insert
   |_ -> ()
 
+(*[change_loc net info] returns a unit and takes in a net_id and the
+ * string representation of json that represents the information the student
+ * wants to update about themself. It extracts the location field and if
+ * that field has some value in it, it has the side effect of updating the
+ * database so that the student in the students table with netid = netid
+ * has the new information in the location column*)
 let change_loc net info =
   let jsn = from_string info in
   match jsn |> Util.member "location" |> Util.to_string_option with
@@ -309,28 +330,45 @@ let admin_change_query info =
       student_list_insert jsnLst
     | _ -> ()
   end
-
+(*[reset_students ()] takes in a unit and returns a unit with the side effect
+ * of updating the students table in the database so that the table is
+ * truncated (cleared)*)
 let reset_students () =
   let reset = P.create db ("TRUNCATE students") in
   match P.execute_null reset [||] with |_ -> (); P.close reset
 
+(*[reset_swipes ()] takes in a unit and returns a unit with the side effect
+ * of updating the swipes table in the database so that the table is
+ * truncated (cleared)*)
 let reset_swipes () =
   let reset = P.create db ("TRUNCATE swipes") in
   match P.execute_null reset [||] with |_ -> (); P.close reset
 
+(*[reset_matches ()] takes in a unit and returns a unit with the side effect
+ * of updating the matches table in the database so that the table is
+ * truncated (cleared)*)
 let reset_matches () =
   let reset = P.create db ("TRUNCATE matches") in
   match P.execute_null reset [||] with |_ -> (); P.close reset
 
+(*[reset_credentials ()] takes in a unit and returns a unit with the side effect
+ * of updating the credentials table in the database so that the table is
+ * truncated (cleared)*)
 let reset_credentials () =
   let reset = P.create db ("DELETE FROM credentials WHERE netid <> ?") in
   match P.execute_null reset [|Some "admin"|] with |_ -> (); P.close reset
 
+(*[reset_periods ()] takes in a unit and returns a unit with the side effect
+ * of updating the periods table in the database so that the table is
+ * truncated (cleared)*)
 let reset_periods () =
   let reset = P.create db ("TRUNCATE periods") in
   match P.execute_null reset [||] with |_ -> (); P.close reset
 
-
+(*[delete_students_helper un nets] takes in a unit and a string list of netids
+ * of the students that need to be deleted from the students table in the
+ * database. It returns a unit but has the side effect of updating the
+ * students table in the database*)
 let rec delete_students_helper un nets =
   match nets with
   |h1::t1 ->
@@ -352,6 +390,8 @@ let delete_students students =
                             Yojson.Basic.to_string):: swipes) j)
     |[] -> swipes
 
+(*[rem_swipes net] takes in a stirng netid of the student whose swipes we want
+ * to delete from the swipes table in the database*)
 let rem_swipes net =
   let reset = P.create db ("DELETE FROM swipes WHERE netid = ?") in
   match P.execute_null reset [|Some net|] with |_ -> (); P.close reset
@@ -366,6 +406,9 @@ let set_swipes swipes =
     |_-> P.close insert
   end
 
+(*[loop t obj] takes in the result of executing the prepared query and the
+ *string representation of the json and recursively constructs the json obj
+ *that gets parsed into a string in the get_swipes function*)
 let rec loop t jobj=
   match P.fetch t with
   | Some arr ->
@@ -384,6 +427,10 @@ let get_swipes ()=
   let jobj_lst = `List jobj  in
   P.close select; Yojson.Basic.to_string jobj_lst
 
+(*[loop2 t obj] takes in the result of executing the prepared query and the
+ *string representation of the json and recursively constructs the json obj
+ *that gets parsed into a string in the get_all_students function by pattern
+ *matching each field of the student with either some value or none*)
   let rec loop2 t jobj=
     match P.fetch t with
     | Some arr ->
