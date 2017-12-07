@@ -7,7 +7,6 @@ let admin_endpoint = "admin/"
 let swipes_endpoint = "swipes/"
 let matches_endpoint = "matches/"
 
-(* remove for prod *)
 let test_endpoint = "test/"
 
 (* database parameters *)

@@ -3,7 +3,8 @@ open Mysql
 module P = Mysql.Prepared
 open Printf
 
-let db = quick_connect ~host:("localhost") ~port:(3306) ~database:("test") ~user:("root") ~password:("admin123") ()
+let db = quick_connect ~host:("localhost") ~port:(3306) ~database:("test")
+    ~user:("root") ~password:("admin123") ()
 
 (*Table names
 let stu_tbl = "students"

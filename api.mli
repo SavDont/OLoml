@@ -1,4 +1,4 @@
-(* test callbacks, will not be there in final version *)
+(* test callbacks*)
 val test_post: HttpServer.request -> HttpServer.response
 val test_get: HttpServer.request -> HttpServer.response
 
