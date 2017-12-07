@@ -318,9 +318,8 @@ let reset_matches () =
   match P.execute_null reset [||] with |_ -> (); P.close reset
 
 let reset_credentials () =
-  let ad = "admin" in
-  let reset = P.create db ("DELETE FROM credentials WHERE netid <> ?") in
-  match P.execute_null reset [|ad|] with |_ -> (); P.close reset
+  let reset = P.create db ("DELETE FROM credentials WHERE netid <> admin") in
+  match P.execute_null reset [||] with |_ -> (); P.close reset
 
 let reset_periods () =
   let reset = P.create db ("TRUNCATE periods") in
