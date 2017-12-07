@@ -47,11 +47,6 @@ let set_period_query periods =
       ignore (P.execute insert [|update_dt;swipe_dt;match_dt|]); P.close insert
     else ()
 
-
-  (*
-      PGSQL(dbh) "INSERT INTO $periods_tbl (Update, Swipe, Match)
-      VALUES ($update_dt, $swipe_dt, $match_dt)" *)
-
 let get_period_query ()=
   let select = P.create db ("SELECT u, s, m FROM periods") in
   let t1 = P.execute_null select [||] in
