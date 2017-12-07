@@ -273,7 +273,7 @@ and
   | Quit -> quit_check_outer net pwd update_loop
   | _ ->
     print_endline ("\nUnrecognized command. Enter 'quit' or the number of "^
-    "field you want to update.");
+                  "field you want to update.");
     inner_profile_loop net pwd
 
 and
@@ -350,7 +350,7 @@ and
       if List.length st.schedule = 0 then Array.make 21 false
       else Array.of_list st.schedule in
     print_endline ("\nEnter a time you want to either add or remove from your"^
-                   "availability schedule, in the form 'day,time' where day "^
+                   " availability schedule, in the form 'day,time' where day "^
                    "is 'monday','tuesday', 'wednesday', 'thursday', 'friday',"^
                    " 'saturday', or 'sunday' and time is 'morning', "^
                    "'afternoon', or 'evening'. You may also 'quit'.");
