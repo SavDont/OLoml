@@ -2,22 +2,26 @@
   "sd549" :
       { "netid" : "sd549",
         "name" : "Sav",
-         "year" : "junior"
+         "year" : "junior",
+         "password" : "pw1"
       },
   "ab2466" :
           { "netid" : "ab2466",
             "name" : "Aayush",
-             "year" : "junior"
+             "year" : "junior",
+             "password" : "pw2"
           },
   "mg954" :
           { "netid" : "mg954",
             "name" : "Myra",
-            "year" : "junior"
+            "year" : "junior",
+            "password" : "pw3"
           },
   "sed87" :
           { "netid" : "sed87",
             "name" : "Sam",
-            "year" : "junior"
+            "year" : "junior",
+            "password" : "pw4"
           }
 
 
