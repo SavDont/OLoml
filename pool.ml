@@ -61,7 +61,7 @@ module MakePool (T : TupleComparable) : Pool
     let rec cut_lst = function
       | [] -> []
       | h::t ->
-        if List.length (h::t) <= 1 then (h::t)
+        if List.length (h::t) <= 6 then (h::t)
         else cut_lst t in
     cut_lst rem_dupe
 end

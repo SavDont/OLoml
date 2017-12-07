@@ -319,13 +319,21 @@ and
   match update_profile net pwd data with
   | true ->
     print_endline ("\nProfile updated.");
-    outer_profile_loop net pwd
+    print_endline ("Here is your new profile:");
+    begin
+      match get_student net pwd with
+      | Some s ->
+        print_endline (printable_student s);
+        update_loop net pwd
+      | _ ->
+        print_endline ("Error retrieving profile.");
+        update_loop net pwd
+    end
   | _ ->
     print_endline ("\nError. Please try again.");
-    outer_profile_loop net pwd
+    update_loop net pwd
 
 and
-
   (* [update_loc] handles update of a student's living location. *)
   update_loc net pwd =
   print_endline ("\nEnter '0' to set location to North Campus, '1' to set "^
@@ -396,10 +404,10 @@ and
       if List.length st.schedule = 0 then Array.make 21 false (* empty init *)
       else Array.of_list st.schedule in
     print_endline ("\nEnter a time you want to either add or remove from your"^
-                   " availability schedule, in the form 'day,time' where day "^
-                   "is 'monday','tuesday', 'wednesday', 'thursday', 'friday',"^
-                   " 'saturday', or 'sunday' and time is 'morning', "^
-                   "'afternoon', or 'evening'. You may also 'quit'.");
+                   " availability schedule, in the form 'day time' where time"^
+                   " is 'afternoon', or 'evening'. Example: 'monday afternoon'"^
+                   " You may also 'quit'. If you enter something that is "^
+                   "already in your schedule it will be removed.");
     print_string ("\n> ");
     begin
       match parse_command (read_line ()) with
@@ -407,27 +415,28 @@ and
         let () = arr.(t) <- not (arr.(t)); in
         update_feedback net pwd [Schedule (Array.to_list arr)]
       | Day (Tuesday t) ->
-        let () = arr.(t + 1) <- not (arr.(t + 1)); in
-        update_feedback net pwd [Schedule (Array.to_list arr)]
-      | Day (Wednesday t) ->
-        let () = arr.(t + 2) <- not (arr.(t + 2)); in
-        update_feedback net pwd [Schedule (Array.to_list arr)]
-      | Day (Thursday t) ->
         let () = arr.(t + 3) <- not (arr.(t + 3)); in
         update_feedback net pwd [Schedule (Array.to_list arr)]
+      | Day (Wednesday t) ->
+        let () = arr.(t + 6) <- not (arr.(t + 6)); in
+        update_feedback net pwd [Schedule (Array.to_list arr)]
+      | Day (Thursday t) ->
+        let () = arr.(t + 9) <- not (arr.(t + 9)); in
+        update_feedback net pwd [Schedule (Array.to_list arr)]
       | Day (Friday t) ->
-        let () = arr.(t + 4) <- not (arr.(t + 4)); in
+        let () = arr.(t + 12) <- not (arr.(t + 12)); in
         update_feedback net pwd [Schedule (Array.to_list arr)]
       | Day (Saturday t) ->
-        let () = arr.(t + 5) <- not (arr.(t + 5)); in
+        let () = arr.(t + 15) <- not (arr.(t + 15)); in
         update_feedback net pwd [Schedule (Array.to_list arr)]
       | Day (Sunday t) ->
-        let () = arr.(t + 6) <- not (arr.(t + 6)); in
+        let () = arr.(t + 18) <- not (arr.(t + 18)); in
         update_feedback net pwd [Schedule (Array.to_list arr)]
       | Quit -> quit_check_outer net pwd update_sched
       | _ ->
         print_endline
-          ("Unrecognized command. Please enter a valid 'day,time' or 'quit'.");
+          ("Unrecognized command. Please enter a valid 'day time' or 'quit'.");
+          update_sched net pwd
     end
 
 
@@ -448,7 +457,7 @@ and
         | Failure _ -> -1 with
       | v when v < 0 ->
         print_endline ("\nInvalid integer. Try again.");
-        outer_profile_loop net pwd
+        update_hours net pwd
       | v -> update_feedback net pwd [Hours i]
     end
   | _ ->
