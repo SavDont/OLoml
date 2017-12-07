@@ -103,10 +103,12 @@ and
                 prof_main_outer net pwd
             | _ ->
               print_endline("\n Invalid dates. Try again.");
+              let _ = reset_class pwd in
               prof_main_outer net pwd
           end
         | _ ->
           print_endline ("\n Error importing students. Try again.");
+          let _ = reset_class in
           prof_main_outer net pwd
       end
       | _ ->
