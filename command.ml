@@ -58,9 +58,9 @@ let parse_command txt =
   else if txt_lower = "reset" then Reset
   else if txt_lower = "matchify" then Matchify
   else if txt_lower = "period" then Period
-  else if String.contains txt ','
+  else if String.contains txt ' '
   then
-    let dt_lst = String.split_on_char ',' txt in
+    let dt_lst = String.split_on_char ' ' txt in
     if List.length dt_lst <> 2 then Unknown txt
     else
       let time = parse_time (List.nth dt_lst 1) in
