@@ -10,11 +10,17 @@ open Match
 
 exception QuitREPL
 
+(* [check_creds net pwd] gives true if net pwd is a valid netid, password
+ * combination such that the user is not authenticated.  It returns false
+ * if not. *)
 let check_creds net pwd =
   match credentials_post net pwd with
   | (`OK,str) -> true
   | _ -> false
 
+(* [get_authed] is the entry-point for the repl. It checks if a user
+ * is authenticated.  If the user is admin (ie netid = admin), they
+ * are sent into a separate admin loop. *)
   let rec get_authed () =
   print_string("\nNetid: ");
   let net = (read_line ()) |> String.trim |> String.lowercase_ascii in
@@ -23,7 +29,6 @@ let check_creds net pwd =
   print_string("Password (case-sensitive): ");
   let pwd = read_line () in
   print_newline();
-  (**)
   match check_creds net pwd with
   | true ->
     print_endline("Success. Hello "^net);
@@ -37,6 +42,7 @@ let check_creds net pwd =
 
 and
 
+  (* [prof_main_outer] is the main page for admins. *)
   prof_main_outer net pwd =
   match period_get net pwd with
   | (`OK,str) ->
@@ -64,6 +70,9 @@ and
 
 and
 
+  (* [prof_set_period] handles setting up the class for admin.  Admin
+   * must enter  a valid date for when swiping will begin and upload
+   * a json following the schema included with this project. *)
   prof_set_period net pwd =
   print_string("\n> ");
   match parse_command (read_line ()) with
@@ -83,18 +92,21 @@ and
         let dir = read_line () in
         let impSuccess = import_students dir pwd in
       begin
+        (* successful import of students? *)
         match impSuccess with
         | true  ->
           let pdSuccess = set_periods d1 d2 pwd in
+          (* successful setting of periods? *)
           begin match pdSuccess with
             | true ->
                 print_endline ("\n Class setup completed!");
                 prof_main_outer net pwd
             | _ ->
-              print_endline("\n Can't setup class right now, try again later")
+              print_endline("\n Invalid dates. Try again.");
+              prof_main_outer net pwd
           end
         | _ ->
-          print_endline ("\n Can't setup class right now, try again later");
+          print_endline ("\n Error importing students. Try again.");
           prof_main_outer net pwd
       end
       | _ ->
@@ -107,6 +119,9 @@ and
     prof_set_period net pwd
 and
 
+  (* [prof_match] gives professor the option of running the matching
+   * algorithm on all students who have saved swipe results.
+   * (note: algorithm will still work if not everyone has)*)
   prof_match net pwd =
   print_string("\n> ");
   match parse_command (read_line ()) with
@@ -132,6 +147,7 @@ and
 
 and
 
+  (* [reset_outer] gives admin the option to quit or reset *)
   reset_outer net pwd =
   print_string("\n> ");
   match parse_command (read_line ()) with
@@ -145,6 +161,8 @@ and
 
 and
 
+  (* [reset_inner] asks for confirmation from admin to reset class.
+   * this clears all data, except for admin credentials. *)
   reset_inner net pwd =
   print_string("\n> ");
   match parse_command (read_line ()) with
@@ -166,6 +184,7 @@ and
 
 and
 
+  (* [student_main_outer] is the main page for student users *)
   student_main_outer net pwd =
   match period_get net pwd with
   | (`OK,str) ->
@@ -189,6 +208,11 @@ and
 
 and
 
+  (* [match_period] prints the student this user has matched with if
+   * the professor has already run the algorithm.  If there are an odd
+   * number of students in the class, the student is matched
+   * with a netid of "UNMATCHED", in which case this should be resolved
+   * by talking with the professor. *)
   match_period net pwd =
   match get_match net pwd with
   | Some s ->
@@ -201,6 +225,7 @@ and
     print_endline ("\nLogging out...");
 and
 
+  (* [swipe_period] gives students the option to start swiping or quit. *)
   swipe_period net pwd =
   print_string ("\n> ");
   match parse_command (read_line ()) with
@@ -223,6 +248,8 @@ and
 
 and
 
+  (* [update_period] gives students the option to go to their profile
+   * page, where they can view and edit.  They can also quit. *)
   update_period net pwd =
   print_string ("\n> ");
   match parse_command (read_line ()) with
@@ -234,6 +261,8 @@ and
 
 and
 
+  (* [outer_profile_loop] allows students to view their profile,
+   * and gives the option to update it. *)
   outer_profile_loop net pwd =
   match get_student net pwd with
   | None ->
@@ -247,6 +276,8 @@ and
 
 and
 
+  (*[inner_profile_loop] routes the student's choice between updating their
+   * profile and quitting. *)
   inner_profile_loop net pwd =
   print_string ("\n> ");
   match parse_command (read_line ()) with
@@ -258,6 +289,7 @@ and
 
 and
 
+  (* [update_loop] routes the type of update the student wants to perform.*)
   update_loop net pwd =
   print_endline ("\nWhat would you like to update? Enter '0' for location, "^
                  "'1' for classes taken, '2' for schedule, '3' for hours "^
@@ -278,6 +310,9 @@ and
 
 and
 
+  (* [update_feedback net pwd] attempts an update of data.
+   * if it's sucessful, it prints a confirmation.  If not, it prints an error.
+   * It then routes back to the profile page. *)
   update_feedback net pwd data =
   match update_profile net pwd data with
   | true ->
@@ -289,6 +324,7 @@ and
 
 and
 
+  (* [update_loc] handles update of a student's living location. *)
   update_loc net pwd =
   print_endline ("\nEnter '0' to set location to North Campus, '1' to set "^
                  "location to West Campus, or '2' to set location to "^
@@ -305,6 +341,9 @@ and
 
 and
 
+  (* [update_classes] handles updating students' course lists.  If the
+   * student enters a class that is already contained on their profile,
+   * it removes it.  If the class is not already contained, it is added. *)
   update_classes net pwd =
   match get_student net pwd with
   | None ->
@@ -328,6 +367,7 @@ and
               update_classes net pwd
             | i ->
               let old_classes = s.courses_taken in
+              (* class already on profile? *)
               let upd =
               if List.mem i old_classes
               then [Courses (List.filter (fun x -> x <> i) old_classes)]
@@ -341,13 +381,17 @@ and
 
 and
 
+  (* [update_sched] handles the update of a single day and time in
+   * a student's schedule.  If schedule is null, it initializes a
+   * schedule for them in which they are not free on any day. *)
   update_sched net pwd =
   match get_student net pwd with
   | None -> print_endline ("\nError in finding profile. Please try again.");
     outer_profile_loop net pwd
   | Some st ->
+    (* temp array conversion to facilitate mutability *)
     let arr =
-      if List.length st.schedule = 0 then Array.make 21 false
+      if List.length st.schedule = 0 then Array.make 21 false (* empty init *)
       else Array.of_list st.schedule in
     print_endline ("\nEnter a time you want to either add or remove from your"^
                    " availability schedule, in the form 'day,time' where day "^
@@ -387,6 +431,9 @@ and
 
 and
 
+  (* [update_hours] allows students to update how many hours they're
+   * willing to spend on a project.  The integer they enter must
+   * be convertable from a string to an int. *)
   update_hours net pwd =
   print_endline ("\nEnter the integer number of hours you're willing to"^
                 " spend on this project, or 'quit' to quit.");
@@ -408,6 +455,7 @@ and
 
 and
 
+  (* [update_text] handles update of student bios. *)
   update_text net pwd =
   print_endline ("\nEnter your bio: ");
   print_string ("\n");
@@ -416,12 +464,16 @@ and
 
 and
 
+  (* quit_check_outer prompts a user for confirmation on quitting  *)
   quit_check_outer net pwd r_func =
   print_endline ("\nAre you sure you want to quit? Enter 'yes' or 'no'");
   quit_check_inner net pwd r_func
 
 and
 
+  (* [quit_check_inner net pwd r_func] quits the program if users confirm.
+   * otherwise, it routes the user back to they were in the program.
+   * the spot is represented by r_func. *)
   quit_check_inner net pwd r_func =
   print_string ("\n> ");
   match parse_command (read_line ()) with
@@ -433,6 +485,9 @@ and
 
 and
 
+  (* [outer_swipe_loop] routes a user to swiping on students if
+   * their pool of students is not empty.  If it is empty, it routes
+   * students to saving their swipes. *)
   outer_swipe_loop pl net pwd s_results =
   match StudentPool.peek pl with
   | Some s ->
@@ -447,6 +502,8 @@ and
 
 and
 
+  (* [quit_loop_swipe] quits the program if the user confirms.  If not,
+   * it saves the state of their swiping, and returns them to that state. *)
   quit_loop_swipe pl net pwd s_results =
   print_string("\n> ");
   match parse_command (read_line ()) with
@@ -460,6 +517,8 @@ and
 
 and
 
+  (* [inner_swipe_loop] handles the left and right swiping that students
+   * perform on their classmates. *)
   inner_swipe_loop pl net pwd s_results compat =
   print_string("\n> ");
   match parse_command (read_line ()) with
@@ -483,13 +542,16 @@ and
 
 and
 
+  (* [save_loop] handles writing a user's swipes to the database. *)
   save_loop pl net pwd s_results =
   print_string("\n> ");
   match parse_command (read_line ()) with
   | Save ->
     begin
       match write_swipes net pwd s_results with
-      | true -> print_endline ("\nSwipes saved.");
+      | true ->
+        print_endline ("\nSwipes saved.");
+        print_endline ("\nCheck back later to see your match. Logging out...");
       | _ ->
         print_endline ("\nSave unsuccessful. Enter 'save' to try again, or"^
                       " 'quit' to quit.");
@@ -503,6 +565,7 @@ and
     print_endline ("\nUnrecognized command. Please enter 'save' or 'quit'.");
     save_loop pl net pwd s_results
 
+(* The start-point for this REPL. *)
 let main () =
   print_endline("\nWelcome to OLoml!  Let's find you the love of your CS life."^
                 " AKA your only life.");

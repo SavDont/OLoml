@@ -1,7 +1,5 @@
 open Yojson.Basic
 
-(* Type representing student's current year in school
- * Fresh = freshman, Soph = sophomore, Jun = junior, Sen = senior*)
 type classYear =
   | Fresh
   | Soph
@@ -15,16 +13,6 @@ type location =
   | Collegetown
   | Empty
 
-(* Type representing a student's available time slots throughout a single week.
- * Each schedule must be of length exactly 21.  It is parsed as follows:
- * - every three elements represent a single day.  For example,
- *   elements 0-2 represent monday, 3-5 represent tuesday...18-20 represent
- *   sunday
- * - within each day, the first element represents morning, the second
- *   afternoon, and the third evening. i.e. 0 is monday morning, 2 is monday
- *   evening
- * - true means that a student is available during this time slot, and
- *   false means they are not. *)
 type schedule = bool list
 
 type student = {
@@ -116,21 +104,23 @@ let rec sched_to_str sched acc pos =
     then sched_to_str t (acc^(day_of_week pos)^(time_of_day pos)^"\n") (pos+1)
     else sched_to_str t acc (pos+1)
 
-(* [ext_str jsn_str] removes double quotations from the inputted string.
- * Requires: the double quotations must contain the entirety of the string
- * within [jsn_str], and they must exist. *)
+(* [ext_str jsn_str] gives "" if it is not possible to convert jsn_str to
+ * a string, or the string form of jsn_str if it is. *)
 let ext_str jsn_str =
   match Util.to_string_option jsn_str with
   | None -> ""
   | Some s -> s
 
-let rem_double_quote s = String.sub s 1 (String.length s - 2)
-
+(* [ext_int jsn_int] returns -1 if it is not possible to convert jsn_int to
+ * and int, or the int form of jsn_int if it is possible.*)
 let ext_int jsn_int =
   match Util.to_string_option jsn_int with
   | None -> -1
   | Some s -> int_of_string s
 
+(* [ext_lst jsn_str field_name conv_func] extracts a list and converts
+ * its elements based on conv_func from jsn_str if extracting such a list
+ * is possible.  If it is not possible, the empty list is returned.*)
 let ext_lst jsn_str field_name conv_func =
   let elt = Util.member field_name jsn_str in
   match elt with
@@ -175,12 +165,18 @@ let get_student net pwd =
   | (`OK,str) -> Some (parse_student str)
   | _ -> None
 
+(* [course_to_json lst] converts lst into a json association, with
+ * "courses_taken" as the key, and lst as the value *)
 let course_to_json lst =
   `Assoc[("courses_taken",`List (List.map (fun i -> `Int i) lst))] |> to_string
 
+(* [sched_to_json lst] converts lst into a json association, with
+ * "courses_taken" as the key, and lst as the value *)
 let sched_to_json lst =
   `Assoc[("schedule",`List (List.map (fun b -> `Bool b) lst))] |> to_string
 
+(* [field_to_json d] gives the json association form of the inputted
+ * piece of update data. *)
 let field_to_json = function
   | Schedule s -> ("schedule", `String (sched_to_json s))
   | Courses c -> ("courses_taken",`String (course_to_json c))
@@ -199,9 +195,6 @@ let get_match net pwd =
   match Loml_client.student_get net pwd "match" with
   | (`OK,str) -> Some (parse_student str)
   | _ -> None
-
-let to_jsn_str lst map_func =
-  `List (List.map map_func lst) |> to_string
 
 (* For all compatibility functions below, if either student has
  * incomplete information for a given field, that field gives a

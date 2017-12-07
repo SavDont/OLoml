@@ -29,6 +29,8 @@ type command =
   | Day of wkday
   | Unknown of string
 
+(* [parse_time str] gives the integer representation of a time of day,
+ * or -1 if str is not a valid time of day. *)
 let parse_time str =
   if str = "morning" then 0
   else if str = "afternoon" then 1

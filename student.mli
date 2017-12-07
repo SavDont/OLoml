@@ -1,21 +1,6 @@
-
-(* Type representing a student, with all of his/her metadata and profile
- * information*)
-(* type student *)
-
-(* Type representing possible skills a student can have, as well as
- * proficiency in those skills *)
-(* type skills *)
-
-(* Type representing a location closest to where a student lives *)
-(* type location *)
-
-(* Type representing data that can be updated by a student (non-metadata)*)
-(* type updateData *)
-
-(* REMOVE LATER ~~~~~~~~~~~~~~~*)
 (* Type representing student's current year in school
- * Fresh = freshman, Soph = sophomore, Jun = junior, Sen = senior*)
+ * Fresh = freshman, Soph = sophomore, Jun = junior, Sen = senior
+ * Empty if student has not set it yet. *)
 type classYear =
   | Fresh
   | Soph
@@ -23,6 +8,8 @@ type classYear =
   | Sen
   | Empty
 
+(* Type representing student's living location on campus. empty
+ * if student has not set this field yet. *)
 type location =
   | North
   | West
@@ -41,6 +28,7 @@ type location =
  *   false means they are not. *)
 type schedule = bool list
 
+(* Type representing a student and all metadata/profile data*)
 type student = {
   name : string;
   netid : string;
@@ -52,13 +40,15 @@ type student = {
   profile_text : string;
 }
 
+(* Type representing different varieties of data that can be updated
+ * by student during profile update mode. *)
 type updateData =
   | Schedule of schedule
   | Courses of int list
   | Hours of string
   | Location of location
   | Text of string
-(* REMOVE LATER ~~~~~~~~~~~~~~~~~~~ *)
+
 
 (* [valid_course c] is true iff c is a course that a student can
  * list as having taken.

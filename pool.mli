@@ -68,7 +68,9 @@ module type TupleComparable = sig
   (* [opt_key_to_string] gives the string representation of rank option.*)
   val opt_key_to_string : rank option -> string
 
-  val get_id : item -> string 
+(* [get_id i] gives a unique string identifier for i. No other item in
+ * a pool is allowed to have this identifier. *)
+  val get_id : item -> string
 end
 
 module StudentScores : TupleComparable
