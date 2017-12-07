@@ -3,7 +3,8 @@ open Mysql
 module P = Mysql.Prepared
 open Printf
 
-let db = quick_connect ~host:("localhost") ~port:(3306) ~database:("test") ~user:("root") ~password:("admin123") ()
+let db = quick_connect ~host:("localhost") ~port:(3306) ~database:("test")
+    ~user:("root") ~password:("admin123") ()
 
 (*Table names
 let stu_tbl = "students"
@@ -13,7 +14,8 @@ let periods_tbl = "periods"
 *)
 
 let check_cred_query netid pwd =
-  let select = P.create db ("SELECT password FROM credentials WHERE netid = ?") in
+  let select =
+    P.create db ("SELECT password FROM credentials WHERE netid = ?") in
   let t1 = P.execute_null select [|Some netid|] in
     match P.fetch t1 with
     | Some arr ->
