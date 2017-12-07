@@ -499,7 +499,8 @@ and
     inner_swipe_loop pl net pwd s_results s
   | None ->
     print_endline ("\nYou have finished swiping. Type 'save' to save your"^
-                  " swipes, or 'quit' to quit.");
+                   " swipes, or 'quit' to quit. If you have already saved"^
+                  " swipes, this will overwrite them.");
     save_loop pl net pwd s_results
 
 and
