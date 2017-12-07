@@ -343,7 +343,7 @@ let delete_students students =
     |[] -> swipes
 
 let rem_swipes net =
-  let reset = P.create db ("DELETE FROM credentials WHERE netid = ?") in
+  let reset = P.create db ("DELETE FROM swipes WHERE netid = ?") in
   match P.execute_null reset [|Some net|] with |_ -> (); P.close reset
 
 let set_swipes swipes =
@@ -351,7 +351,7 @@ let set_swipes swipes =
   let netid1 = jsn |> Util.keys |> List.hd in
   let swipe_str = jsn |> Util.member netid1|> Util.to_string in
   let insert = P.create db ("INSERT INTO swipes VALUES (?, ?)") in
-  rem_swipes netid1;
+  let _ = rem_swipes netid1 in
   begin match ignore (P.execute insert [|netid1;swipe_str|]) with
     |_-> P.close insert
   end
