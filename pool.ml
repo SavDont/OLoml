@@ -52,18 +52,18 @@ module MakePool (T : TupleComparable) : Pool
 
   let size p = List.length p
 
+  (* Hard cap of 30 students to swipe through *)
   let poolify v v_lst =
     let tuple_lst = List.map (T.tuple_gen v) v_lst in
     let tuple_lst_srt = List.sort (T.tuple_comparison) tuple_lst in
     (* Remove possibility of an item swiping on itself *)
-    List.filter (fun (rnk,it) -> v <> it) tuple_lst_srt
-    (* How many do we want them swiping through? *)
-    (* let max_len = (List.length tuple_lst_rem) in
-    let rec cut_lst lst len final_lst =
-      if List.length final_lst = max_len then final_lst
-      else cut_lst (List.tl lst) len (push (List.hd lst) final_lst) in
-    cut_lst tuple_lst_srt max_len [] *)
-
+    let rem_dupe = List.filter (fun (rnk,it) -> v <> it) tuple_lst_srt in
+    let rec cut_lst = function
+      | [] -> []
+      | h::t ->
+        if List.length (h::t) <= 1 then (h::t)
+        else cut_lst t in
+    cut_lst rem_dupe
 end
 
 module StudentScores : TupleComparable

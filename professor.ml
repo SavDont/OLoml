@@ -40,10 +40,12 @@ let valid_student s =
     let netID = j |> member "netid" |> to_string in
     let name = j |> member "name" |> to_string in
     let yr = j |> member "year" |> to_string in
+    let pwd = j |> member "password" |> to_string in
     let netIDNotEmpty = if netID <> "" then true else false in
     let nameNotEmpty = if name <> "" then true else false in
     let yrNotEmpty = if yr <> "" then true else false in
-    netIDNotEmpty && nameNotEmpty && yrNotEmpty with
+    let pwdNotEmpty = pwd <> "" in
+    netIDNotEmpty && nameNotEmpty && yrNotEmpty  && pwdNotEmpty with
   | _ -> false
 
 (* [checkDuplicates acc lst] takes a boolean accumulator [acc] and a list [lst]

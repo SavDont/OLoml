@@ -272,10 +272,19 @@ let change_stu_query net info =
   match [a;b;c;d;e] with
   |_ -> ()
 
+let insert_creds net pwd =
+  match net, pwd with
+  |(Some n, Some p) ->
+    let insert = P.create db ("INSERT INTO credentials VALUES (?, ?)") in
+    ignore (P.execute insert [|n; p|]); P.close insert
+  | _ -> ()
+
 let rec insert_student s =
   let new_name = s |> Util.member "name" |> Util.to_string_option in
   let new_id = s |> Util.member "netid" |> Util.to_string_option in
   let new_year = s |> Util.member "year" |> Util.to_string_option in
+  let pwd = s |> Util.member "password" |> Util.to_string_option in
+  let _ = insert_creds new_id pwd in
   begin
     match (new_name, new_id, new_year) with
     |(Some name, Some id, Some yr) ->
@@ -284,6 +293,7 @@ let rec insert_student s =
       ignore (P.execute insert [|id; name; yr; name; yr|]); P.close insert
     | _ -> ()
   end
+
 
 let admin_change_query info =
   let jsn = from_string info in
@@ -342,11 +352,16 @@ let delete_students students =
                             Yojson.Basic.to_string):: swipes) j)
     |[] -> swipes
 
+let rem_swipes net =
+  let reset = P.create db ("DELETE FROM swipes WHERE netid = ?") in
+  match P.execute_null reset [|Some net|] with |_ -> (); P.close reset
+
 let set_swipes swipes =
   let jsn = from_string swipes in
   let netid1 = jsn |> Util.keys |> List.hd in
   let swipe_str = jsn |> Util.member netid1|> Util.to_string in
   let insert = P.create db ("INSERT INTO swipes VALUES (?, ?)") in
+  let _ = rem_swipes netid1 in
   begin match ignore (P.execute insert [|netid1;swipe_str|]) with
     |_-> P.close insert
   end
