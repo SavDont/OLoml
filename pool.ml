@@ -64,6 +64,7 @@ module MakePool (T : TupleComparable) : Pool
         if List.length (h::t) <= 1 then (h::t)
         else cut_lst t in
     cut_lst rem_dupe
+end
 
 module StudentScores : TupleComparable
   with type rank = score
