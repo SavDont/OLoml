@@ -145,7 +145,7 @@ let parse_student st_str =
 
 let printable_student st =
   if st.netid = "UNMATCHED" then
-    "\n\nSorry, the system could not find a match for you. Please contact " ^
+    "Sorry, the system could not find a match for you. Please contact " ^
     "your administrator for further instructions"
   else
     let header = "Viewing profile for: "^st.name^" ("^st.netid^")" in
@@ -161,7 +161,7 @@ let printable_student st =
     let hrs_str = "Willing to spend "^(hrs)^" hours on this project" in
     let sched = "Available:\n"^(sched_to_str st.schedule "" 0) in
     let about = "About me: "^st.profile_text in
-    "\n\n"^header^"\n\n"^yr^"\n\n"^loc^"\n\n"^courses^"\n\n"^sched^"\n"^hrs_str
+    ""^header^"\n\n"^yr^"\n\n"^loc^"\n\n"^courses^"\n\n"^sched^"\n"^hrs_str
     ^"\n\n"^about
 
 let get_student net pwd =

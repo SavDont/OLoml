@@ -1,5 +1,5 @@
 open Cohttp
-
+(* Test client functions *)
 val test_get: unit -> Code.status_code*string
 val test_post: string -> Code.status_code*string
 
@@ -97,7 +97,7 @@ val student_post :
 val admin_get :
   ?netID:string -> string -> string -> Code.status_code*string
 
-(* [admin_post password reqBody] returns a tuple containing the response 
+(* [admin_post password reqBody] returns a tuple containing the response
  * status and response body received after a POST request to the admin api
  * endpoint.
  * requires:
