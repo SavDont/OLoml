@@ -1,0 +1,3009 @@
+commit 592074fda2ba48a348839b08622063e0aaecec86
+Merge: cb7b6ba c63ba12
+Author: Savarn Dontamsetti <sd549@cornell.edu>
+Date:   Thu Dec 7 01:19:55 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit cb7b6ba567b9468d8eee0aec77f771f8b44787f5
+Author: Savarn Dontamsetti <sd549@cornell.edu>
+Date:   Thu Dec 7 01:19:24 2017 -0500
+
+    [largeClass.json] Added 200 individual json class file as test
+
+ largeClass.json | 1202 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 1202 insertions(+)
+
+commit c63ba1217d75d5e9ff39930674cd93badfcce09c
+Merge: dcf7bfd f71dd70
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Wed Dec 6 23:46:42 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit dcf7bfd320751734b570f08912cdf6487e1570b7
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Wed Dec 6 23:46:19 2017 -0500
+
+    [db.ml] 80 line issue
+
+ db.ml | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+commit f71dd70453a14c62b32d42ce1fc411529caac159
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 23:17:15 2017 -0500
+
+    removing uneccesary files
+
+ api.mli         |    2 +-
+ backend_lib.ml  |    1 -
+ backend_lib.mli |    6 +-
+ db.ml           |    3 +-
+ loml_client.mli |    4 +-
+ questions.ml    |    8 -
+ schema.json     |   93 -
+ setup.ml        | 8172 -------------------------------------------------------
+ todo.txt        |   29 -
+ 9 files changed, 7 insertions(+), 8311 deletions(-)
+
+commit 5ba0bc40459c06b67663687463913f1cb6a4400c
+Merge: 4b1a290 a902113
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 23:06:40 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 4b1a2909d7af4401b2a95e0a41067cf892397003
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 23:06:35 2017 -0500
+
+    fixed spacing in student
+
+ student.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit a9021134882de33e492cc9d60a5503ef44bd44ad
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Wed Dec 6 23:02:25 2017 -0500
+
+    [db.ml] added specs for helper functions
+
+ db.ml | 85 ++++++++++++++++++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 66 insertions(+), 19 deletions(-)
+
+commit 5a86d48992b38b0ca30297275971d7dc4494486e
+Merge: e8014f2 db4db43
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 22:32:22 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit e8014f2551947fcc9d41dfc796ec44c0c8efbe7e
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 22:32:16 2017 -0500
+
+    [command.ml, command.mli, main.ml] made commands more intuitive
+
+ command.ml  | 22 ++++++++++++++++------
+ command.mli |  9 ++++++++-
+ main.ml     | 32 ++++++++++++++++----------------
+ 3 files changed, 40 insertions(+), 23 deletions(-)
+
+commit db4db43b70cd5e1895eb4dca0bdd8ee7e91d0848
+Merge: 21b758b 1bdd5df
+Author: sd549 <sd549@cornell.edu>
+Date:   Wed Dec 6 22:23:46 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 21b758bf7bca1a063141e229927cb95a7d3088fe
+Author: sd549 <sd549@cornell.edu>
+Date:   Wed Dec 6 22:23:41 2017 -0500
+
+    [main.ml; professor.ml; student.ml] Professor removed unnecessary method. Added UNMATCHED logic for student to string method. Edited string in main for professor match.
+
+ main.ml      |  3 +--
+ professor.ml | 19 +++----------------
+ student.ml   | 34 +++++++++++++++++++---------------
+ 3 files changed, 23 insertions(+), 33 deletions(-)
+
+commit 1bdd5df1ca3a1eda490a4da2210a395e5d227f52
+Merge: 198eb2f 04b6a7b
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 22:12:24 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 198eb2f367eff30dacdfa2a1832a51508673c54a
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 22:12:19 2017 -0500
+
+    cleaning up repl workflow
+
+ command.ml |  4 ++--
+ main.ml    | 39 ++++++++++++++++++++++++---------------
+ pool.ml    |  2 +-
+ 3 files changed, 27 insertions(+), 18 deletions(-)
+
+commit 04b6a7b4ddadb22aea53dc1f19387f8dd67fbf7e
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Wed Dec 6 21:48:35 2017 -0500
+
+    [class.json] that'll do it
+
+ class.json | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 323ada247cfc6e0be193b1c2ebda7538af1d7343
+Merge: e7c4c48 8878a0c
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Wed Dec 6 21:43:12 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit e7c4c48fca1bcbef05542e60f31e612979f891a4
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Wed Dec 6 21:42:13 2017 -0500
+
+    [class.json] updated class
+
+ class.json | 86 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 81 insertions(+), 5 deletions(-)
+
+commit 8878a0c3569e5b5db75c98e15895e978a5c8291c
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 21:30:29 2017 -0500
+
+    [pool.ml] syntax error fixed
+
+ pool.ml | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 18ccd5c4709dd163ed4b542d5930b6f048943b17
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 21:29:48 2017 -0500
+
+    [pool.ml] placing hard cap on student pull size
+
+ pool.ml | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
+
+commit e819e0b32f9dce58357923e6a27ddcc2f158661b
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 21:22:13 2017 -0500
+
+    [class.json, professor.ml] updated class schema, added password verification
+
+ class.json   | 12 ++++++++----
+ professor.ml |  4 +++-
+ 2 files changed, 11 insertions(+), 5 deletions(-)
+
+commit 8d0a2933ff7ce35b66df21041d789761bab2e953
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 21:15:47 2017 -0500
+
+    [db.ml] trying add credentials
+
+ db.ml | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+commit ae9a7c4f34c56285137193c7bff68cf10b1b385f
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 21:01:02 2017 -0500
+
+    [db.ml] bug fix
+
+ db.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 5001c1001f73136bbbb8f333de7cd36fe5c01674
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 20:56:32 2017 -0500
+
+    [db.ml] syntax error
+
+ db.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit c3f8332f341550fc84de7f09ccef6064420033ec
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 20:54:17 2017 -0500
+
+    [db.ml] overwrite swipes
+
+ db.ml | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+commit cf6b3559c1197cc1bc93415bf4aedd086e0a11be
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 20:44:50 2017 -0500
+
+    [main.ml] swipe overwrite warning
+
+ main.ml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 2c9af436493a4d0f575ec14b15c2ed9ddb26b681
+Merge: 4bd7d0e 8c71a29
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 20:31:48 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 4bd7d0e4119966decee98b19bcd1cb9ed9e3d259
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 20:31:42 2017 -0500
+
+    [professor.ml] fixed date bug
+
+ professor.ml | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+commit 8c71a2956ae433b558f5025b7082df4e65b18b19
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Wed Dec 6 20:31:04 2017 -0500
+
+    [db.ml] extraneous comment
+
+ db.ml | 5 -----
+ 1 file changed, 5 deletions(-)
+
+commit ed2f1969f490f94bde36d47403ee14b94f063e56
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 20:16:16 2017 -0500
+
+    prevent writing class twice when invalid dates
+
+ main.ml | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 3d14b92c69633a29615f37ba053a4705a7b64226
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 20:07:27 2017 -0500
+
+    updating documentation
+
+ command.ml  |  2 ++
+ command.mli | 13 +++++++++++
+ main.ml     | 73 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
+ pool.mli    |  4 +++-
+ student.ml  | 33 +++++++++++-----------------
+ student.mli | 26 +++++++---------------
+ 6 files changed, 107 insertions(+), 44 deletions(-)
+
+commit fdb4107495ebb7159d4e3407f04f0e0b7be4c277
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 19:06:55 2017 -0500
+
+    fixing reset
+
+ db.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 5df4a7ae834daa96d05d76dc1bfc87387f2e6c7b
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 19:04:20 2017 -0500
+
+    oops
+
+ db.ml | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+commit ff2d9f441065a5b78119089949a59d7b3dbbfed9
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 19:03:23 2017 -0500
+
+    testing out deleting everything but admin from credentials
+
+ db.ml   | 5 +++--
+ main.ml | 4 ++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+commit 656d0650d52fffaa42468eda500fd0cf6c62297f
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 18:43:51 2017 -0500
+
+    oops
+
+ swipe.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit ae39f9bba5fbf4d5f7bcb0f55fd5198a3c82bfff
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Dec 6 18:35:07 2017 -0500
+
+    cleaned up updating UI
+
+ command.ml  |  35 +++++++++++-
+ command.mli |  11 +++-
+ main.ml     | 179 ++++++++++++++++++++++++++++++++++++------------------------
+ student.ml  |   3 +-
+ swipe.ml    |   2 +-
+ 5 files changed, 152 insertions(+), 78 deletions(-)
+
+commit 8cb1e7ee9c21c0fe0014721f2a566191d5324a24
+Author: sd549 <sd549@cornell.edu>
+Date:   Tue Dec 5 16:21:10 2017 -0500
+
+    [server.ml] fixed server roude for admin post
+
+ server.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 6f4986336d7172819195e80c578866e6d02d6374
+Merge: 095db88 bb38243
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Tue Dec 5 12:47:23 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 095db88a7e76d42050b64a871268a4b31b4790ed
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Tue Dec 5 12:47:15 2017 -0500
+
+    [main.ml] update students before periods
+
+ main.ml | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
+
+commit bb38243f83e62f8d1dd7a305376e06c2e46f77e5
+Author: sd549 <sd549@cornell.edu>
+Date:   Tue Dec 5 07:47:50 2017 -0500
+
+    [dm.ml] Fixed student match query
+
+ db.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 23a6c56a4b75ff5d8e127f6c7f1294df135c3b87
+Author: sd549 <sd549@cornell.edu>
+Date:   Tue Dec 5 07:40:13 2017 -0500
+
+    [main.ml] prevent professor from going back to main loop after match
+
+ main.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 36a2d0d6530bdcee07438484473c8523a5bcd0ea
+Author: sd549 <sd549@cornell.edu>
+Date:   Tue Dec 5 07:35:56 2017 -0500
+
+    [db.ml;match.ml] match works now
+
+ db.ml    |  2 +-
+ match.ml | 15 ++++-----------
+ 2 files changed, 5 insertions(+), 12 deletions(-)
+
+commit 91b78f44e75b4886803811183fe9c79b4048f0f5
+Author: Savarn Dontamsetti <sd549@en-cs-3110project.coecis.cornell.edu>
+Date:   Tue Dec 5 07:33:14 2017 -0500
+
+    [match.ml] match works
+
+ match.ml | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
+
+commit 2e582037b3789e9943d8e253b394ecc09fdcd09d
+Author: sd549 <sd549@cornell.edu>
+Date:   Tue Dec 5 05:20:59 2017 -0500
+
+    [match.ml] fixed parsing of json to new format
+
+ match.ml | 49 ++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 30 insertions(+), 19 deletions(-)
+
+commit 2abc3c595285f69ab8252bd59bd3fef612301ba5
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Tue Dec 5 04:01:45 2017 -0500
+
+    [loml_client] added netid header in swipe post
+
+ loml_client.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 8b77034b16d0b8e915236b459a1d58d6aeb7945c
+Author: sd549 <sd549@cornell.edu>
+Date:   Tue Dec 5 03:52:40 2017 -0500
+
+    [db.ml] removed set_swipes helper function
+
+ db.ml | 15 ---------------
+ 1 file changed, 15 deletions(-)
+
+commit 0bb4f66673b7be127d4f6aa08fa031045425fa22
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Tue Dec 5 03:46:12 2017 -0500
+
+    uneccessary printing
+
+ professor.ml | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit e40554c63647390b9a0f6c52d7c980e00562cc27
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Tue Dec 5 03:27:30 2017 -0500
+
+    [db.ml] set swipes query
+
+ db.ml | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+commit 50c6521a495ddd1fbd50d2a96d43d39ca47afe1d
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Tue Dec 5 03:20:00 2017 -0500
+
+    [db.ml] fixed syntax
+
+ db.ml | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+commit 4ff5e1ac27b7a6f3862be954dd33db6b8b9530a8
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Tue Dec 5 03:16:11 2017 -0500
+
+    [db.ml] missing end
+
+ db.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 40354350354d5095f3a9612d3ea552d48af27b4f
+Merge: 31c120b 6b0e306
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Tue Dec 5 03:14:33 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 31c120bc947fdfa42c543bf85eb67f5324835bcb
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Tue Dec 5 03:14:19 2017 -0500
+
+    [db.ml] set_swipes only writes one string at a time
+
+ db.ml | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+commit 6b0e3061ad6dfbaebcea2068deb7be48ee89232d
+Merge: bd62a2d a0a019c
+Author: sd549 <sd549@cornell.edu>
+Date:   Tue Dec 5 03:09:57 2017 -0500
+
+    [main.ml] removed ability to update during swipe
+
+commit bd62a2d5de189c6135b8c223c0f3c88d55315ffe
+Author: sd549 <sd549@cornell.edu>
+Date:   Tue Dec 5 03:09:03 2017 -0500
+
+    [main.ml] removed ability to update profile during swipe period
+
+ main.ml | 36 ++++--------------------------------
+ 1 file changed, 4 insertions(+), 32 deletions(-)
+
+commit a0a019c2c83dbd323bdc43025acd14d145682582
+Merge: 75ceca6 9a3f60a
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Tue Dec 5 02:55:07 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 75ceca6fe46509076459425df9b308bccc4b2895
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Tue Dec 5 02:54:52 2017 -0500
+
+    [db.ml] fixing loop2
+
+ db.ml | 69 +++++++++++++++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 42 insertions(+), 27 deletions(-)
+
+commit 9a3f60a124d546035f8a0d19560d5439fadf57f0
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Tue Dec 5 02:39:21 2017 -0500
+
+    compiles
+
+ main.ml      | 2 +-
+ professor.ml | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+commit 3469cae4fce7ec2a846b91ed982dae0303f964b9
+Merge: 95afeea 69a69f1
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Tue Dec 5 02:37:04 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 95afeea74658cf15ec94a8ae0f4b45eb5c120a77
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Tue Dec 5 02:36:58 2017 -0500
+
+    fixing admin get endpoint for get all students
+
+ main.ml       |  3 +--
+ professor.ml  | 11 +++++------
+ professor.mli |  2 +-
+ server.ml     |  5 +++--
+ 4 files changed, 10 insertions(+), 11 deletions(-)
+
+commit 69a69f14217d53f0cad33a155275bf5f20f8671c
+Merge: 8b4fb67 c29f8d0
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Tue Dec 5 02:17:12 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 8b4fb67044e57dc1533c3bb0988af9ad2055aa9b
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Tue Dec 5 02:16:54 2017 -0500
+
+    [db.ml] get swipes
+
+ db.ml | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+commit c29f8d0e938b6557fae3a8e092f61df7ed9ca762
+Merge: a1f8dca bb7732c
+Author: sd549 <sd549@cornell.edu>
+Date:   Tue Dec 5 01:55:51 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit a1f8dcac5ae83516e7c9a1b0e423e939f47c807c
+Author: sd549 <sd549@cornell.edu>
+Date:   Tue Dec 5 01:55:42 2017 -0500
+
+    [main.ml] Updated repl loop to allow student to swipe after updating profile
+
+ main.ml | 33 ++++++++++++++++++++++++++++++---
+ 1 file changed, 30 insertions(+), 3 deletions(-)
+
+commit bb7732c17338bb6dc87e88065d5458e5919f901e
+Merge: 7339914 0ee6b9a
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Tue Dec 5 01:48:22 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 733991410b844f839d4ec26615ba717353f17252
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Tue Dec 5 01:48:17 2017 -0500
+
+    [professor.ml] parsing for get all students
+
+ professor.ml | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+commit 0ee6b9a0365ae18a547c26539c693577873847ac
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Tue Dec 5 01:39:30 2017 -0500
+
+    [db.ml] format of get_all_students
+
+ db.ml | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+commit f56d4c63946289320e6187e91dc80c20afed0257
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Tue Dec 5 01:14:36 2017 -0500
+
+    [student.ml] west campus parses now
+
+ student.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 77b38583bceaa357d11852e6f8d6884d28c38faa
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Tue Dec 5 01:12:24 2017 -0500
+
+    [student.ml] parses schedule
+
+ student.ml | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+commit 510fb7294c3d4e86106aa10676f7ef3620b8d5ff
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Tue Dec 5 01:06:30 2017 -0500
+
+    [main.ml] can now update schedule
+
+ main.ml | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+commit 5fc7fc5389f42ffbab6c6921f8eacab2849f29f6
+Merge: 3bb7ba7 aa92afc
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Tue Dec 5 00:37:47 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 3bb7ba73b23d55fab67f156d192b3aa423a03eca
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Tue Dec 5 00:37:38 2017 -0500
+
+    [student.ml] fixed course parsing
+
+ student.ml | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
+
+commit aa92afc592a60b32aa47b302f2f21d2918c97b6d
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Tue Dec 5 00:31:15 2017 -0500
+
+    [main] reverted
+
+ main.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 1080a84ef3cbb7befd92ddc0cbc2cd1effdf1233
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Tue Dec 5 00:28:26 2017 -0500
+
+    [main.ml] testing something, line 349
+
+ main.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit cb3cbea3ef339aaf05948ad26b804a7a8347f040
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Tue Dec 5 00:14:56 2017 -0500
+
+    writes are successful for students, need to fix parsing
+
+ student.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 57a38180c30d2c7b0f27632f36bcaa0c3cb62964
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Tue Dec 5 00:06:31 2017 -0500
+
+    [db.ml] courses taken
+
+ db.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit f7bb2ab9509ad6e0107557d978040cb2b99a2f41
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Tue Dec 5 00:03:45 2017 -0500
+
+    [student.ml] fixing inputs for courses schedule
+
+ student.ml | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+commit 52d9ab57846fa3e4386b7e1a4f997bdb8fd94709
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 23:47:10 2017 -0500
+
+    [main.ml, student.ml, student.mli] fixed hour parsing
+
+ main.ml     |  4 ++--
+ student.ml  | 22 +++++-----------------
+ student.mli |  2 +-
+ 3 files changed, 8 insertions(+), 20 deletions(-)
+
+commit 9b4fca2c6993b764134d64c3169a2c827163dd41
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 23:27:09 2017 -0500
+
+    [student.ml] fixed west campus parsing
+
+ student.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 2f5b9c74c9491da224808a54f38249caf6eabd21
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Mon Dec 4 23:19:27 2017 -0500
+
+    [db.ml] update students
+
+ db.ml | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+commit 6beaec0740062925ef7c9dbfe64f192b456b8164
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 23:04:24 2017 -0500
+
+    [db.ml, command.ml
+    , main.ml] fixed argument order, added profile updating
+
+ command.ml |  1 +
+ db.ml      |  4 ++--
+ main.ml    | 11 ++++++++++-
+ 3 files changed, 13 insertions(+), 3 deletions(-)
+
+commit 61d216775dee8caa25349f6bbf7512782cfea2d7
+Merge: fa44064 cd2925d
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 22:43:44 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit fa44064949428a7aa1b9da8eb2e972cd1462a50d
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 22:43:40 2017 -0500
+
+    [professor.ml, professor.mli] removing get student
+
+ professor.ml  | 9 ---------
+ professor.mli | 4 ----
+ 2 files changed, 13 deletions(-)
+
+commit cd2925dfd8f57fbec6a16735fafa3dc9e47ce346
+Merge: 87243db c2ad003
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Mon Dec 4 22:26:31 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 87243dbae68680b4ba0e3c12e2e7973111c9949f
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Mon Dec 4 22:26:14 2017 -0500
+
+    [db.ml] changing an int to string
+
+ db.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit c2ad003ec647164207ee523ee483f9e8b3ecb702
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 22:20:23 2017 -0500
+
+    [student.ml] should still be parsed as int
+
+ student.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 9ce316fa4d1d65585ddffd1a7156984afe395aa6
+Merge: 2102b86 4bc1f7a
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Mon Dec 4 22:17:49 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 2102b86109baa0ebd91a2fd3fa431c5fa44c44b9
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Mon Dec 4 22:17:32 2017 -0500
+
+    [db.ml] handled partial reads in student
+
+ db.ml | 69 +++++++++++++++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 42 insertions(+), 27 deletions(-)
+
+commit 4bc1f7af390b2aa23de4eced81e991a695a2a1e8
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 22:02:07 2017 -0500
+
+    [student.ml] changed hours parsing to string
+
+ student.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 83511a8b2c6302905e6e61fa336bba95a9607a1d
+Author: Savarn Dontamsetti <sd549@en-cs-3110project.coecis.cornell.edu>
+Date:   Mon Dec 4 16:59:40 2017 -0500
+
+    [api.ml] Forgot to add time
+
+ api.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 78f91e8cee226a11e7ed0b7c09c48e823f4c570f
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 16:55:35 2017 -0500
+
+    [api.ml] subtracted some time from today
+
+ api.ml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit ea019ce73af19320b8f9cb07ec37f024a1612fad
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 16:46:11 2017 -0500
+
+    [professor.ml] update time now local
+
+ professor.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 0a8868021d2eacfb450a3fffd88e9c4deaad202b
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 16:40:15 2017 -0500
+
+    [api.ml; db.ml] removed markers
+
+ api.ml | 2 +-
+ db.ml  | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+commit e26c3b256c4ca79101cc0b5e3e09fea19b4eb77b
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 16:39:03 2017 -0500
+
+    [main.ml; professor.ml; professor.mli] Logic to set update period immediately
+
+ main.ml       | 10 ++++------
+ professor.ml  |  6 +++---
+ professor.mli |  4 ++--
+ 3 files changed, 9 insertions(+), 11 deletions(-)
+
+commit 5fb80f3944e157216f8551bffd1902f1fb99e454
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 16:20:40 2017 -0500
+
+    [db.ml] removed Uti.to_float in post
+
+ db.ml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 506c50fd137c3aaceed366f1394d1eacb778037d
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Mon Dec 4 16:11:21 2017 -0500
+
+    [db.ml] fixed periods stuff
+
+ db.ml | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
+
+commit 233221ad8d6b95e2f4221e2e210639c873ad996d
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 15:52:36 2017 -0500
+
+    [db.ml] changed query in get_period_query
+
+ db.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit e636e2733f303a07a5ad6faf44784b8423556cae
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 15:46:19 2017 -0500
+
+    [professor.ml; db.ml] addded 0.001
+
+ db.ml        | 2 +-
+ professor.ml | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 842e648f9c6f6038354b4aa1424ec8c351a441f5
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 15:42:20 2017 -0500
+
+    [db.ml] appended .001
+
+ db.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit b0206e0ed4da06d233a9a65fc3ae3139d3faf590
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 15:33:10 2017 -0500
+
+    [professor.ml; db.ml] Reverted back to string representation and used Mysql commands
+
+ db.ml        | 14 +++++++-------
+ professor.ml |  2 +-
+ 2 files changed, 8 insertions(+), 8 deletions(-)
+
+commit fa9a79df74addd1357be88ef98a684386e7f8977
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 15:26:53 2017 -0500
+
+    [db.ml] forgot to update get_period_query
+
+ db.ml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 1d249131497618c5b9151ff8030e057d6a089d74
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 15:24:36 2017 -0500
+
+    [db.ml] edited set_period_query to handle floats
+
+ db.ml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 7e2758752df0fdb321b3fdea247f2a5e49e1ac5a
+Merge: 956594b 964fd7a
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 15:20:36 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 956594b12c7788a6fc4f539a3dc7819e9db8d09e
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 15:20:31 2017 -0500
+
+    [professor.ml] fixed profesor import function
+
+ professor.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 964fd7aaa8cf9fe784cef081c23ddd1658b278c8
+Merge: 87129f5 e53640a
+Author: Aayush Beri <ab2466@en-cs-3110project.coecis.cornell.edu>
+Date:   Mon Dec 4 15:06:13 2017 -0500
+
+    Merge branch 'master' of github.coecis.cornell.edu:ab2466/CS3110-Final-Project
+
+commit 87129f5e06cddfe071de37825f107eeee3c9f4d1
+Author: Aayush Beri <ab2466@en-cs-3110project.coecis.cornell.edu>
+Date:   Mon Dec 4 15:06:09 2017 -0500
+
+    [oclient.* added interface for oclient]
+
+ oclient.ml  |  9 ---------
+ oclient.mli | 51 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 51 insertions(+), 9 deletions(-)
+
+commit e53640a902af79fb96ea4d6c61f065baab7d3e79
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 14:56:19 2017 -0500
+
+    [dbl.ml] updated marker
+
+ db.ml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 275c7914ad56768ea99c58554daae581d1ae1888
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 14:53:47 2017 -0500
+
+    [db.ml] added a . to make a float
+
+ db.ml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 5078ca83634cff19130e96fcbab6706c41289f05
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 14:49:47 2017 -0500
+
+    [db.ml] fixed type error in db.ml
+
+ db.ml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit e60c416335050f26a82369817737b6385f184e26
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 14:45:17 2017 -0500
+
+    [db.ml] Changed get_period_query yojson to floats
+
+ db.ml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 13678e0ee4dc157f23458dfccb036d729f555660
+Merge: 9a40ed5 705193c
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 14:40:50 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 9a40ed5251b1fb7c2947e946fc8fbdac806203b0
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 14:40:47 2017 -0500
+
+    [api.ml] Fixed type error
+
+ api.ml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 705193c2c1ba54592d06def5173734e442d814b2
+Author: Aayush Beri <ab2466@en-cs-3110project.coecis.cornell.edu>
+Date:   Mon Dec 4 14:39:04 2017 -0500
+
+    [loml_client.*, oclient.ml] added error handling in requests
+
+ loml_client.ml  |  7 ++++++-
+ loml_client.mli |  3 ++-
+ oclient.ml      | 22 ++++++++++++++--------
+ 3 files changed, 22 insertions(+), 10 deletions(-)
+
+commit 2e72f00f692177554e068a2126235f2748d1d71f
+Author: Aayush Beri <ab2466@en-cs-3110project.coecis.cornell.edu>
+Date:   Mon Dec 4 14:22:03 2017 -0500
+
+    [Makefile] removed extra commented out stuff
+
+ Makefile | 19 -------------------
+ 1 file changed, 19 deletions(-)
+
+commit 4afa2d1c715981928fd5cc0100e5465638a5693a
+Merge: 956ddad 944dc1a
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 14:15:58 2017 -0500
+
+    Merge branch 'goodbranch'
+
+commit 944dc1af143d9f3af2457555ecdfcc2c9d350653
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 14:10:05 2017 -0500
+
+    [api.ml; db.ml] Added markers in both files to isolate error
+
+ api.ml | 4 ++--
+ db.ml  | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+commit 956ddadac9d9e9b22771fff81dc4bbd14aadc8ac
+Merge: fb9d4f3 4988353
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 12:32:43 2017 -0500
+
+    merged
+
+commit fb9d4f3c46736fc9b160b4ad6c91e15581686bba
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 12:31:22 2017 -0500
+
+    trying converting to strings
+
+ db.ml        |  8 ++++----
+ professor.ml | 10 ++++++----
+ 2 files changed, 10 insertions(+), 8 deletions(-)
+
+commit 49883532a36c54eab125d0202effac2e0d7eebf2
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 12:10:05 2017 -0500
+
+    [professor.ml] Removed flags. Backend issue identified.
+
+ professor.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 018b515acde55d6a9a3a000b5b10b5bd6714561f
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 12:04:52 2017 -0500
+
+    [professor.ml] flags type check
+
+ professor.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit c53206be6c88516a34bc9cd24ff28d1b659d7063
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 12:01:27 2017 -0500
+
+    [professor.ml] Fixing valid_date error
+
+ professor.ml | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+commit dc8f8c512e1d115a52a5853514412a9a2e7bbc1c
+Merge: 8021f43 06ec871
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 11:46:34 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 8021f43bb70641c403cf475f3d9df0e4be6f2889
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 11:46:31 2017 -0500
+
+    [db.ml] recreated import_students function to handle json list
+
+ db.ml | 34 +++++++++++++++++++++++++---------
+ 1 file changed, 25 insertions(+), 9 deletions(-)
+
+commit 06ec8719d73f07c1a740d767c4669111faec7c35
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 11:45:19 2017 -0500
+
+    [db.ml] fixed units thing. unsound types?
+
+ db.ml | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+commit 6d1901a22f473d559cb297f55b8de427ee7a4ae7
+Merge: ce8a7d4 b0b863d
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 03:59:10 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit ce8a7d45ae6e77d48c9b0de46e06b9fadbf68f26
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 03:59:07 2017 -0500
+
+    [professor.ml] fixed error
+
+ professor.ml | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+commit b0b863d6ec56bf685370dd860aefcb0371202d33
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 03:56:12 2017 -0500
+
+    testing
+
+ api.ml | 5 +++--
+ db.ml  | 6 +++---
+ 2 files changed, 6 insertions(+), 5 deletions(-)
+
+commit 15fa5c95133fa24ac5c7c824ae40a851a41d2457
+Merge: 5aee37b 231b0a4
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 03:53:28 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 5aee37b5b19f7d3d7ee2c6e5b8613e30900fb037
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 03:53:24 2017 -0500
+
+    [db.ml] changed float types in DB
+
+ db.ml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 231b0a487f29a9e73279a4a9914c473c139b8c48
+Merge: f6d165b 188e246
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 03:51:16 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit f6d165b3a9c5ded3858403f4d35c682b8e98237c
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 03:51:14 2017 -0500
+
+    [professor.ml] Updated professor import to reflect change in json
+
+ professor.ml | 19 +------------------
+ 1 file changed, 1 insertion(+), 18 deletions(-)
+
+commit 188e2463ad307eebf33fe448dab9d09742397b22
+Merge: 830b3ea 589aeb4
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 03:49:41 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 830b3ea63722f91a1ad3f4b97235c4bb46bf107a
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 03:49:33 2017 -0500
+
+    [api.ml] testing strings out
+
+ db.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 589aeb44c1c82b9796c909d18be54ce981500063
+Merge: 9e2e7c1 37731f5
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 03:48:24 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 9e2e7c181a4a0eb2d5eb536758875385d1607b77
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 03:48:19 2017 -0500
+
+    [class.json] Updated class.json with only immutable fields
+
+ class.json | 76 +++++++++-----------------------------------------------------
+ 1 file changed, 11 insertions(+), 65 deletions(-)
+
+commit 37731f5c38cbed21d42be9bb8965d4eceb9812a8
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 03:45:04 2017 -0500
+
+    [db.ml] removed ml2floats
+
+ db.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 6a45f8eed46bd59143b690f9842ade9483dad57f
+Merge: e32ffbe da927b6
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 03:37:40 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit e32ffbef105ca7373fdd0c3ec7ae5f016fa46980
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 03:37:34 2017 -0500
+
+    [api.ml] added period logic
+
+ api.ml | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+commit da927b6d0612aafdd19cbf5075fd9f82dc116392
+Merge: 295e635 df34c97
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 03:27:49 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 295e635722607ba44e18ff0eef429ad2bd81fc47
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Dec 4 03:25:24 2017 -0500
+
+    [main.ml] new error message for when admin hasn't run match yet
+
+ main.ml | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+commit df34c97fd05643de9c21cb460cfc78b307f310fa
+Merge: 4d8064e fd68695
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 03:11:38 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 4d8064e71c717a249d670a631a1bd2881c0ba0ae
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 03:11:32 2017 -0500
+
+    [professor.ml] fixed yojson formatting
+
+ professor.ml | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+commit fd68695dd81937c0ef30448cb9f0195f9f04efb1
+Author: Aayush Beri <ab2466@en-cs-3110project.coecis.cornell.edu>
+Date:   Mon Dec 4 02:56:03 2017 -0500
+
+    [api.ml] updated period post
+
+ api.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit a704e2aa0afbabff7f8ff9cf6e03531090d9fece
+Author: Aayush Beri <ab2466@en-cs-3110project.coecis.cornell.edu>
+Date:   Mon Dec 4 02:32:35 2017 -0500
+
+    [api.ml] small fix in period_get
+
+ api.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 1f59edd3d245e2272f53c26a61489d47d7848197
+Merge: cdf0423 431a5fd
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Mon Dec 4 02:19:05 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit cdf0423b73ecb79b84717a908fc2a1c7b03ebeb8
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Mon Dec 4 02:18:45 2017 -0500
+
+    [db.ml] added P.close
+
+ db.ml | 60 ++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 30 insertions(+), 30 deletions(-)
+
+commit 431a5fdc56b25458b8388c455d0ba34417177285
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 01:54:21 2017 -0500
+
+    [api.ml] works
+
+ api.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 9a9658f81f62df0bcc9067d71e8b39b54f36b40d
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Mon Dec 4 01:53:10 2017 -0500
+
+    api.ml units
+
+ api.ml | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+commit ce1656603155c76b4bf3930d985736f9885b387c
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Mon Dec 4 01:49:50 2017 -0500
+
+    [api.ml] added get all students endpoint
+
+ api.ml | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+commit 7c093b8fac8523f1d28294d698816205630f087b
+Merge: 0e4f8de 198b401
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Mon Dec 4 01:44:42 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 0e4f8de96e6690a2187f07aee78509a9d476eedc
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Mon Dec 4 01:44:23 2017 -0500
+
+    [db.ml/mli, api.ml] added units everywhere
+
+ api.ml | 10 +++++-----
+ db.ml  | 24 +++++++-----------------
+ db.mli | 10 +++++-----
+ 3 files changed, 17 insertions(+), 27 deletions(-)
+
+commit 198b401546839c681b787263ef615b8f87ac03f7
+Author: sd549 <sd549@cornell.edu>
+Date:   Sun Dec 3 23:57:47 2017 -0500
+
+    [class.json] Added test profiles for the class
+
+ class.json | 78 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 78 insertions(+)
+
+commit f44d5513b5af909f391574fd7c2f54b2474ee43d
+Merge: 780e172 292514c
+Author: sd549 <sd549@cornell.edu>
+Date:   Sun Dec 3 23:39:42 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 780e17254ac85d5d2ebc1fbd7e3a70e29129054d
+Author: sd549 <sd549@cornell.edu>
+Date:   Sun Dec 3 23:39:35 2017 -0500
+
+    [professor.ml] Added json validation for student input file
+
+ professor.ml | 75 +++++++++++++++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 64 insertions(+), 11 deletions(-)
+
+commit 292514c10d18c39afe4cdfb07df318365bfdefb4
+Author: Aayush Beri <ab2466@en-cs-3110project.coecis.cornell.edu>
+Date:   Sun Dec 3 23:28:50 2017 -0500
+
+    [db.ml] fixed some shit
+
+ db.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit ac177dcf75fe5d28981a9b49f8fc47d7aaff383e
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Sun Dec 3 23:05:21 2017 -0500
+
+    [Makefile] fixed compilation linking issue
+
+ Makefile | 48 +++++++++++++++++++++++++-----------------------
+ 1 file changed, 25 insertions(+), 23 deletions(-)
+
+commit 468b6f9f77c4f6c3d3e4b2417507bfdacdaecf28
+Merge: 70a9b09 6a4fb85
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sun Dec 3 22:48:43 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 70a9b091a366212088d5521a0ddd7071b717c83f
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sun Dec 3 22:48:22 2017 -0500
+
+    [db.ml/mli] get students
+
+ db.ml  | 22 ++++++++++++----------
+ db.mli |  4 ++++
+ 2 files changed, 16 insertions(+), 10 deletions(-)
+
+commit 6a4fb85d35080511f348acd24a772a5a2c4e661e
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Sun Dec 3 22:35:46 2017 -0500
+
+    [student.ml] fixed bug causing nan errors in compatibility scorers
+
+ student.ml | 66 ++++++++++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 38 insertions(+), 28 deletions(-)
+
+commit bbc6d80d6aeb5b1bf453c497d510e8eaacd55cca
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Sun Dec 3 22:13:37 2017 -0500
+
+    [student.ml] fixed stuff to make sure compatible with json reading from professor
+
+ student.ml | 39 ++++++++++++++++++++++-----------------
+ 1 file changed, 22 insertions(+), 17 deletions(-)
+
+commit cf1798e0f16e65b4ff9aeb718b4e85862b8076ea
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Sun Dec 3 21:39:50 2017 -0500
+
+    [api.ml] apis are like tacos
+
+ api.ml | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+commit 1d8a5544248c13fa7b75ca2da1ff27f07354f7de
+Merge: a9c26a3 ce48b2e
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Sun Dec 3 21:32:31 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit a9c26a3e6a5a4f51febb231eafe0063de6320c44
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Sun Dec 3 21:32:29 2017 -0500
+
+    [api.ml] ate more tacos
+
+ api.ml | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+commit ce48b2eb2471ac755f09b2c1fd3203c4bff4d490
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Sun Dec 3 21:32:08 2017 -0500
+
+    [api.ml] ate a taco
+
+ api.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 8e7d5ba59a71c7644dd5d1431e6abfec8bee1c0e
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sun Dec 3 17:12:54 2017 -0500
+
+    [db.ml/mli] get swipes
+
+ db.ml  | 65 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ db.mli |  4 ++++
+ 2 files changed, 68 insertions(+), 1 deletion(-)
+
+commit d8603cb181bc832210b38b857276774a19475a70
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sun Dec 3 14:54:34 2017 -0500
+
+    [db.ml/mli] set swipes
+
+ db.ml  | 27 +++++++++++++++++++++++++++
+ db.mli | 14 ++++++++------
+ 2 files changed, 35 insertions(+), 6 deletions(-)
+
+commit db8eab23b2c3334661623cf3cf1b13a9528f9354
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sun Dec 3 14:18:00 2017 -0500
+
+    [api.ml/mli] added back the admin_get stuff
+
+ api.ml  | 43 ++++++++++++++++++++++++----------------
+ api.mli | 70 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------
+ 2 files changed, 90 insertions(+), 23 deletions(-)
+
+commit f1813d780e55d71a7f80bb4765013c63347386df
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sun Dec 3 14:12:26 2017 -0500
+
+    [db.ml] partial delete of students
+
+ db.ml | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+commit 11be61d2db448598cce8fe63569543d6050fdb05
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sun Dec 3 14:09:22 2017 -0500
+
+    [db.ml/mli] partial delete from students table functionality
+
+ db.ml  | 15 +++++++++++++++
+ db.mli | 11 ++++++++++-
+ 2 files changed, 25 insertions(+), 1 deletion(-)
+
+commit be556db63421f24ace407df949c22aad06c02073
+Merge: 10e8610 4ac4325
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sun Dec 3 13:52:15 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 10e86107a946b05f19765f116ef1fcb731845aa0
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sun Dec 3 13:51:57 2017 -0500
+
+    [db.ml] match post
+
+ db.ml | 43 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+
+commit 4ac43254ace33782bb294f6f40933e3911e0c11c
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Sun Dec 3 12:02:24 2017 -0500
+
+    [api.*, server] removed admin get
+
+ api.ml    |  8 --------
+ api.mli   | 58 ----------------------------------------------------------
+ server.ml |  1 -
+ 3 files changed, 67 deletions(-)
+
+commit 9f675e2f1a616a2d782d88aa5067f9fc98507dce
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Sun Dec 3 05:59:11 2017 -0500
+
+    [api.ml] refactored api code with callback template
+
+ api.ml | 222 +++++++++++++++++++++++++++--------------------------------------
+ 1 file changed, 92 insertions(+), 130 deletions(-)
+
+commit 66ffbc2b0ce34fcc8c769bd38e2f3f9fbf2f09eb
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Sun Dec 3 05:11:15 2017 -0500
+
+    [api.ml] finished skeleton for all requests, waiting on some db functions
+
+ api.ml | 214 ++++++++++++++++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 164 insertions(+), 50 deletions(-)
+
+commit feb8e3d5238a2332a61d69b999e49a228a9195b3
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sun Dec 3 03:43:39 2017 -0500
+
+    tags
+
+ _tags | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+commit e6f4ceb3c3bd35fbae43f454da047a43d6a579d9
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sun Dec 3 03:43:16 2017 -0500
+
+    Makefile
+
+ Makefile | 44 +++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 35 insertions(+), 9 deletions(-)
+
+commit dd8f773900c919c00375913394951bf232ed1c78
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sun Dec 3 03:42:56 2017 -0500
+
+    [db.ml/mli] compiles!
+
+ db.mli | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
+
+commit 1e4972efafc61a3a56558c35db8bb38b3d32f790
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sun Dec 3 03:13:47 2017 -0500
+
+    db.mli
+
+ db.mli | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit f80277acf0dd975bc4f35b497c7537a2ca32dd75
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sun Dec 3 03:11:16 2017 -0500
+
+    db.ml all functions
+
+ db.ml | 117 ++++++++++++++++++++++++++++++++++++++++++------------------------
+ 1 file changed, 75 insertions(+), 42 deletions(-)
+
+commit b3e1bf982e3a329a73668dea0edf6e8c9fb7954c
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sun Dec 3 02:27:01 2017 -0500
+
+    [db.ml] functions
+
+ db.ml | 166 +++++++++++++++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 114 insertions(+), 52 deletions(-)
+
+commit 5a16504beb91cd2fe0ac1a44025da2f9f5ad1348
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sun Dec 3 00:22:11 2017 -0500
+
+    [db.ml] period and creds
+
+ db.ml | 31 ++++++++++++++++++++++++-------
+ 1 file changed, 24 insertions(+), 7 deletions(-)
+
+commit 15656d7bbbfbca89c3a1dc554ef2f80fb8457040
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sat Dec 2 16:59:52 2017 -0500
+
+    db.ml localhost
+
+ db.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit bdd08fe1a6d6166e9eaead4acc2df54b9e86c075
+Merge: be698f0 d59432c
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sat Dec 2 16:58:27 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit be698f0a9306d5f3052fdbaf85a11b4020c1e14c
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sat Dec 2 16:57:40 2017 -0500
+
+    [db.ml] connection host
+
+ db.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit d59432cc07e884d77db88e5f9c086d86e1fba904
+Merge: 8da4a77 d5179fe
+Author: sd549 <sd549@cornell.edu>
+Date:   Sat Dec 2 16:51:59 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 8da4a7770a1bca41578f35f3eea767dd72082467
+Author: sd549 <sd549@cornell.edu>
+Date:   Sat Dec 2 16:51:53 2017 -0500
+
+    [setup.ml] Added from pgocaml library
+
+ setup.ml | 8172 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 8172 insertions(+)
+
+commit d5179fe1fd94fdc5e63cf3bc6f149125f744cef5
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sat Dec 2 16:47:07 2017 -0500
+
+    [db.ml] connection info
+
+ db.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 3f5e257d0afc76b3bb44a3966c8d88db80faf40e
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sat Dec 2 16:40:09 2017 -0500
+
+    [db.ml] connection obj
+
+ db.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit d53819d6dade4929f1a28207bf78b6be09068114
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sat Dec 2 16:09:22 2017 -0500
+
+    [db.ml/backend_lib] table names
+
+ backend_lib.ml | 8 ++++----
+ db.ml          | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
+
+commit 89dcd6bf279138722b9794818ca2ad224f3dc20a
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sat Dec 2 15:55:09 2017 -0500
+
+    [db.ml] connection obj
+
+ db.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 8a7ba48bde0ca78a4eb1772d89962934be0aded2
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sat Dec 2 15:01:42 2017 -0500
+
+    [db] makefile changes
+
+ Makefile       |  2 +-
+ _tags          |  1 +
+ db.ml          |  5 ++---
+ loml_client.ml | 11 +++++------
+ 4 files changed, 9 insertions(+), 10 deletions(-)
+
+commit 0e501ebafae2b1aa76c202fef4ae8230aaa6b39e
+Merge: ce6cd72 9355fe1
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Sat Dec 2 00:20:10 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit ce6cd725502e3dabd119cb1ace119a4b2473b3af
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Sat Dec 2 00:19:57 2017 -0500
+
+    [api, backend_lib.*, loml_client] refactored lib again
+
+ Makefile                        |  2 +-
+ api.ml                          | 37 ++++++++++++++++++++++++++++++++-----
+ loml_lib.ml => backend_lib.ml   |  6 ++++++
+ loml_lib.mli => backend_lib.mli |  4 ++++
+ loml_client.ml                  |  2 +-
+ 5 files changed, 44 insertions(+), 7 deletions(-)
+
+commit 9355fe1ae34f5f6b6117412128492398e626bf3f
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Sat Dec 2 00:06:31 2017 -0500
+
+    [db.ml/mli] took our dbh parameter
+
+ db.ml  | 54 +++++++++++++++++++++++++++++++++++++---------------
+ db.mli | 68 ++++++++++++++++++++++++++++++++----------------------------------
+ 2 files changed, 72 insertions(+), 50 deletions(-)
+
+commit d36d68667fc375446cc848952f41e258036b887b
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Fri Dec 1 20:03:34 2017 -0500
+
+    [student.ml, student.mli] fixed parsing to handle optionals
+
+ student.ml  | 48 +++++++++++++++++++++++++++++++++---------------
+ student.mli |  2 ++
+ 2 files changed, 35 insertions(+), 15 deletions(-)
+
+commit 68f2b24f5929d475f0614113f24a60ebaa206892
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Fri Dec 1 17:20:17 2017 -0500
+
+    [command.ml, command.mli, main.ml] compiles now
+
+ command.ml  |  3 ---
+ command.mli |  1 +
+ main.ml     | 36 ++++++++++++++++++------------------
+ 3 files changed, 19 insertions(+), 21 deletions(-)
+
+commit cb6c3f4ddb96c83e9386704ea795f76bdbcaf657
+Merge: d7eaaf9 2421c29
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Fri Dec 1 16:20:24 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit d7eaaf95791acc8d439c36b93a63e30059c2ca42
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Fri Dec 1 16:19:59 2017 -0500
+
+    [db.ml/mli] swipe functionality changes
+
+ Makefile | 11 +++++++++++
+ db.mli   |  5 ++++-
+ 2 files changed, 15 insertions(+), 1 deletion(-)
+
+commit 2421c29bca0b70e3da5250dad1081daab30579e6
+Merge: 7493398 232f923
+Author: sd549 <sd549@cornell.edu>
+Date:   Fri Dec 1 16:06:38 2017 -0500
+
+    Merge in command.ml
+
+commit 7493398b9941b8b586722d975c07db9b1ca0cf78
+Merge: 267b868 2f7c098
+Author: sd549 <sd549@cornell.edu>
+Date:   Fri Dec 1 16:04:29 2017 -0500
+
+    Merge main.ml
+
+commit 232f9230049e293c88020c38d0107a18b0961026
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Fri Dec 1 15:35:42 2017 -0500
+
+    [command.ml, command.mli, main.ml] update branch for professor
+
+ command.ml  |  2 ++
+ command.mli |  1 +
+ main.ml     | 16 +++++++++++++++-
+ 3 files changed, 18 insertions(+), 1 deletion(-)
+
+commit 267b8680da7c56e03a217bb49e42163f63c49b7e
+Author: sd549 <sd549@cornell.edu>
+Date:   Fri Dec 1 15:25:58 2017 -0500
+
+    [command.ml; main.ml; professor.ml; professor.mli] Implemented setting period and importing students into main
+
+ command.ml    |  2 ++
+ main.ml       | 34 ++++++++++++++++++++++++++++++----
+ professor.ml  |  8 ++++++++
+ professor.mli |  4 ++++
+ 4 files changed, 44 insertions(+), 4 deletions(-)
+
+commit 2f7c0987ef0b3603c46eda8329d88abf6bcd7f3e
+Merge: e043230 9a29048
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Fri Dec 1 15:02:14 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit e04323082128fb3e25619391f3e3a7df9e05b3a2
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Fri Dec 1 15:02:09 2017 -0500
+
+    [loml_lim.*, loml_client, Makefile] refactored global parameters into loml_lib module
+
+ Makefile       |  2 +-
+ loml_client.ml | 13 ++-----------
+ loml_lib.ml    | 11 +++++++++++
+ loml_lib.mli   | 17 +++++++++++++++++
+ 4 files changed, 31 insertions(+), 12 deletions(-)
+
+commit 9a29048607fc7aa59e70208b933482205b1cb79f
+Merge: 9355e91 297d7f1
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Fri Dec 1 15:01:09 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 297d7f1085d789638ba3c10e74728f1f348776ab
+Merge: 2c17c91 30a4150
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Fri Dec 1 15:00:47 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 9355e91c772538d763f265b53ab145b099645bbf
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Fri Dec 1 15:00:44 2017 -0500
+
+    [db.ml/mli] added get periods functionality
+
+ db.ml  | 8 ++++++++
+ db.mli | 8 ++++++++
+ 2 files changed, 16 insertions(+)
+
+commit 2c17c911c2bfbe54ebacc0351c99f1b296833a12
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Fri Dec 1 15:00:42 2017 -0500
+
+    [main.ml, pool.ml, pool.mli, swipe.ml, swipe.mli] added to main.  Changed how I input swipe results to be compatible with Sav's code
+
+ main.ml   | 18 +++++++++++++++---
+ pool.ml   |  4 ++++
+ pool.mli  |  2 ++
+ swipe.ml  | 26 +++++++++++++++-----------
+ swipe.mli |  2 +-
+ 5 files changed, 37 insertions(+), 15 deletions(-)
+
+commit 30a415096b0e70a444c99d032bc6355f9f714583
+Merge: e9ffec8 55c6d1a
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Fri Dec 1 14:18:23 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit e9ffec8cc8ecdcb310b3106906278e157fa902b9
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Fri Dec 1 14:16:21 2017 -0500
+
+    [todo.txt] updated list
+
+ todo.txt | 2 --
+ 1 file changed, 2 deletions(-)
+
+commit f54580a28b73296f009d36228228e80659937376
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Fri Dec 1 14:14:40 2017 -0500
+
+    [db.ml] handled Options
+
+ db.ml | 41 +++++++++++++++++++++--------------------
+ 1 file changed, 21 insertions(+), 20 deletions(-)
+
+commit 55c6d1a9bb653bcb0c21c26ef61bf3732a9dce6a
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Fri Dec 1 13:47:04 2017 -0500
+
+    [student.ml] student compiles
+
+ student.ml | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+commit be9b19eeb047edf29ff9e69f8d9029ddc0514076
+Merge: ea86ead 3f4e272
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Fri Dec 1 13:21:45 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit ea86ead3e658ea9791a4399392d19473fc0a669e
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Fri Dec 1 13:21:40 2017 -0500
+
+    [student.ml] sending lists instead of strings to database
+
+ student.ml | 35 ++++++++++-------------------------
+ 1 file changed, 10 insertions(+), 25 deletions(-)
+
+commit 3f4e272b2fc8e3bb3bf363dbb84d7e93bbaa74d9
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Fri Dec 1 12:13:06 2017 -0500
+
+    [db.ml/mli] added reset_class functionality, removed tbl param, hardcoded table names
+
+ db.ml  | 77 +++++++++++++++++++++++++++++++++++++-----------------------------
+ db.mli | 48 +++++++++++++++++++++--------------------
+ 2 files changed, 68 insertions(+), 57 deletions(-)
+
+commit af6e57f0d4c2aecf6e692386cb6ac3d42a0669a2
+Merge: ede7c89 ce5af81
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Fri Dec 1 05:05:55 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit ede7c89d55047a64e6fd08fe151791a0626cb769
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Fri Dec 1 05:02:42 2017 -0500
+
+    [api.*, loml_client, server] updated api doc, added test server code
+
+ api.ml         |  8 +++++++-
+ api.mli        | 15 +++++++++++++--
+ loml_client.ml |  3 ++-
+ server.ml      |  3 ++-
+ 4 files changed, 24 insertions(+), 5 deletions(-)
+
+commit ce5af81706f3aa604dbe64931436b87da4ea68d7
+Merge: c4b7545 44cac59
+Author: sd549 <sd549@cornell.edu>
+Date:   Thu Nov 30 22:02:44 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit c4b754511dc96ac87a9a9fbc6047518f2926c0db
+Author: sd549 <sd549@cornell.edu>
+Date:   Thu Nov 30 22:02:33 2017 -0500
+
+    [professor.ml] Validated relation between dates provided for periods so they are in order and so that swipe and match periods are after the current time
+
+ professor.ml | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
+
+commit 44cac597a0fdad933aa2565a72aa842d844911cd
+Merge: ffdbb07 be80c38
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Thu Nov 30 13:16:09 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit ffdbb07092aee057ca8d8baaf27ff9deb9934948
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Thu Nov 30 13:16:04 2017 -0500
+
+    [main.ml, student.ml] bug fixes after walkthrough
+
+ main.ml    | 34 +++++++++++++++++++---------------
+ student.ml |  9 +++------
+ 2 files changed, 22 insertions(+), 21 deletions(-)
+
+commit be80c38cf892414b5d51143d0aa49152376e221c
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Thu Nov 30 13:12:48 2017 -0500
+
+    [todo.txt]
+
+ todo.txt | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+commit 152458af6a43dddf96deccd9692298b1f17244e2
+Merge: b1a9fe6 bb19ad9
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Thu Nov 30 12:29:46 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit b1a9fe6cf202cf70cf2327e8d13e387cadd0f644
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Thu Nov 30 12:29:22 2017 -0500
+
+    [db.ml/mli + _tags]
+
+ _tags    |  4 +++-
+ db.ml    | 29 ++++++++++-------------------
+ db.mli   |  2 ++
+ todo.txt | 24 ++++++++++++++++++++++++
+ 4 files changed, 39 insertions(+), 20 deletions(-)
+
+commit bb19ad9e1bbdb38e88ab52e386545bec155f9ab0
+Merge: 0d739bb 84ec74d
+Author: sd549 <sd549@cornell.edu>
+Date:   Thu Nov 30 11:52:22 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 84ec74dfa19897ee141a125c2ff3591ffcabb8ff
+Merge: ce4315d 7831309
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Thu Nov 30 11:51:58 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit ce4315d078e3496c5d41958295afbdd632475374
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Thu Nov 30 11:51:53 2017 -0500
+
+    [command.ml, main.ml, pool.ml, student.ml, student.mli] removing skills
+
+ command.ml  |   1 -
+ main.ml     |  40 +++++++++++++++--------
+ pool.ml     |  13 ++++----
+ student.ml  | 105 ++----------------------------------------------------------
+ student.mli |  24 --------------
+ 5 files changed, 34 insertions(+), 149 deletions(-)
+
+commit 0d739bb5053fa6db7a731d4b034f1664de8c2eb5
+Author: sd549 <sd549@cornell.edu>
+Date:   Thu Nov 30 11:49:04 2017 -0500
+
+    [match.ml; match.mli] Fixed bugs
+
+ match.ml  | 26 ++++++++++++++++++++++----
+ match.mli | 10 ++++++----
+ 2 files changed, 28 insertions(+), 8 deletions(-)
+
+commit 783130978ddb95858d2393ac238e4208116269a5
+Author: sd549 <sd549@cornell.edu>
+Date:   Thu Nov 30 11:02:49 2017 -0500
+
+    [match.ml] Fixed syntax and type errors
+
+ match.ml | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+commit f44998f6357e4819af8c2631823f562e54b2f6cd
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Thu Nov 30 10:51:16 2017 -0500
+
+    [Makefile, command.ml, command.mli] adding matchify stuff for professor. Sav needs to fix match so it compiles
+
+ Makefile    | 2 +-
+ command.ml  | 2 ++
+ command.mli | 1 +
+ 3 files changed, 4 insertions(+), 1 deletion(-)
+
+commit 58f920b42684af5a6affd8b5eb017f4e928fe319
+Merge: 7204384 a2cce5b
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Thu Nov 30 10:24:07 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 720438404d09ca33fb1b2cfbf96266e716e58d06
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Thu Nov 30 10:24:02 2017 -0500
+
+    [swipe.ml] added correct post for swipes
+
+ swipe.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit a2cce5b3f34c511c7051d573550136ae81246e95
+Merge: 26f4e2a 767eb77
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Thu Nov 30 03:43:09 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 26f4e2a392835862146246a4cd1eaf2af0a00c06
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Thu Nov 30 03:43:02 2017 -0500
+
+    [api.*, loml_client.*, server] added some test code, cleaned up api/client interface
+
+ api.ml          | 13 +++++++++++--
+ api.mli         | 20 ++++++--------------
+ loml_client.ml  |  8 +++++++-
+ loml_client.mli |  2 ++
+ server.ml       |  3 +++
+ 5 files changed, 29 insertions(+), 17 deletions(-)
+
+commit 767eb77503aac5e46d3c9c7d4acdfd361d915fd9
+Merge: fb07cd1 a1b9297
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Thu Nov 30 02:04:41 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit fb07cd1bcdb8c7d91a253f3cc688c0d3e35bb62d
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Thu Nov 30 02:04:36 2017 -0500
+
+    [command.ml, command.mli, main.ml] further fleshing out main.  Added part of professor repl
+
+ command.ml  |   2 +
+ command.mli |   1 +
+ main.ml     | 191 ++++++++++++++++++++++++------------------------------------
+ 3 files changed, 78 insertions(+), 116 deletions(-)
+
+commit a1b9297739244d09b8d3b3bf7c210a68a27a13f7
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Thu Nov 30 02:00:23 2017 -0500
+
+    [api.*, loml_client.*] added swipe and match client side, server side
+
+ api.ml          |   9 +++++
+ api.mli         | 112 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ loml_client.ml  |  23 +++++++++++-
+ loml_client.mli |  28 ++++++++++++++
+ 4 files changed, 171 insertions(+), 1 deletion(-)
+
+commit 8fc86c86193ac8837d58ebd973083292e8fda279
+Merge: d66c1ad bc16e60
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Thu Nov 30 00:27:19 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit d66c1ad950315df5dfeb0bc4989ab9467b66b7b6
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Thu Nov 30 00:26:44 2017 -0500
+
+    [command.ml, command.mli, main.ml]
+
+ command.ml  |  28 ++++--
+ command.mli |  17 ++--
+ main.ml     | 298 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
+ 3 files changed, 309 insertions(+), 34 deletions(-)
+
+commit bc16e60c990d266309cdee062e8f232dff8ab0ce
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Thu Nov 30 00:06:04 2017 -0500
+
+    [db.ml/mli] changed cred verification
+
+ db.ml  |  7 +++++--
+ db.mli | 19 ++++++++++---------
+ 2 files changed, 15 insertions(+), 11 deletions(-)
+
+commit e7db7cefd2ac2e565cecb9e0d11deabd38266702
+Merge: c6e1e2a f917a7f
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Wed Nov 29 23:47:30 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit c6e1e2a3d0a6a6139b840c8ae969fe2afbbd7e61
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Wed Nov 29 23:46:26 2017 -0500
+
+    [db.ml/mli] fixed the check_period_set queries
+
+ db.ml  | 6 +++---
+ db.mli | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+commit f917a7f4eb874335ca5e82f5af25d93443a6de9b
+Author: sd549 <sd549@cornell.edu>
+Date:   Wed Nov 29 23:03:52 2017 -0500
+
+    [match.ml; match.mli] Cleaned up code and documentation
+
+ match.ml  | 1 +
+ match.mli | 3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+commit 26f92929db4f542e2d9baf9c50a9d480066fd1c6
+Author: sd549 <sd549@cornell.edu>
+Date:   Wed Nov 29 22:57:03 2017 -0500
+
+    [match.mli; match.ml] Fully implemented matches
+
+ match.ml  | 140 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ match.mli |   6 ++-
+ 2 files changed, 144 insertions(+), 2 deletions(-)
+
+commit 8a0b09f78930200aac112c5f148867c7cbbccd5b
+Merge: 346183e 612711c
+Author: sd549 <sd549@cornell.edu>
+Date:   Wed Nov 29 19:30:27 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 346183ee4b3aaa3a60086bd9c7d5064b77a139f3
+Author: sd549 <vagrant@vm3110-2017fa>
+Date:   Wed Nov 29 19:27:25 2017 -0500
+
+    [match.ml; match.mli; api.mli] Finished gen_class_results in match and modified api.mli documentation to reflect how swipes are stored
+
+ api.mli   | 116 ++++++++++++++++++++++++++++++++------------------------------
+ match.mli |   4 +--
+ 2 files changed, 61 insertions(+), 59 deletions(-)
+
+commit 612711c9bb5d41c26721e57ea3a0eb7759644d02
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Wed Nov 29 17:28:35 2017 -0500
+
+    [db.ml/mli] contains everything except admin delete
+
+ db.ml | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 3b0ce497ad30ddc3e6f2df45c6cec63dd3f571e6
+Merge: 2dbc826 6bb7540
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Wed Nov 29 17:27:07 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 2dbc8269e5197dabdfceac168c3bfc2753d94dbc
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Wed Nov 29 17:25:02 2017 -0500
+
+    [db.ml/mli] includes everything except admin_delete capability
+
+ db.ml  | 71 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ db.mli | 25 ++++++++++++++++++++---
+ 2 files changed, 91 insertions(+), 5 deletions(-)
+
+commit 6bb754081871dfa4cd008272dc2f322b1ccd5ed4
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Nov 29 17:06:30 2017 -0500
+
+    [Makefile, main.ml, pool.ml, student.ml, student.mli, swipe.ml, swipe.mli] added swiping example to main. Need to remember to edit poolify and remove student type exposure later
+
+ Makefile    |   3 ++
+ main.ml     | 130 +++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
+ pool.ml     |   6 +--
+ student.ml  |   2 +-
+ student.mli |  72 +++++++++++++++++++++++++++++++--
+ swipe.ml    |   8 ++++
+ swipe.mli   |   9 +++++
+ 7 files changed, 213 insertions(+), 17 deletions(-)
+
+commit 059b855319557d971c6a1035981e5b94627a3d77
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Nov 29 16:00:49 2017 -0500
+
+    [Makefile, main.ml, student.ml, command.ml, command.mli] initial implementation of swipe loop in main
+
+ Makefile    |  2 +-
+ command.ml  | 25 +++++++++++++++++++++++++
+ command.mli | 17 +++++++++++++++++
+ main.ml     | 57 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ student.ml  |  8 +++-----
+ 5 files changed, 103 insertions(+), 6 deletions(-)
+
+commit eb6e00cf89dea83a8629d1fc294ea080ea86620a
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Nov 29 14:29:29 2017 -0500
+
+    [pool.ml, student.ml, student.mli] finished up skill comparison between students
+
+ pool.ml     |  4 ++--
+ student.ml  | 33 +++++++++++++++++++++++++++++++--
+ student.mli | 13 +++++++++----
+ 3 files changed, 42 insertions(+), 8 deletions(-)
+
+commit 366ba1f2f2f1667ad16ae26d2983d5ac6cc027b2
+Merge: 5b589da fa71e41
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Nov 29 13:57:56 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 5b589dad5721ff34be4db1493b8c28351cf4dd32
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Nov 29 13:57:19 2017 -0500
+
+    [student.ml, student.mli] changed skill type to make comparison easier
+
+ student.ml  | 154 ++++++++++++++++++++++++++++--------------------------------
+ student.mli |   2 +-
+ 2 files changed, 74 insertions(+), 82 deletions(-)
+
+commit fa71e418e2889f9f56bc8220a83d0612e453fda9
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Wed Nov 29 13:40:33 2017 -0500
+
+    [questions.ml] list of questions that we need to answer
+
+ questions.ml | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+commit 23c199ce77a620e625fabd11fec72e1a772c9f06
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Wed Nov 29 13:14:00 2017 -0500
+
+    [db.ml/mli] added functions to get student's match
+
+ db.ml  | 4 ++++
+ db.mli | 8 +++++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
+
+commit 69f990ef67f98b4200d46120235c6282eb8c876c
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Wed Nov 29 12:58:30 2017 -0500
+
+    [db.ml/mli] get student queries
+
+ db.ml  | 25 ++++++++++++++++++++-----
+ db.mli |  8 +++++---
+ 2 files changed, 25 insertions(+), 8 deletions(-)
+
+commit 622dc737caa27622a2a5f760cf4545436f6a7f14
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Wed Nov 29 12:27:43 2017 -0500
+
+    [db.ml/mli] added functions for period checking/setting
+
+ db.ml  | 17 +++++++++++++++++
+ db.mli | 28 +++++++++++++++++++++-------
+ 2 files changed, 38 insertions(+), 7 deletions(-)
+
+commit 4d4a3204c5d21deefb5da0c64c05d6f532a24881
+Author: Myra Gupta <mg954@cornell.edu>
+Date:   Wed Nov 29 11:04:11 2017 -0500
+
+    [db.mli/db.ml] added date and cred functions
+
+ db.ml  |  8 ++++++++
+ db.mli | 20 ++++++++++++++++++--
+ 2 files changed, 26 insertions(+), 2 deletions(-)
+
+commit 675476828be8157b2a73a781159f23e45f4d0a13
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Wed Nov 29 05:36:17 2017 -0500
+
+    [oclient.ml] some small doc updates
+
+ oclient.ml | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 5c44192d3127bc20fd41572449d0798cfe79c0f0
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Wed Nov 29 05:30:36 2017 -0500
+
+    [Makefile, loml_client.*, oclient.ml, server.ml, student, professor] finished client functions, updated client to take string not json,  abstracted cohttp code to oclient library
+
+ Makefile                      |  4 +--
+ client.ml                     | 53 -----------------------------------
+ loml_client.ml                | 59 +++++++++++++++++++++++++++++++++++++++
+ client.mli => loml_client.mli | 64 +++++++++++++++++++++----------------------
+ oclient.ml                    | 40 +++++++++++++++++++++++++++
+ professor.ml                  | 20 ++++++--------
+ professor.mli                 |  2 --
+ server.ml                     | 18 ++++++------
+ student.ml                    |  9 +++---
+ 9 files changed, 154 insertions(+), 115 deletions(-)
+
+commit 94d8f78fa24b73df4b266ed36dbad2ff33518102
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Wed Nov 29 04:10:51 2017 -0500
+
+    [Makefile, client.ml] abstracted cohttp future code into helpers
+
+ Makefile  |  2 +-
+ client.ml | 31 ++++++++++++++++++++++++++++++-
+ 2 files changed, 31 insertions(+), 2 deletions(-)
+
+commit 1ce51813814cd065fae677524c1ff493050e6799
+Merge: ecd2f64 a4632f6
+Author: sd549 <vagrant@vm3110-2017fa>
+Date:   Wed Nov 29 01:16:33 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit ecd2f6488f6664501d7b835dbd2813c1dba66fb5
+Author: vagrant <vagrant@vm3110-2017fa>
+Date:   Wed Nov 29 01:11:59 2017 -0500
+
+    [Makefile; professor.ml; professor.mli; student.ml; student.mli] Added professor to makefile and modified parts of student files in order to access student methods. Professor is fully implemented now.
+
+ Makefile      |  2 +-
+ professor.ml  | 79 +++++++++++++++++++++++++++++++++++++++--------------------
+ professor.mli | 23 ++++++-----------
+ student.ml    |  7 ------
+ student.mli   |  8 ++++++
+ 5 files changed, 69 insertions(+), 50 deletions(-)
+
+commit a4632f6b6d2ef767c2ddeabae88331a0667e9d21
+Author: Samantha Dimmer <sed87@cornell.edu>
+Date:   Wed Nov 29 00:35:11 2017 -0500
+
+    [student.mli] updated documentation
+
+ student.mli | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+commit 99f42e690f8946642df287e2ede3a7bf648c0a8f
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Wed Nov 29 00:27:08 2017 -0500
+
+    [pool.ml, student.ml, student.mli] added stuff for calculating compatibility
+
+ pool.ml     |  8 ++++++--
+ student.ml  | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ student.mli | 11 +++++++++++
+ 3 files changed, 63 insertions(+), 2 deletions(-)
+
+commit 35386e8bc1112f6646610dc86cab5b5ac801bf45
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Tue Nov 28 22:53:34 2017 -0500
+
+    [client.mli, main.mli, student.ml] compiles
+
+ client.mli | 60 +++++++++++++++++++++++++++++-----------------------------
+ main.ml    | 64 --------------------------------------------------------------
+ student.ml | 17 ++++++++++-------
+ 3 files changed, 40 insertions(+), 101 deletions(-)
+
+commit 997e48dec9d9fe8de24184581c045e51e117d444
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Tue Nov 28 21:42:09 2017 -0500
+
+    [student.ml, student.mli] added documentation
+
+ student.ml  | 123 ++++++++++++++++++++++++++++++++++++++++--------------------
+ student.mli | 110 +++++++++++++++++++++--------------------------------
+ 2 files changed, 126 insertions(+), 107 deletions(-)
+
+commit 056577a1ca8afe16ccee43f7b8641892fa915b79
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Tue Nov 28 20:30:50 2017 -0500
+
+    [student.ml] added more client functions
+
+ student.ml | 124 ++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 60 insertions(+), 64 deletions(-)
+
+commit befe6d9bce0507b6f48039c77810080f053ff314
+Merge: f887d38 068ae65
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Tue Nov 28 19:14:53 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit f887d385d155aa67a8b03c041603edc631723c91
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Tue Nov 28 19:14:46 2017 -0500
+
+    [student.ml] added stuff for parsing to json, printing student.  Changed some types.
+
+ student.ml | 201 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 188 insertions(+), 13 deletions(-)
+
+commit 068ae654546a60f906beb3247ddcb3d8d1611f0d
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Tue Nov 28 03:49:43 2017 -0500
+
+    [Makefile, api.*, server.ml] added test callback, makefile modifications for server
+
+ Makefile  | 9 ++++++---
+ api.ml    | 4 ++--
+ api.mli   | 3 +++
+ server.ml | 1 +
+ 4 files changed, 12 insertions(+), 5 deletions(-)
+
+commit 294946b8e7ece0bb9b692ba8e67bda68af5faf66
+Merge: 2cc88d6 025a421
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Tue Nov 28 03:04:15 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 2cc88d6127e648e0f1db98e30c564b369b238acc
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Tue Nov 28 03:04:09 2017 -0500
+
+    [Makefile, _tags, api.ml] added compilation pieces for all except server
+
+ Makefile |  2 +-
+ _tags    |  3 +++
+ api.ml   | 21 +++++++++++++++++----
+ 3 files changed, 21 insertions(+), 5 deletions(-)
+
+commit 025a42194e4c788619f32668f66fca2ac6d02eb7
+Author: sd549 <sd549@cornell.edu>
+Date:   Tue Nov 28 02:51:45 2017 -0500
+
+    [professor.mli; professor.ml] Implemented half of Professor
+
+ professor.ml  | 82 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ professor.mli | 44 ++++++++++++++------------------
+ 2 files changed, 101 insertions(+), 25 deletions(-)
+
+commit 85a480e9bc70f532857011efa8e24832ced67645
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Mon Nov 27 21:10:06 2017 -0500
+
+    [api.mli, client.*, server.ml] added endpoints and client side for period and authentication
+
+ api.mli    | 99 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ client.ml  |  9 ++++++
+ client.mli | 51 ++++++++++++++++++++++++++------
+ server.ml  |  3 ++
+ 4 files changed, 150 insertions(+), 12 deletions(-)
+
+commit c6aab26670b6661b52809833431ad4ef5f714b2a
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Mon Nov 27 17:55:42 2017 -0500
+
+    [client.mli] changed some outdated doc
+
+ client.mli | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit caaa12cd796057817bea6493a4c63b6f7e9977a1
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Mon Nov 27 17:53:31 2017 -0500
+
+    [client.mli] updated client documentation
+
+ client.mli | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+commit caf987b07527a03b171ceab13abbfa546612a68d
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Mon Nov 27 17:06:21 2017 -0500
+
+    [pool.ml, pool.mli] remove possibility of self-swiping
+
+ pool.ml  | 8 +++++---
+ pool.mli | 2 ++
+ 2 files changed, 7 insertions(+), 3 deletions(-)
+
+commit b14b755209fd5ed82c07caf231265e5749717444
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Sun Nov 26 22:15:51 2017 -0800
+
+    [pool.ml, swipe.ml] small bug-fix, compiles now
+
+ pool.ml  |  2 +-
+ swipe.ml | 12 ++++++------
+ 2 files changed, 7 insertions(+), 7 deletions(-)
+
+commit db8785848a8f41c966021a4df984b8d8c98ffedb
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Sun Nov 26 22:07:15 2017 -0800
+
+    [pool.mli, swipe.mli, swipe.ml] updating documentation
+
+ pool.mli  |  3 ---
+ swipe.ml  | 17 ++++++-----------
+ swipe.mli | 13 ++++++++++++-
+ 3 files changed, 18 insertions(+), 15 deletions(-)
+
+commit 591afad787f0efe54d196848bb5b418610839968
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Sun Nov 26 17:23:55 2017 -0800
+
+    [pool.ml, pool.mli] improved documentation
+
+ pool.ml  | 29 +++++++++++++----------------
+ pool.mli | 63 ++++++++++++++++++++++++++++++++++++++-------------------------
+ 2 files changed, 51 insertions(+), 41 deletions(-)
+
+commit 1abae49387ac230ada971f8b228d00046aa98baf
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Sun Nov 26 15:45:49 2017 -0800
+
+    [pool.ml, pool.mli, swipe.ml, swipe.mli, main.ml] improvements for code abstraction/reusabilty
+
+ main.ml   |  2 +-
+ pool.ml   | 11 ++++++++---
+ pool.mli  |  2 +-
+ swipe.ml  | 36 ++++++++++++++----------------------
+ swipe.mli | 25 +++----------------------
+ 5 files changed, 27 insertions(+), 49 deletions(-)
+
+commit f2928fd68451f8a7e6f499e7183a1e12b3ddbf1d
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Sun Nov 26 14:25:16 2017 -0800
+
+    [main.ml] added main, using for testing
+
+ main.ml | 69 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
+
+commit cdf61988bf08b56b120ad24f9088ccea7bc39e78
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Sun Nov 26 14:24:53 2017 -0800
+
+    [swipe.ml, swipe.mli] fixing encapsulation.  Fixed bug for converting to Yojson with empty decimals
+
+ swipe.ml  | 10 +++++++---
+ swipe.mli |  7 ++++++-
+ 2 files changed, 13 insertions(+), 4 deletions(-)
+
+commit 6e239cbc6873bd16e1b9a3e67f986225a6fd09b1
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Sun Nov 26 14:24:11 2017 -0800
+
+    [student.ml, student.mli] exposing student types for testing. may want to conceal later
+
+ student.ml  |  6 ------
+ student.mli | 56 +++++++++++++++++++++++++++++++++++++++++++++++++-------
+ 2 files changed, 49 insertions(+), 13 deletions(-)
+
+commit 32a1e9effed7d6cb7a84c1ead65f3eaceed0956e
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Sun Nov 26 14:23:16 2017 -0800
+
+    [pool.ml, pool.mli] fixing encapsulation
+
+ pool.ml  | 25 +++++++++++++++++--------
+ pool.mli | 16 +++++++++++++---
+ 2 files changed, 30 insertions(+), 11 deletions(-)
+
+commit 7a9f8abbc1f1b4b24133b0f61b44eacd944d0d2f
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Sun Nov 26 14:22:44 2017 -0800
+
+    [Makefile] compilation stuff for main
+
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 2810e163ee554228068171241f2b56fc575c2944
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Sat Nov 25 23:00:32 2017 -0800
+
+    [swipe.ml, swipe.mli] lst_to_string bug fix
+
+ swipe.ml  | 12 +++++-------
+ swipe.mli |  1 +
+ 2 files changed, 6 insertions(+), 7 deletions(-)
+
+commit aedcd95a32bd2198999d7d4a55bf13df3dfc60ed
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Sat Nov 25 22:43:50 2017 -0800
+
+    [pool.ml, pool.mli, swipe.ml, swipe.mli] split up pool and swipe
+
+ pool.ml   | 99 ++++++++++++++++++++++++++-------------------------------------
+ pool.mli  | 40 +++++++-------------------
+ swipe.ml  | 60 ++++++++++++++++++++++++++++++++++++++
+ swipe.mli | 31 ++++++++++++++++++++
+ 4 files changed, 142 insertions(+), 88 deletions(-)
+
+commit 253d866369489bc5d5664d2f9578db8a733d7e2f
+Merge: dff8185 509a104
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Sat Nov 25 22:42:43 2017 -0800
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit dff81855f3f1fa50a156532eaa14770e511d71e7
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Sat Nov 25 22:42:36 2017 -0800
+
+    [Makefile, _tags] added compilation for swipe, yojson
+
+ Makefile | 2 +-
+ _tags    | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+commit 509a1046e78cd858a0370c69b6c27b38b74ceb8e
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Sat Nov 25 23:01:37 2017 -0500
+
+    [api.mli] updated some docs
+
+ api.mli | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+commit f721a8922a98e0cef1e81aa61feb5a935d3c831a
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Sat Nov 25 22:32:58 2017 -0500
+
+    [api.mli, client.mli] renamed 'all' to 'student' in student GET request scope header
+
+ api.mli    | 4 ++--
+ client.mli | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 267c617b862a8d6b0bb724786d39d5cf0a8581b0
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Sat Nov 25 22:07:46 2017 -0500
+
+    [client.mli] fixed incorrect return type for client functions
+
+ client.mli | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+commit 6364ac3e3fa5ed893d41329db5001ac58ab2fe4d
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Sat Nov 25 00:11:39 2017 -0500
+
+    [api.mli] tighter specs on post requests
+
+ api.mli | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+commit cb0a0c35066d2716d8b20b206bdc4d4b4a5a6656
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Sat Nov 25 00:00:22 2017 -0500
+
+    [api.mli, client.*] changed 'info' header to 'scope'
+
+ api.mli    | 31 ++++++++++++++++---------------
+ client.ml  |  4 ++--
+ client.mli | 10 ++++------
+ 3 files changed, 22 insertions(+), 23 deletions(-)
+
+commit 9d414d0e60761f17f210b1947ba04ea1a2d24fb8
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Fri Nov 24 23:53:21 2017 -0500
+
+    [client.*, api.mli] added client interface and stubs
+
+ api.mli    | 26 +++++++++++++-------------
+ client.ml  | 15 +++++++++++++++
+ client.mli | 58 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 86 insertions(+), 13 deletions(-)
+
+commit 4327f21fa0e0d3d84b1fb06e8a98f701c31bfdc9
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Fri Nov 24 15:47:40 2017 -0800
+
+    [pool.ml, pool.mli] small type changes
+
+ pool.ml  | 7 +++++--
+ pool.mli | 4 +++-
+ 2 files changed, 8 insertions(+), 3 deletions(-)
+
+commit 93a9227213467f2387298cc7374e61a4391f4b69
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Fri Nov 24 14:47:14 2017 -0800
+
+    [student.ml, student.mli] fleshed out student types
+
+ student.ml  | 67 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ student.mli | 12 +++++++----
+ 2 files changed, 75 insertions(+), 4 deletions(-)
+
+commit 50a0c038709397749c584adf523e9f7a7dcd65a1
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Fri Nov 24 14:46:39 2017 -0800
+
+    [.merlin, _tags] added necessary compilation pieces
+
+ .merlin | 2 ++
+ _tags   | 0
+ 2 files changed, 2 insertions(+)
+
+commit 037fd8dbc5f8707f90e2e9f42ce35b32f418de5c
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Fri Nov 24 14:45:44 2017 -0800
+
+    [pool.ml, pool.mli] updates in order to compile
+
+ pool.ml  | 46 ++++++++++++++++++++++++++++++----------------
+ pool.mli | 48 +++++++++++++++++++++++++-----------------------
+ 2 files changed, 55 insertions(+), 39 deletions(-)
+
+commit 0762298a84157ea495c6d3ae7a79c04e3d7f4f46
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Fri Nov 24 14:44:57 2017 -0800
+
+    [Makefile] added compilation stuff
+
+ Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 8d68e56951fca5f5295996251cc4936bf7940f5f
+Merge: 80472a2 abb6299
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Fri Nov 24 11:25:35 2017 -0800
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 80472a223e30a5fc4ff7fdd7b6b0e806ad13ebf9
+Author: Samantha Dimmer <SamanthaDimmer@Samanthas-MacBook-Air.local>
+Date:   Fri Nov 24 11:25:28 2017 -0800
+
+    [pool.ml, pool.mli] initial implementation of pool
+
+ pool.ml  | 79 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ pool.mli | 14 +++++++-----
+ 2 files changed, 87 insertions(+), 6 deletions(-)
+
+commit abb6299743a5069454ae556896ccbecb11d219e6
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Fri Nov 24 02:01:39 2017 -0500
+
+    [api.*, server] refactored admin post into delete and post
+
+ api.ml    |  5 +++-
+ api.mli   | 87 +++++++++++++++++++++++++++++++++++++++++++++------------------
+ server.ml |  1 +
+ 3 files changed, 67 insertions(+), 26 deletions(-)
+
+commit 47e6c86a3f37b5f4245a984f350669694981e9a9
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Fri Nov 24 00:51:21 2017 -0500
+
+    [api.mli] replaced 'key' with 'header' for req.headers
+
+ api.mli | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
+
+commit 0b02b8113c447e4d48d9dcdfa2c3f055be5ba1cc
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Thu Nov 23 16:21:03 2017 -0500
+
+    [api.mli] made request/response json format uniform
+
+ api.mli | 67 ++++++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 35 insertions(+), 32 deletions(-)
+
+commit 6b986795b2e1af95b278eb39667b579c148d9af7
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Thu Nov 23 03:42:18 2017 -0500
+
+    [api.mli] small documentation changes
+
+ api.mli | 2 --
+ 1 file changed, 2 deletions(-)
+
+commit b773b31bfdf0308c93762584b479be46b9d31248
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Thu Nov 23 03:33:01 2017 -0500
+
+    [api.*, server.ml] moved server.mli into api.mli
+
+ api.ml                | 23 +++++++++++++++++++++++
+ server.mli => api.mli | 28 ++++++++++++++--------------
+ server.ml             | 31 +++++--------------------------
+ 3 files changed, 42 insertions(+), 40 deletions(-)
+
+commit bb5f770570f31d1769b38fa2941c4c50e76d3c6e
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Thu Nov 23 03:15:32 2017 -0500
+
+    [server.*, professor] hey guys I wrote the equivalent of the api documentation for OLoml. Also happy thanksgiving
+
+ .gitignore    |   1 +
+ professor.mli |   5 ++
+ server.ml     |  30 +++++++++
+ server.mli    | 212 ++++++++++++++++++++++++++++++++++++++++++++++++++--------
+ 4 files changed, 220 insertions(+), 28 deletions(-)
+
+commit 4c4b3f31077b14bf1e9f62a737173643187f2fc2
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Wed Nov 22 19:28:50 2017 -0500
+
+    [httpServer.*, server.mli, Makefile] started server mli, added ohttp modules]
+
+ .gitignore     |  3 +++
+ Makefile       | 18 +++++++++++++++++
+ httpServer.ml  | 62 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ httpServer.mli | 40 +++++++++++++++++++++++++++++++++++++
+ match.mli      | 11 +++--------
+ server.mli     | 41 ++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 167 insertions(+), 8 deletions(-)
+
+commit 3b57a7031c6e4e8992ed3db38f1874720ca00a95
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Wed Nov 15 21:21:57 2017 -0500
+
+    [db.mli] updated db
+
+ db.mli | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+commit d7bd49b1ec10d161a4e1b88d3a2bdae54d4026dc
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Wed Nov 15 21:10:52 2017 -0500
+
+    [professor.mli, student.mli, db.mli] updated professor and student, created db
+
+ db.mli        |  0
+ professor.mli | 19 +++++++++++++++----
+ student.mli   | 20 +++++++++++++++++---
+ 3 files changed, 32 insertions(+), 7 deletions(-)
+
+commit 6f22d28283f97145363d1f59fbb44073dd886ef5
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Wed Nov 15 20:12:01 2017 -0500
+
+    [professor.mli, student.mli] changed people to student, added professor mli
+
+ people.mli    | 27 ---------------------------
+ professor.mli | 37 +++++++++++++++++++++++++++++++++++++
+ student.mli   |  8 ++++++++
+ 3 files changed, 45 insertions(+), 27 deletions(-)
+
+commit cf7bde68c45f4f384fc103c578edb6c6a210098a
+Author: Samantha Dimmer <SamanthaDimmer@dhcp-uris-3619.eduroam.cornell.edu>
+Date:   Tue Nov 14 14:35:51 2017 -0500
+
+    [match.mli] fixed merge
+
+ match.mli | 24 +++++++-----------------
+ 1 file changed, 7 insertions(+), 17 deletions(-)
+
+commit ff91c0aefbe7f2c1619ebd0500f50ffa72bfb587
+Author: Samantha Dimmer <SamanthaDimmer@dhcp-uris-3619.eduroam.cornell.edu>
+Date:   Tue Nov 14 14:33:23 2017 -0500
+
+    [people.mli] added specs
+
+ people.mli | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
+
+commit 09c69b9e9a81e69c652082ab57ac2456d5c6a072
+Merge: 1e107ca 902ef6b
+Author: Samantha Dimmer <SamanthaDimmer@dhcp-uris-3619.eduroam.cornell.edu>
+Date:   Tue Nov 14 14:32:58 2017 -0500
+
+    [pool.mli/match.mli] merged, added specs
+
+commit 1e107ca073b65c8d68cc333bc18ddbecfdc9f42e
+Author: Samantha Dimmer <SamanthaDimmer@dhcp-uris-3619.eduroam.cornell.edu>
+Date:   Tue Nov 14 14:30:51 2017 -0500
+
+    [pool.mli] added specs
+
+ pool.mli | 64 +++++++++++++++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 47 insertions(+), 17 deletions(-)
+
+commit 24141af6cba8d547cbd70fd3b95507eb32045604
+Author: Samantha Dimmer <SamanthaDimmer@dhcp-uris-3619.eduroam.cornell.edu>
+Date:   Tue Nov 14 14:30:16 2017 -0500
+
+    [match.mli] updated spec
+
+ match.mli | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
+commit 902ef6ba9af1fae463341a2466e22ae425944a96
+Merge: 9e4bb38 4dfbf18
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Tue Nov 14 02:47:05 2017 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/ab2466/CS3110-Final-Project
+
+commit 9e4bb38b8e43f1abdf518cdcea1a627dec734594
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Tue Nov 14 02:45:58 2017 -0500
+
+    [match.mli, pool.mli] changed type names for swipe results
+
+ match.mli |  8 ++++----
+ pool.mli  | 12 ++++++------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
+
+commit 4dfbf18abe6a723dec6a1f7638c79b94f1c2f096
+Author: sd549 <sd549@cornell.edu>
+Date:   Tue Nov 14 00:34:33 2017 -0500
+
+    [pool.mli] Updated documentation and changed swipe function inputs
+
+ pool.mli | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+commit 45adf6b0fa641633e129fed7f13472d7498f1469
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Mon Nov 13 21:13:40 2017 -0500
+
+    [match.mli] added match interface
+
+ match.mli | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+commit f23701f15263c8e2a73c6c7441016463c7b837e2
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Mon Nov 13 20:44:49 2017 -0500
+
+    [README.md]
+
+ README.md | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit b763fbf1e64530ab0d7e9f014e10129d485c51b8
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Mon Nov 13 20:43:55 2017 -0500
+
+    [README.md] metro boomin readme
+
+ README.md | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+commit c3b55e144a92782a8d53a17d384d814476b8a34b
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Mon Nov 13 20:34:44 2017 -0500
+
+    [pool.mli] added pool interface
+
+ pool.mli | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+
+commit d1641456bf32c8a81d84f5eadaf7869b88165f77
+Author: aayushberi26 <aayush.beri26@gmail.com>
+Date:   Mon Nov 13 19:48:17 2017 -0500
+
+    [people.mli] added people interface
+
+ people.mli | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+commit 3a21531e7aef11b8bf022c74c10397ab4a1a3b92
+Author: sd549 <sd549@cornell.edu>
+Date:   Mon Nov 13 13:38:59 2017 -0500
+
+    [schema.json] Built schema
+
+ schema.json | 93 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 93 insertions(+)
+
+commit d829bf2d944a5d1c4764f54061bb6553f5c8a959
+Author: Aayush Beri <ab2466@cornell.edu>
+Date:   Mon Nov 13 12:56:34 2017 -0500
+
+    Initial commit
+
+ README.md | 2 ++
+ 1 file changed, 2 insertions(+)

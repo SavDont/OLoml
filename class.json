@@ -1,0 +1,99 @@
+{
+  "sd549" :
+      { "netid" : "sd549",
+        "name" : "Sav",
+         "year" : "junior",
+         "password": "password"
+      },
+  "ab2466" :
+          { "netid" : "ab2466",
+            "name" : "Aayush",
+             "year" : "junior",
+             "password": "password"
+          },
+  "mg954" :
+          { "netid" : "mg954",
+            "name" : "Myra",
+            "year" : "junior",
+            "password": "password"
+          },
+  "sed87" :
+          { "netid" : "sed87",
+            "name" : "Sam",
+            "year" : "junior",
+            "password": "password"
+          },
+  "krg48" :
+      { "netid" : "krg48",
+        "name" : "katie",
+         "year" : "freshman",
+         "password": "password"
+      },
+  "aik47" :
+          { "netid" : "aik47",
+            "name" : "alex",
+             "year" : "senior",
+             "password": "password"
+          },
+  "bmq4" :
+          { "netid" : "bmq4",
+            "name" : "brandon",
+            "year" : "junior",
+            "password": "password"
+          },
+  "am123" :
+          { "netid" : "am123",
+            "name" : "aaron",
+            "year" : "sophomore",
+            "password": "password"
+          },
+  "rd123" :
+      { "netid" : "rd123",
+        "name" : "rene",
+         "year" : "senior",
+         "password": "password"
+      },
+  "oo123" :
+          { "netid" : "oo123",
+            "name" : "object-oriented",
+             "year" : "freshman",
+             "password": "password"
+          },
+  "mk123" :
+          { "netid" : "mk123",
+            "name" : "michael",
+            "year" : "senior",
+            "password": "password"
+          },
+  "rk123" :
+          { "netid" : "rk123",
+            "name" : "robby",
+            "year" : "freshman",
+            "password": "password"
+          }
+,
+  "cd123" :
+      { "netid" : "cd123",
+        "name" : "christina",
+         "year" : "sophomore",
+         "password": "password"
+      },
+  "lj123" :
+          { "netid" : "lj123",
+            "name" : "lebron",
+             "year" : "senior",
+             "password": "password"
+          },
+  "cs123" :
+          { "netid" : "cs123",
+            "name" : "chris",
+            "year" : "senior",
+            "password": "password"
+          },
+  "ls123" :
+          { "netid" : "ls123",
+            "name" : "loml",
+            "year" : "senior",
+            "password": "password"
+    }
+}
