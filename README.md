@@ -59,4 +59,4 @@ Run
     make play
 
 ### Notes
-This project was developed as the final project for [CS3110](http://www.cs.cornell.edu/courses/cs3110/2017fa/) - Data Structures and Functional Programming. As such, OLoml is far from perfect. Suggestions and contributions welcome.
+OLoml was developed as the final project for [CS3110](http://www.cs.cornell.edu/courses/cs3110/2017fa/) - Data Structures and Functional Programming. As such, it is far from perfect. Suggestions and contributions welcome.
